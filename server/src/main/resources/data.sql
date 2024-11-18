@@ -1,11 +1,35 @@
-INSERT INTO users (id, name, email, password) VALUES (111, 'Ronaldo', 'ronaldo@gmail.com', '$2a$12$6kRfLC5UxQ3mhKXtcX3EZ.nDgkQH4Y0ERswZWTsIkIapz7n0lDbQW');
-INSERT INTO users (id, name, email, password) VALUES (112, 'Messi', 'messi@gmail.com', '$2a$12$HW0E0HBVTEmMqfzoEirNXOQGfgxOQrrIow9NM0NP7QWSEgNp2M4bm');
-INSERT INTO users (id, name, email, password) VALUES (113, 'Doraemon', 'doraemon@gmail.com', '$2a$12$gloWkH7CNmQJSH5ebef7AuM2sUZHZA5udYCPa0DtxMgLNrwB7wREi');
+-- Insert Users
+INSERT INTO users (id, username, password, is_approved)
+VALUES (1, 'admin_user', '$2a$12$IKEQb00u5QpZMx4v5zMweu.3wrq0pS7XLCHO4yHZ.BW/yvWu1feo2', true),
+       (2, 'seller_user', '$2a$12$IKEQb00u5QpZMx4v5zMweu.3wrq0pS7XLCHO4yHZ.BW/yvWu1feo2', true),
+       (3, 'buyer_user', '$2a$12$IKEQb00u5QpZMx4v5zMweu.3wrq0pS7XLCHO4yHZ.BW/yvWu1feo2', true);
 
+-- Insert Products
+INSERT INTO product (id, name, description, price, seller_id, is_approved)
+VALUES (1, 'Laptop', 'High-performance laptop', 1200.00, 2, true),
+       (2, 'Headphones', 'Noise-canceling headphones', 150.00, 2, true),
+       (3, 'Smartphone', 'Latest model smartphone', 800.00, 2, false);
+-- Not approved yet
 
-INSERT INTO role (id, role) VALUES (1, 'USER');
-INSERT INTO role (id, role) VALUES (2, 'ADMIN');
+-- Insert Orders
+INSERT INTO orders (id, buyer_id, product_id, quantity, order_date)
+VALUES (1, 3, 1, 1, '2024-11-01T10:00:00'),
+       (2, 3, 2, 2, '2024-11-02T12:30:00');
 
-INSERT INTO users_roles (user_id, roles_id) VALUES (111, 1);
-INSERT INTO users_roles (user_id, roles_id) VALUES (111, 2);
-INSERT INTO users_roles (user_id, roles_id) VALUES (112, 1);
+-- Insert Reviews
+INSERT INTO review (id, buyer_id, product_id, comment, rating)
+VALUES (1, 3, 1, 'Excellent laptop, works perfectly!', 5),
+       (2, 3, 2, 'Good headphones but could be more comfortable.', 4);
+
+-- Data for Role table
+INSERT INTO Role (role)
+VALUES ('ADMIN'),
+       ('SELLER'),
+       ('BUYER');
+
+-- Data for the join table between Users and Role
+-- Assuming the join table is named user_roles
+INSERT INTO users_roles (user_id, roles_id)
+VALUES (1, 1), -- ADMIN
+       (2, 2), -- SELLER
+       (3, 3); -- BUYER

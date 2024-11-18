@@ -1,7 +1,7 @@
 package edu.miu.project.service.impl;
 
-import edu.miu.project.entity.dtos.LoginRequest;
-import edu.miu.project.entity.dtos.LoginResponse;
+import edu.miu.project.entity.dto.LoginRequest;
+import edu.miu.project.entity.dto.LoginResponse;
 import edu.miu.project.service.AuthService;
 import edu.miu.project.util.JwtUtil;
 import lombok.RequiredArgsConstructor;

@@ -1,8 +1,8 @@
 package edu.miu.project.controller;
 
 
-import edu.miu.project.entity.dtos.LoginRequest;
-import edu.miu.project.entity.dtos.LoginResponse;
+import edu.miu.project.entity.dto.LoginRequest;
+import edu.miu.project.entity.dto.LoginResponse;
 import edu.miu.project.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
