@@ -1,8 +1,8 @@
 -- Insert Users
-INSERT INTO users (id, username, password, is_approved)
-VALUES (1, 'admin_user', '$2a$12$IKEQb00u5QpZMx4v5zMweu.3wrq0pS7XLCHO4yHZ.BW/yvWu1feo2', true),
-       (2, 'seller_user', '$2a$12$IKEQb00u5QpZMx4v5zMweu.3wrq0pS7XLCHO4yHZ.BW/yvWu1feo2', true),
-       (3, 'buyer_user', '$2a$12$IKEQb00u5QpZMx4v5zMweu.3wrq0pS7XLCHO4yHZ.BW/yvWu1feo2', true);
+INSERT INTO users (id, username, email, password, is_approved)
+VALUES (1, 'admin', 'admin@miu.edu', '$2a$12$IKEQb00u5QpZMx4v5zMweu.3wrq0pS7XLCHO4yHZ.BW/yvWu1feo2', true),
+       (2, 'seller', 'seller@miu.edu', '$2a$12$IKEQb00u5QpZMx4v5zMweu.3wrq0pS7XLCHO4yHZ.BW/yvWu1feo2', true),
+       (3, 'buyer','buyer@miu.edu', '$2a$12$IKEQb00u5QpZMx4v5zMweu.3wrq0pS7XLCHO4yHZ.BW/yvWu1feo2', true);
 
 -- Insert Products
 INSERT INTO product (id, name, description, price, seller_id, is_approved)

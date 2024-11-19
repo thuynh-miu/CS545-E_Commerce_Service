@@ -16,13 +16,14 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 @Component
 public class JwtUtil {
 
     private final String secret = "mytopsecretIbetyoucannotguessithahahahahahaha";
-    private final long expiration = 5 * 60 * 60 * 60;
-    private final long refreshExpiration = 5 * 60 * 60 * 60 * 60;
+    private final long expiration = 1000 * 60 * 60; // 1 hour
+    private final long refreshExpiration = 7 * 1000 * 60 * 60 * 24; // 7 days
 
     private final UserDetailsService userDetailsService;
 
@@ -60,7 +61,7 @@ public class JwtUtil {
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
-    private String doGenerateToken(Map<String, Object> claims, String subject) {
+    public String doGenerateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .claims(claims)
                 .subject(subject)
@@ -75,5 +76,45 @@ public class JwtUtil {
         claims.put("roles",userDetails.getAuthorities());
 
         return doGenerateToken(claims, userDetails.getUsername());
+    }
+
+    public String generateRefreshToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("roles",userDetails.getAuthorities());
+
+        return Jwts.builder()
+                .claims(claims)
+                .subject(userDetails.getUsername())
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + refreshExpiration))
+                .signWith(getSignInKey())
+                .compact();
+    }
+
+    public String getSubject(String token) {
+        Claims claims = getAllClaimsFromToken(token);
+        return claims.getSubject();
+    }
+
+    public Date getExpirationDateFromToken(String token) {
+        Claims claims = getAllClaimsFromToken(token);
+        return claims.getExpiration();
+    }
+
+    public Boolean isTokenExpired(String token) {
+        try {
+            return getExpirationDateFromToken(token).before(new Date());
+        } catch (Exception e) {
+            return true;
+        }
+    }
+
+    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = getAllClaimsFromToken(token);
+        return claimsResolver.apply(claims);
+    }
+
+    public UserDetails extractUserDetails(String token) {
+        return userDetailsService.loadUserByUsername(getSubject(token));
     }
 }
