@@ -1,5 +1,6 @@
 package edu.miu.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -33,4 +34,7 @@ public class Product {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Order> orders; // Orders for this product
+
+    @ManyToMany()
+    private List<Category> categories;
 }
