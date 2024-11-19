@@ -4,12 +4,13 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 import SellerPage from "./components/SellerPage";
 import RegisterPage from "./components/RegisterPage";
+import Cart from "./components/Cart";
 
 
 function App() {
   return (
     <div>
-      <header>
+      <header className="mb-3">
         <NavBar />
       </header>
       <Routes>
@@ -17,6 +18,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/seller" element={<SellerPage />} />
+        <Route path="/cart" element={<Cart />} />
       </Routes>
     </div>
   );

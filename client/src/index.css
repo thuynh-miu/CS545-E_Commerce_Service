@@ -11,3 +11,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.product-overview {
+  max-width: 200px;
+}
+
+.text-decoration-none {
+  text-decoration: none;
+}
+
+.quantity-selector {
+  width: 120px;
+  border: 1px solid black;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 9999px;
+}
+
+.decrease-quantity-button:hover,
+.increase-quantity-button:hover {
+  cursor: pointer;
+}
