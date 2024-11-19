@@ -11,7 +11,7 @@ public class ProductDto {
     private String description;
     private double price;
     private UserDto seller; // Nested DTO for seller information
-    private boolean isApproved; // Approval status
     private List<ReviewDto> reviews; // List of nested DTOs for reviews
     private List<OrderDto> orders; // List of nested DTOs for orders
+    private List<CategoryDto> categories; // List of nested DTOs for categories
 }

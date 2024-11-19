@@ -3,10 +3,10 @@ package edu.miu.project.service.impl;
 import edu.miu.project.entity.Role;
 import edu.miu.project.entity.User;
 import edu.miu.project.entity.dto.UserDto;
-import edu.miu.project.repo.RoleRepo;
-import edu.miu.project.repo.UserRepo;
+import edu.miu.project.helper.ListMapper;
+import edu.miu.project.repo.RoleRepository;
+import edu.miu.project.repo.UserRepository;
 import edu.miu.project.service.UserService;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,13 +18,18 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
-    UserRepo userRepository;
+    UserRepository userRepository;
     @Autowired
-    RoleRepo roleRepository;
-    @Autowired
-    ModelMapper modelMapper;
+    RoleRepository roleRepository;
     @Autowired
     PasswordEncoder passwordEncoder;
+    @Autowired
+    ListMapper listMapper;
+
+    @Override
+    public List<UserDto> getAllUsers() {
+        return listMapper.mapList(userRepository.findAll(), UserDto.class);
+    }
 
     // Register a user (default isApproved = false for sellers)
     public String registerUser(User user) {
@@ -64,10 +69,5 @@ public class UserServiceImpl implements UserService {
         } else {
             return "Error: Can't approve a non-seller user: " + user.get().getUsername();
         }
-    }
-
-    // Helper method to convert User to UserDto
-    private UserDto convertToDto(User user) {
-        return modelMapper.map(user, UserDto.class);
     }
 }

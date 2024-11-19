@@ -1,14 +1,14 @@
 -- Insert Users
 INSERT INTO users (username, email, password, is_approved)
 VALUES ('admin', 'admin@miu.edu', '$2a$12$IKEQb00u5QpZMx4v5zMweu.3wrq0pS7XLCHO4yHZ.BW/yvWu1feo2', true),
-       ('seller', 'seller@miu.edu', '$2a$12$IKEQb00u5QpZMx4v5zMweu.3wrq0pS7XLCHO4yHZ.BW/yvWu1feo2', true),
+       ('seller', 'seller@miu.edu', '$2a$12$IKEQb00u5QpZMx4v5zMweu.3wrq0pS7XLCHO4yHZ.BW/yvWu1feo2', false),
        ('buyer','buyer@miu.edu', '$2a$12$IKEQb00u5QpZMx4v5zMweu.3wrq0pS7XLCHO4yHZ.BW/yvWu1feo2', true);
 
 -- Insert Products
-INSERT INTO product (name, description, price, seller_id, is_approved)
-VALUES ('Laptop', 'High-performance laptop', 1200.00, 2, true),
-       ('Headphones', 'Noise-canceling headphones', 150.00, 2, true),
-       ('Smartphone', 'Latest model smartphone', 800.00, 2, false);
+INSERT INTO product (name, description, price, seller_id)
+VALUES ('Laptop', 'High-performance laptop', 1200.00, 2),
+       ('Headphones', 'Noise-canceling headphones', 150.00, 2),
+       ('Smartphone', 'Latest model smartphone', 800.00, 2);
 -- Not approved yet
 
 -- Insert Orders

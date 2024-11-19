@@ -22,12 +22,12 @@ public class Product {
     @Column(nullable = false)
     private double price;
 
+    @Column(nullable = false)
+    private int quantity;
+
     @ManyToOne
     @JoinColumn(name = "seller_id", nullable = false)
     private User seller; // Reference back to the seller
-
-    @Column(nullable = false)
-    private boolean isApproved; // Approval by Admin
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Review> reviews; // Reviews for this product
