@@ -12,9 +12,9 @@ VALUES ('Laptop', 'High-performance laptop', 1200.00, 2),
 -- Not approved yet
 
 -- Insert Orders
-INSERT INTO orders (buyer_id, product_id, quantity, order_date)
-VALUES (3, 1, 1, '2024-11-01T10:00:00'),
-       (3, 2, 2, '2024-11-02T12:30:00');
+-- INSERT INTO orders (buyer_id, product_id, quantity, order_date)
+-- VALUES (3, 1, 1, '2024-11-01T10:00:00'),
+--        (3, 2, 2, '2024-11-02T12:30:00');
 
 -- Insert Reviews
 INSERT INTO review (buyer_id, product_id, comment, rating)

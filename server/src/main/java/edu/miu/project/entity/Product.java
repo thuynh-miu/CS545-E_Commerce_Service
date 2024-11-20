@@ -22,8 +22,8 @@ public class Product {
     @Column(nullable = false)
     private double price;
 
-    @Column(nullable = false)
-    private int quantity;
+    @Column(nullable = false, columnDefinition = "int default 0")
+    private Integer quantity = 0;
 
     @ManyToOne
     @JoinColumn(name = "seller_id", nullable = false)
@@ -32,8 +32,8 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Review> reviews; // Reviews for this product
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Order> orders; // Orders for this product
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    private List<Order> orders; // Orders for this product
 
     @ManyToMany()
     private List<Category> categories;

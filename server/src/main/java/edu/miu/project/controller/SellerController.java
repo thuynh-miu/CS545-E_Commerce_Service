@@ -15,9 +15,13 @@ public class SellerController {
     ProductService productService;
 
     @PostMapping("/products")
-    public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
-        Product savedProduct = productService.saveProduct(product);
-        return ResponseEntity.ok(savedProduct);
+    public ResponseEntity<?> createProduct(@RequestBody Product product, @RequestParam Long sellerId) {
+        try {
+            Product createdProduct = productService.createProduct(product, sellerId);
+            return ResponseEntity.ok(createdProduct);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/products")
