@@ -3,8 +3,8 @@ import { useState } from "react";
 
 
 export default function Collapsible(props) {
-    const { title, id, children } = props;
-    const [isShow, setIsShow] = useState(false);
+    const { title, id, children, collapsed = false } = props;
+    const [isShow, setIsShow] = useState(!collapsed);
 
     const toggle = () => {
         setIsShow(isShow => !isShow);
@@ -13,7 +13,7 @@ export default function Collapsible(props) {
         <div>
             <button className="btn btn-light w-100 d-flex" onClick={toggle}>
                 <span>{title}</span>
-                <span className="ms-auto">
+                <span className="ms-auto my-auto">
                     {isShow ? <ArrowDownOutlined /> : <ArrowRightOutlined />}
                 </span>
             </button>

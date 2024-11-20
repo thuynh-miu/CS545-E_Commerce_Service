@@ -6,7 +6,9 @@ import SellerPage from "./components/SellerPage";
 import RegisterPage from "./components/RegisterPage";
 import Cart from "./components/Cart";
 import ProductsSearch from "./components/ProductsSearch";
-
+import ProductDetailPage from "./components/ProductDetailPage";
+import AdminDashboard from "./components/AdminDashboard";
+import Checkout from "./components/Checkout";
 
 function App() {
   return (
@@ -21,6 +23,12 @@ function App() {
         <Route path="/seller" element={<SellerPage />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/products/search" element={<ProductsSearch />} />
+        <Route
+          path="/products/detail/:productId"
+          element={<ProductDetailPage />}
+        />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/checkout" element={<Checkout />} />
       </Routes>
     </div>
   );

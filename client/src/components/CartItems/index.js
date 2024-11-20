@@ -11,6 +11,7 @@ export default function CartItems(props) {
                     item => <CartItem item={item} />
                 )
             }
+            <hr />
         </div>
     )
 }
