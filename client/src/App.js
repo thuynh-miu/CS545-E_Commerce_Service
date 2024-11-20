@@ -5,6 +5,7 @@ import Login from "./components/Login";
 import SellerPage from "./components/SellerPage";
 import RegisterPage from "./components/RegisterPage";
 import Cart from "./components/Cart";
+import ProductsSearch from "./components/ProductsSearch";
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/seller" element={<SellerPage />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/products/search" element={<ProductsSearch />} />
       </Routes>
     </div>
   );

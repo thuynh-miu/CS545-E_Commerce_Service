@@ -9,7 +9,7 @@ export default function CartItem({item}) {
                 <div>
                     <img src={img_url} height={96} width={96} />
                 </div>
-                <div className="d-flex w-100">
+                <div className="d-flex w-100 ps-3">
                     <p>{name}</p>
                     <p className="ms-auto"><b>${parseFloat(price).toFixed(2)}</b></p>
                 </div>

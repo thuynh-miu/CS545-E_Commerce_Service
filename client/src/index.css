@@ -32,3 +32,15 @@ code {
 .increase-quantity-button:hover {
   cursor: pointer;
 }
+
+.cart-detail {
+  width: 60%;
+}
+
+.cart-preview {
+  width: 30%;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}

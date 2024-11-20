@@ -20,7 +20,7 @@ export default function NavBar(props) {
             q: inputRef.current.value,
             page: 1
         })
-        navigate(`/products/search?q=${queryParams.toString()}`)
+        navigate(`/products/search?${queryParams.toString()}`)
     }
 
     return (
