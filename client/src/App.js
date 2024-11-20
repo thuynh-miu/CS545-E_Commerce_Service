@@ -9,6 +9,11 @@ import ProductsSearch from "./components/ProductsSearch";
 import ProductDetailPage from "./components/ProductDetailPage";
 import AdminDashboard from "./components/AdminDashboard";
 import Checkout from "./components/Checkout";
+import SellerDashboard from "./components/SellerDashboard";
+import SellerOrders from "./components/SellerOrders";
+import BuyerDashboard from "./components/BuyerDashboard";
+import OrdersHistory from "./components/OrdersHistory";
+
 
 function App() {
   return (
@@ -20,7 +25,6 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/seller" element={<SellerPage />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/products/search" element={<ProductsSearch />} />
         <Route
@@ -29,6 +33,13 @@ function App() {
         />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/checkout" element={<Checkout />} />
+
+        <Route path="/seller" element={<SellerDashboard />} >
+          <Route path="orders" element={<SellerOrders />} />
+        </Route>
+        <Route path="/buyer" element={<BuyerDashboard />} >
+          <Route path="orders" element={<OrdersHistory />} />
+        </Route>
       </Routes>
     </div>
   );
