@@ -20,6 +20,11 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     CartRepository cartRepository;
 
+    @Override
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
+
     // Create a product
     public Product createProduct(Product product, Long sellerId) {
         User seller = userRepository.findById(sellerId)

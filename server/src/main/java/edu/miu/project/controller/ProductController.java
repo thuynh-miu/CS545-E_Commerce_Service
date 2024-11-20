@@ -2,6 +2,7 @@ package edu.miu.project.controller;
 
 import edu.miu.project.entity.Product;
 import edu.miu.project.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,10 +12,13 @@ import java.util.List;
 @RequestMapping("/api/v1/products")
 public class ProductController {
 
-    private final ProductService productService;
+    @Autowired
+    ProductService productService;
 
-    public ProductController(ProductService productService) {
-        this.productService = productService;
+    @GetMapping
+    public ResponseEntity<List<Product>> getAllProducts() {
+        List<Product> products = productService.getAllProducts();
+        return ResponseEntity.ok(products);
     }
 
     // Get all products by seller

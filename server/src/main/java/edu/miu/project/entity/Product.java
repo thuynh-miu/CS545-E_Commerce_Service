@@ -1,6 +1,5 @@
 package edu.miu.project.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -29,7 +28,8 @@ public class Product {
     @JoinColumn(name = "seller_id", nullable = false)
     private User seller; // Reference back to the seller
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
     private List<Review> reviews; // Reviews for this product
 
 //    @ManyToMany(fetch = FetchType.LAZY)
