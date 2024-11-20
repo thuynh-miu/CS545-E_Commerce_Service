@@ -2,6 +2,8 @@ import { useState } from "react";
 import AddToCartButton from "../AddToCartButton";
 import ProductReview from "../ProductReviews";
 import { Link } from "react-router-dom";
+import Rating from "react-rating";
+import { StarFilled, StarOutlined } from "@ant-design/icons";
 
 export default function ProductDetailPage(props) {
   const [productDetail, setProductDetail] = useState({
@@ -24,7 +26,7 @@ export default function ProductDetailPage(props) {
         author: "Ronaldo",
         title: "I love it!",
         content: "This is my 1000-th phone",
-        rating: 0,
+        rating: 5,
       },
     ],
     about: `<ul>   <li>FORGED IN TITANIUM - iPhone 15 Pro has a strong and light aerospace-grade titanium design with a textured matte-glass back. It also features a Ceramic Shield front that's tougher than any smartphone glass. And it's splash, water, and dust resistant.</li>   <li>ADVANCED DISPLAY - The 6.1" Super Retina XDR display with ProMotion ramps up refresh rates to 120Hz when you need exceptional graphics performance. Dynamic Island bubbles up alerts and Live Activities. Plus, with Always-On display, your Lock Screen stays glanceable, so you don't have to tap it to stay in the know.</li> </ul>`,
@@ -49,9 +51,22 @@ export default function ProductDetailPage(props) {
               <img src={productDetail.img_url} className="w-100" />
             </div>
             <div className="col-6">
-              <button className="btn btn-link ps-0">
-                {productDetail.brand}
-              </button>
+              <div className="d-flex">
+                <button className="btn btn-link ps-0">
+                  {productDetail.brand}
+                </button>
+                <span className="ms-auto my-auto me-2">
+                  <Rating
+                    initialRating={productDetail.rating}
+                    readonly={true}
+                    emptySymbol={<StarOutlined />}
+                    fullSymbol={<StarFilled />}
+                  />
+                </span>
+                <span className="my-auto">
+                  <a href="#Reviews">({productDetail.reviews.length} reviews)</a>
+                </span>
+              </div>
               <h1>{productDetail.name}</h1>
               <hr />
               <h5>About this item</h5>
@@ -61,7 +76,7 @@ export default function ProductDetailPage(props) {
           <div className="row">
             <h4 className="mb-4">Reviews ({productDetail.reviews.length})</h4>
             {productDetail.reviews.map((review) => (
-              <div>
+              <div id="Reviews">
                 <div style={{ height: "150px" }}>
                   <ProductReview
                     author={review.author}
