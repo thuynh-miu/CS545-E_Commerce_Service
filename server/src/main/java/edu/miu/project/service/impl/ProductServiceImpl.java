@@ -1,6 +1,7 @@
 package edu.miu.project.service.impl;
 
 import edu.miu.project.entity.Product;
+import edu.miu.project.entity.Review;
 import edu.miu.project.entity.User;
 import edu.miu.project.repo.CartRepository;
 import edu.miu.project.repo.ProductRepository;
@@ -23,6 +24,30 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getAllProducts() {
         return productRepository.findAll();
+    }
+
+    @Override
+    public Product addProduct(Product product) {
+        return productRepository.save(product);
+    }
+
+    @Override
+    public Product getProductById(Long productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found with ID: " + productId));
+    }
+
+    @Override
+    public Product updateProduct(Long productId, Product product) {
+        Product existingProduct = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found with ID: " + productId));
+
+        existingProduct.setName(product.getName());
+        existingProduct.setDescription(product.getDescription());
+        existingProduct.setPrice(product.getPrice());
+        existingProduct.setQuantity(product.getQuantity());
+        existingProduct.setImageUrl(product.getImageUrl());
+        return productRepository.save(existingProduct);
     }
 
     // Create a product
@@ -77,5 +102,33 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new RuntimeException("Product not found with ID: " + productId));
 
         return product.getQuantity() > 0 ? "In Stock" : "Out of Stock";
+    }
+
+    // Update Product imageUrl
+    public Product updateProductImageUrl(Long productId, String imageUrl) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found with ID: " + productId));
+
+        product.setImageUrl(imageUrl);
+        return productRepository.save(product);
+    }
+
+    // Get Reviews by Product Id
+    public List<Review> getReviewsByProductId(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found with ID: " + productId));
+
+        return product.getReviews();
+    }
+
+    // Get Review by Product Id, Review Id
+    public Review getReviewByProductId(Long productId, Long reviewId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found with ID: " + productId));
+
+        return product.getReviews().stream()
+                .filter(review -> review.getId().equals(reviewId))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Review not found with ID: " + reviewId));
     }
 }

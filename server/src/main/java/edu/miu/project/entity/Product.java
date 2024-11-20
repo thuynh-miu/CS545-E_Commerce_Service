@@ -24,6 +24,8 @@ public class Product {
     @Column(nullable = false, columnDefinition = "int default 0")
     private Integer quantity = 0;
 
+    private String imageUrl;
+
     @ManyToOne
     @JoinColumn(name = "seller_id", nullable = false)
     private User seller; // Reference back to the seller

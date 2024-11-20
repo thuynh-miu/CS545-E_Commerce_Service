@@ -9,7 +9,6 @@ INSERT INTO product (name, description, price, seller_id)
 VALUES ('Laptop', 'High-performance laptop', 1200.00, 2),
        ('Headphones', 'Noise-canceling headphones', 150.00, 2),
        ('Smartphone', 'Latest model smartphone', 800.00, 2);
--- Not approved yet
 
 -- Insert Orders
 -- INSERT INTO orders (buyer_id, product_id, quantity, order_date)

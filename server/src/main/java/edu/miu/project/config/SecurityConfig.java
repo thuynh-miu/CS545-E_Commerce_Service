@@ -45,7 +45,7 @@ public class SecurityConfig {
                     auth -> auth
 //                            .requestMatchers("/api/v1/authenticate").permitAll()
 //                            .requestMatchers("/api/v1/admin/**").hasAuthority("ADMIN")
-//                            .requestMatchers("/api/v1/**").hasAnyAuthority("USER")
+//                            .requestMatchers("/api/v1/seller").hasAnyAuthority("SELLER")
                             .anyRequest().permitAll()
             )
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

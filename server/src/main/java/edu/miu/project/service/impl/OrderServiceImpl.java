@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -22,15 +24,20 @@ public class OrderServiceImpl implements OrderService {
     CartRepository cartRepository;
 
     // Place an order
-    public Order placeOrder(Long buyerId) {
-        Cart cart = (Cart) cartRepository.findByBuyer_Id(buyerId)
-                .orElseThrow(() -> new RuntimeException("Cart not found for user with ID: " + buyerId));
+    public Order placeOrder(Long cartId) {
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new RuntimeException("Cart not found with ID: " + cartId));
 
         if (cart.getItems().isEmpty()) {
             throw new RuntimeException("Cart is empty. Cannot place order.");
         }
 
-        Order order = new Order(null,  cart.getBuyer(), cart, null, LocalDateTime.now(), OrderStatus.PENDING);
+        // Create an order
+        List<Product> products = cart.getItems().stream()
+                .map(CartItem::getProduct)
+                .toList();
+
+        Order order = new Order(null, cart.getBuyer(), products, null, LocalDateTime.now(), OrderStatus.PENDING);
 
         // Save the order
         return orderRepository.save(order);
@@ -44,6 +51,11 @@ public class OrderServiceImpl implements OrderService {
         // Update status to CANCELED
         order.setStatus(OrderStatus.CANCELED);
         return orderRepository.save(order);
+    }
+
+    // Get order history
+    public List<Order> getOrderHistory(Long buyerId) {
+        return orderRepository.findByBuyer_Id(buyerId);
     }
 
     // Update order status (Shipped → On the Way → Delivered)

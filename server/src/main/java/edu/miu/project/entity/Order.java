@@ -23,14 +23,14 @@ public class Order {
     @JoinColumn(name = "buyer_id", nullable = false)
     private User buyer; // Reference back to the buyer
 
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    private List<Product> products; // Reference back to the product
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Product> products; // Reference back to the product
 
 //    @Column(nullable = false)
 //    private int quantity;
 
-    @OneToOne
-    private Cart cart;
+//    @OneToOne
+//    private Cart cart;
 
     @OneToOne
     private Address shippingAddress;
