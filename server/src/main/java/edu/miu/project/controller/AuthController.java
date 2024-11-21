@@ -1,11 +1,10 @@
 package edu.miu.project.controller;
 
 
-import edu.miu.project.entity.dto.LoginRequest;
-import edu.miu.project.entity.dto.LoginResponse;
-import edu.miu.project.entity.dto.RefreshTokenRequest;
-import edu.miu.project.entity.dto.RegisterRequest;
+import edu.miu.project.entity.User;
+import edu.miu.project.entity.dto.*;
 import edu.miu.project.service.AuthService;
+import edu.miu.project.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,22 +13,25 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1/authenticate")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AuthController {
-    private final AuthService authService;
+    @Autowired
+    AuthService authService;
 
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
+    @Autowired
+    UserService userService;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Operation(
             summary = "User login",
@@ -43,11 +45,13 @@ public class AuthController {
     @Parameter(name = "loginRequest", description = "User login credentials", required = true)
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public void login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) throws IOException {
+    public UserDto login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) throws IOException {
         LoginResponse loginResponse = authService.login(loginRequest);
         // Add the cookie to the response
         response.addCookie(new Cookie("accessToken", loginResponse.getAccessToken()));
         response.addCookie(new Cookie("refreshToken", loginResponse.getRefreshToken()));
+        User user = userService.getCurrentUser().orElse(null);
+        return modelMapper.map(user, UserDto.class);
     }
 
     @Operation(
