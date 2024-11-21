@@ -1,7 +1,6 @@
 package edu.miu.project.controller;
 
 
-import edu.miu.project.entity.User;
 import edu.miu.project.entity.dto.*;
 import edu.miu.project.service.AuthService;
 import edu.miu.project.service.UserService;
@@ -13,7 +12,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +28,6 @@ public class AuthController {
 
     @Autowired
     UserService userService;
-    @Autowired
-    private ModelMapper modelMapper;
 
     @Operation(
             summary = "User login",
@@ -50,8 +46,7 @@ public class AuthController {
         // Add the cookie to the response
         response.addCookie(new Cookie("accessToken", loginResponse.getAccessToken()));
         response.addCookie(new Cookie("refreshToken", loginResponse.getRefreshToken()));
-        User user = userService.getCurrentUser().orElse(null);
-        return modelMapper.map(user, UserDto.class);
+        return userService.findByEmail(loginRequest.getEmail());
     }
 
     @Operation(

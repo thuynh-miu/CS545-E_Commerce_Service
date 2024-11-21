@@ -9,6 +9,7 @@ import edu.miu.project.repo.RoleRepository;
 import edu.miu.project.repo.SellerRepository;
 import edu.miu.project.repo.UserRepository;
 import edu.miu.project.service.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,8 @@ public class UserServiceImpl implements UserService {
     BuyerRepository buyerRepository;
     @Autowired
     SellerRepository sellerRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public List<UserDto> getAllUsers() {
@@ -73,5 +76,12 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("No unapproved sellers found.");
 
         return listMapper.mapList(unapprovedSellers.get(), UserDto.class);
+    }
+
+    @Override
+    public UserDto findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(user -> modelMapper.map(user, UserDto.class))
+                .orElse(null);
     }
 }

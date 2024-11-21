@@ -66,6 +66,7 @@ public class JwtFilter extends OncePerRequestFilter {
             // Generate a new access token using the subject from the refresh token
             final UserDetails userDetails = jwtUtil.extractUserDetails(refreshToken);
             String newAccessToken = jwtUtil.generateToken(userDetails);
+            accessToken = newAccessToken;
             response.addCookie(new Cookie("accessToken", newAccessToken));
         }
 
