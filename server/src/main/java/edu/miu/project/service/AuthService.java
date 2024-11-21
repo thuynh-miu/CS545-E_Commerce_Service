@@ -7,4 +7,6 @@ import edu.miu.project.entity.dto.RefreshTokenRequest;
 public interface AuthService {
     LoginResponse login(LoginRequest loginRequest);
     LoginResponse refreshToken(RefreshTokenRequest refreshTokenRequest);
+    boolean registerAsBuyer(LoginRequest loginRequest);
+    boolean registerAsSeller(LoginRequest loginRequest);
 }

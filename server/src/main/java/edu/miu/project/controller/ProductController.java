@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/products")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ProductController {
 
     @Autowired
@@ -126,7 +127,7 @@ public class ProductController {
 
     @Operation(
             summary = "Get products by seller",
-            description = "Retrieves a list of products for the specified seller ID.",
+            description = "Retrieves a list of products for the specified seller",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Products retrieved successfully",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class))),
@@ -134,10 +135,9 @@ public class ProductController {
                             content = @Content(mediaType = "application/json"))
             }
     )
-    @Parameter(name = "sellerId", description = "ID of the seller to retrieve products", required = true)
-    @GetMapping("/seller/{sellerId}")
-    public ResponseEntity<List<Product>> getProductsBySeller(@PathVariable Long sellerId) {
-        List<Product> products = productService.getProductsBySeller(sellerId);
+    @GetMapping("/seller")
+    public ResponseEntity<List<Product>> getProductsBySeller() {
+        List<Product> products = productService.getProductsBySeller();
         return ResponseEntity.ok(products);
     }
 

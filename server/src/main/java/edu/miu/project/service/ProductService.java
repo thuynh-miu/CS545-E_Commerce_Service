@@ -15,9 +15,9 @@ public interface ProductService {
     // Update product
     Product updateProduct(Long productId, Product product);
     // Create or update product
-    Product createProduct(Product product, Long sellerId);
+    Product createProduct(Product product);
     // Get all products for a seller
-    List<Product> getProductsBySeller(Long sellerId);
+    List<Product> getProductsBySeller();
     // Delete product if not ordered
     void deleteProduct(Long productId);
     // Update stock quantity

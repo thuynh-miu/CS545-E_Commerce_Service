@@ -1,5 +1,6 @@
 package edu.miu.project.config;
 
+import edu.miu.project.entity.RoleEnum;
 import edu.miu.project.filter.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -43,9 +44,13 @@ public class SecurityConfig {
             .cors(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(
                     auth -> auth
-//                            .requestMatchers("/api/v1/authenticate").permitAll()
-//                            .requestMatchers("/api/v1/admin/**").hasAuthority("ADMIN")
-//                            .requestMatchers("/api/v1/seller").hasAnyAuthority("SELLER")
+                            .requestMatchers("/swagger-ui/**").permitAll()
+                            .requestMatchers("/api/v1/authenticate").permitAll()
+                            .requestMatchers("/api/v1/admin/**").hasAuthority(RoleEnum.ADMIN.toString())
+                            .requestMatchers("/api/v1/cart").hasAnyAuthority(RoleEnum.BUYER.toString())
+                            .requestMatchers("/api/v1/order").hasAnyAuthority(RoleEnum.BUYER.toString() , RoleEnum.SELLER.toString())
+                            .requestMatchers("/api/v1/product").hasAnyAuthority(RoleEnum.SELLER.toString())
+                            .requestMatchers("/api/v1/users").permitAll()
                             .anyRequest().permitAll()
             )
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

@@ -28,14 +28,11 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "seller_id", nullable = false)
-    private User seller; // Reference back to the seller
+    private Seller seller; // Reference back to the seller
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private List<Review> reviews; // Reviews for this product
-
-//    @ManyToMany(fetch = FetchType.LAZY)
-//    private List<Order> orders; // Orders for this product
 
     @ManyToMany()
     private List<Category> categories;

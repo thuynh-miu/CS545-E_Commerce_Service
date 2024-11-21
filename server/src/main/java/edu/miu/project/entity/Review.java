@@ -13,11 +13,7 @@ public class Review {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "buyer_id", nullable = false)
-    private User buyer; // Reference back to the buyer
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "product_id", nullable = false)
-//    private Product product; // Reference back to the product
+    private Buyer buyer; // Reference back to the buyer
 
     @Column(nullable = false)
     private String comment;

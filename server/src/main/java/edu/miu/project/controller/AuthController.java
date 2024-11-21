@@ -12,7 +12,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1/authenticate")
@@ -54,5 +57,24 @@ public class AuthController {
     @ResponseStatus(HttpStatus.OK)
     public LoginResponse refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
         return authService.refreshToken(refreshTokenRequest);
+    }
+
+    // Register as a buyer
+    @PostMapping("/register-buyer")
+    public ResponseEntity<?> registerAsBuyer(@RequestBody LoginRequest loginRequest) {
+        boolean ret = authService.registerAsBuyer(loginRequest);
+        if (ret) {
+            return ResponseEntity.status(HttpStatus.CREATED).body("Buyer registered successfully");
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: Buyer registration failed");
+    }
+
+    @PostMapping("/register-seller")
+    public ResponseEntity<?> registerAsSeller(@RequestBody LoginRequest loginRequest) {
+        boolean ret = authService.registerAsSeller(loginRequest);
+        if (ret) {
+            return ResponseEntity.status(HttpStatus.CREATED).body("Seller registered successfully");
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: Seller registration failed");
     }
 }

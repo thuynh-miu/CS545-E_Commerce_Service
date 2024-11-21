@@ -8,20 +8,19 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
-public class Cart {
+public class Seller {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<CartItem> items;
-
     @OneToOne
-    private Buyer buyer;
+    private User user;
 
-    private double totalPrice;
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
+    private List<Product> products;
+
+    private boolean isApproved; // For sellers to check admin approval
 }
-

@@ -21,24 +21,15 @@ public class Order {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "buyer_id", nullable = false)
-    private User buyer; // Reference back to the buyer
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<Product> products; // Reference back to the product
-
-//    @Column(nullable = false)
-//    private int quantity;
-
-//    @OneToOne
-//    private Cart cart;
-
-    @OneToOne
-    private Address shippingAddress;
+    private Buyer buyer; // Reference back to the buyer
 
     @Column(nullable = false)
     private LocalDateTime orderDate;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status; // Enum for order status
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> items;
 }
 

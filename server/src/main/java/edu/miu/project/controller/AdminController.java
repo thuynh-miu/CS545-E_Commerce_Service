@@ -17,13 +17,33 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Tag(name = "Admin Controller", description = "Admin management APIs")
 @RequestMapping("/api/v1/admin")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AdminController {
     @Autowired
     UserService userService;
     @Autowired
     ReviewService reviewService;
 
-    @PatchMapping("/sellers/{id}/approve")
+    @Operation(
+            summary = "Get all users",
+            description = "Retrieves a list of all users.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Users retrieved successfully",
+                            content = @Content(mediaType = "application/json")),
+                    @ApiResponse(responseCode = "400", description = "Bad request",
+                            content = @Content(mediaType = "application/json"))
+            }
+    )
+    @GetMapping("/users")
+    public ResponseEntity<?> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
+    }
+
+    @GetMapping("/unapproved")
+    public ResponseEntity<?> getUnapprovedSellers() {
+        return ResponseEntity.ok(userService.getUnapprovedSellers());
+    }
+
     @Operation(
             summary = "Approve a seller",
             description = "Approves a seller by their ID and changes their status to approved. Returns a success or error message."
@@ -35,8 +55,9 @@ public class AdminController {
             @ApiResponse(responseCode = "409", description = "Conflict error if the seller cannot be approved",
                     content = @Content(mediaType = "text/plain", schema = @Schema(example = "Error: Seller approval failed")))
     })
-    public ResponseEntity<?> approveSeller(@PathVariable Long id) {
-        String responseMessage = userService.approveSeller(id);
+    @PatchMapping("/approved/{sellerId}")
+    public ResponseEntity<?> approveSeller(@PathVariable Long sellerId) {
+        String responseMessage = userService.approveSeller(sellerId);
         if (responseMessage.contains("Error")) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(responseMessage);
         }

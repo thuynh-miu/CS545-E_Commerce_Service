@@ -14,14 +14,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/carts")
+@RequestMapping("/api/v1/cart")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CartController {
     @Autowired
     CartService cartService;
 
     @Operation(
-            summary = "Get cart by buyer ID",
-            description = "Retrieves the cart for the specified buyer ID.",
+            summary = "Get cart by buyer",
+            description = "Retrieves the cart for the specified buyer.",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Cart retrieved successfully",
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Cart.class))),
@@ -29,11 +30,10 @@ public class CartController {
                             content = @Content(mediaType = "application/json"))
             }
     )
-    @Parameter(name = "buyerId", description = "ID of the buyer to retrieve cart", required = true)
     @GetMapping()
-    public ResponseEntity<?> getCart(@RequestParam Long buyerId) {
+    public ResponseEntity<?> getCart() {
         try {
-            Cart cart = cartService.getCart(buyerId);
+            Cart cart = cartService.getCart();
             return ResponseEntity.ok(cart);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -51,14 +51,13 @@ public class CartController {
             }
     )
     @Parameters({
-            @Parameter(name = "buyerId", description = "ID of the buyer adding the product to cart", required = true),
             @Parameter(name = "productId", description = "ID of the product to add to cart", required = true),
             @Parameter(name = "quantity", description = "Quantity of the product to add to cart", required = true)
     })
     @PostMapping()
-    public ResponseEntity<?> addToCart(@RequestParam Long buyerId, @RequestParam Long productId, @RequestParam int quantity) {
+    public ResponseEntity<?> addToCart(@RequestParam Long productId, @RequestParam int quantity) {
         try {
-            Cart cart = cartService.addToCart(buyerId, productId, quantity);
+            Cart cart = cartService.addToCart(productId, quantity);
             return ResponseEntity.ok(cart);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -70,7 +69,6 @@ public class CartController {
             description = "Removes a specified product from the cart for the given buyer ID."
     )
     @Parameters({
-            @Parameter(name = "buyerId", description = "ID of the buyer removing the product from cart", required = true),
             @Parameter(name = "productId", description = "ID of the product to remove from cart", required = true)
     })
     @ApiResponses(value = {
@@ -80,9 +78,9 @@ public class CartController {
                     content = @Content(mediaType = "application/json"))
     })
     @DeleteMapping()
-    public ResponseEntity<?> removeFromCart(@RequestParam Long buyerId, @RequestParam Long productId) {
+    public ResponseEntity<?> removeFromCart(@RequestParam Long productId) {
         try {
-            Cart cart = cartService.removeFromCart(buyerId, productId);
+            Cart cart = cartService.removeFromCart(productId);
             return ResponseEntity.ok(cart);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -100,14 +98,13 @@ public class CartController {
             }
     )
     @Parameters({
-            @Parameter(name = "buyerId", description = "ID of the buyer updating the product quantity in cart", required = true),
             @Parameter(name = "productId", description = "ID of the product to update quantity in cart", required = true),
             @Parameter(name = "quantity", description = "New quantity of the product in cart", required = true)
     })
     @PutMapping()
-    public ResponseEntity<?> updateCartItemQuantity(@RequestParam Long buyerId, @RequestParam Long productId, @RequestParam int quantity) {
+    public ResponseEntity<?> updateCartItemQuantity(@RequestParam Long productId, @RequestParam int quantity) {
         try {
-            Cart cart = cartService.updateCartItemQuantity(buyerId, productId, quantity);
+            Cart cart = cartService.updateCartItemQuantity(productId, quantity);
             return ResponseEntity.ok(cart);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

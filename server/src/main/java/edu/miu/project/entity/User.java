@@ -25,15 +25,4 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable()
     private List<Role> roles;
-
-    private boolean isApproved; // For sellers to check admin approval
-
-//    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<Product> products; // Products posted by this seller
-
-//    @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<Order> orders; // Orders placed by this buyer
-//
-//    @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<Review> reviews; // Reviews written by this buyer
 }

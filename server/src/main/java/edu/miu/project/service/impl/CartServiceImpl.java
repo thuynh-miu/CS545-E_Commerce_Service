@@ -1,13 +1,11 @@
 package edu.miu.project.service.impl;
 
-import edu.miu.project.entity.Cart;
-import edu.miu.project.entity.CartItem;
-import edu.miu.project.entity.Product;
-import edu.miu.project.entity.User;
+import edu.miu.project.entity.*;
 import edu.miu.project.repo.CartRepository;
 import edu.miu.project.repo.ProductRepository;
 import edu.miu.project.repo.UserRepository;
 import edu.miu.project.service.CartService;
+import edu.miu.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,32 +18,27 @@ public class CartServiceImpl implements CartService {
     @Autowired
     ProductRepository productRepository;
     @Autowired
-    UserRepository userRepository;
+    private UserService userService;
 
     // Get cart by buyer ID
-    public Cart getCart(Long buyerId) {
-        return (Cart) cartRepository.findByBuyer_Id(buyerId)
+    public Cart getCart() {
+        Buyer buyer = userService.getCurrentBuyer()
+                .orElseThrow(() -> new RuntimeException("Buyer not found"));
+
+        return (Cart) cartRepository.findByBuyer_Id(buyer.getId())
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
     }
 
     // Add item to cart
-    public Cart addToCart(Long buyerId, Long productId, int quantity) {
-        User buyer = userRepository.findById(buyerId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public Cart addToCart(Long productId, int quantity) {
+        Buyer buyer = userService.getCurrentBuyer()
+                .orElseThrow(() -> new RuntimeException("Buyer not found"));
 
-        Cart cart = (Cart) cartRepository.findByBuyer_Id(buyerId)
+        Cart cart = (Cart) cartRepository.findByBuyer_Id(buyer.getId())
                 .orElseGet(() -> new Cart(null, new ArrayList<>(), buyer, 0.0));
 
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
-
-        // Check if the buyer is a seller
-        boolean isSeller = buyer.getRoles().stream()
-                .anyMatch(role -> role.getRole().equalsIgnoreCase("SELLER"));
-
-        if (isSeller) {
-            throw new RuntimeException("Sellers cannot purchase products.");
-        }
 
         // Check if product has enough quantity
         if (product.getQuantity() < quantity) {
@@ -56,16 +49,23 @@ public class CartServiceImpl implements CartService {
         product.setQuantity(product.getQuantity() - quantity);
         productRepository.save(product);
 
-        CartItem item = new CartItem(null, product, quantity, product.getPrice() * quantity);
-        cart.getItems().add(item);
-        cart.setTotalPrice(cart.getTotalPrice() + item.getPrice());
+        CartItem cartItem = new CartItem();
+        cartItem.setCart(cart);
+        cartItem.setProduct(product);
+        cartItem.setQuantity(quantity);
+        cartItem.setPrice(product.getPrice() * quantity);
+        cart.getItems().add(cartItem);
+        cart.setTotalPrice(cart.getTotalPrice() + cartItem.getPrice());
 
         return cartRepository.save(cart);
     }
 
     // Remove item from cart
-    public Cart removeFromCart(Long buyerId, Long productId) {
-        Cart cart = (Cart) cartRepository.findByBuyer_Id(buyerId)
+    public Cart removeFromCart(Long productId) {
+        Buyer buyer = userService.getCurrentBuyer()
+                .orElseThrow(() -> new RuntimeException("Buyer not found"));
+
+        Cart cart = (Cart) cartRepository.findByBuyer_Id(buyer.getId())
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
 
         CartItem item = cart.getItems().stream()
@@ -85,8 +85,11 @@ public class CartServiceImpl implements CartService {
     }
 
     // Update cart item quantity
-    public Cart updateCartItemQuantity(Long buyerId, Long productId, int quantity) {
-        Cart cart = (Cart) cartRepository.findByBuyer_Id(buyerId)
+    public Cart updateCartItemQuantity(Long productId, int quantity) {
+        Buyer buyer = userService.getCurrentBuyer()
+                .orElseThrow(() -> new RuntimeException("Buyer not found"));
+
+        Cart cart = (Cart) cartRepository.findByBuyer_Id(buyer.getId())
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
 
         CartItem item = cart.getItems().stream()

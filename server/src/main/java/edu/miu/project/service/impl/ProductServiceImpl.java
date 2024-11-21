@@ -2,15 +2,18 @@ package edu.miu.project.service.impl;
 
 import edu.miu.project.entity.Product;
 import edu.miu.project.entity.Review;
+import edu.miu.project.entity.Seller;
 import edu.miu.project.entity.User;
 import edu.miu.project.repo.CartRepository;
 import edu.miu.project.repo.ProductRepository;
 import edu.miu.project.repo.UserRepository;
 import edu.miu.project.service.ProductService;
+import edu.miu.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -20,6 +23,8 @@ public class ProductServiceImpl implements ProductService {
     UserRepository userRepository;
     @Autowired
     CartRepository cartRepository;
+    @Autowired
+    private UserService userService;
 
     @Override
     public List<Product> getAllProducts() {
@@ -51,23 +56,26 @@ public class ProductServiceImpl implements ProductService {
     }
 
     // Create a product
-    public Product createProduct(Product product, Long sellerId) {
-        User seller = userRepository.findById(sellerId)
-                .orElseThrow(() -> new RuntimeException("User not found with ID: " + sellerId));
-
-        // Check if the user is a seller
-        if (seller.getRoles().stream().noneMatch(role -> role.getRole().equalsIgnoreCase("SELLER"))) {
-            throw new RuntimeException("Only sellers can add products.");
+    public Product createProduct(Product product) {
+        // Just seller can create product
+        Optional<Seller> seller = userService.getCurrentSeller();
+        if (seller.isEmpty()) {
+            throw new RuntimeException("Seller not found.");
         }
 
         // Set the seller to the product
-        product.setSeller(seller);
+        product.setSeller(seller.get());
         return productRepository.save(product);
     }
 
     // Get all products for a seller
-    public List<Product> getProductsBySeller(Long sellerId) {
-        return productRepository.findBySeller_Id(sellerId);
+    public List<Product> getProductsBySeller() {
+        Optional<Seller> seller = userService.getCurrentSeller();
+        if (seller.isEmpty()) {
+            throw new RuntimeException("Seller not found.");
+        }
+
+        return productRepository.findBySeller_Id(seller.get().getId());
     }
 
     // Delete product if not ordered

@@ -1,6 +1,7 @@
 package edu.miu.project.util;
 
 
+import edu.miu.project.service.impl.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -26,6 +27,8 @@ public class JwtUtil {
     private final long refreshExpiration = 7 * 1000 * 60 * 60 * 24; // 7 days
 
     private final UserDetailsService userDetailsService;
+    @Autowired
+    UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Autowired
     public JwtUtil(UserDetailsService userDetailsService) {

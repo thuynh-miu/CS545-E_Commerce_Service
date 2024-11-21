@@ -17,6 +17,9 @@ public class CartItem {
     @ManyToOne
     private Product product;
 
+    @ManyToOne
+    private Cart cart;
+
     private int quantity;
     private double price;
 }
