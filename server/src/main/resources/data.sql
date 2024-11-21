@@ -1,8 +1,14 @@
--- Insert Users
-INSERT INTO users (username, email, password)
-VALUES ('admin', 'admin@miu.edu', '$2a$12$IKEQb00u5QpZMx4v5zMweu.3wrq0pS7XLCHO4yHZ.BW/yvWu1feo2'),
-       ('seller', 'seller@miu.edu', '$2a$12$IKEQb00u5QpZMx4v5zMweu.3wrq0pS7XLCHO4yHZ.BW/yvWu1feo2'),
-       ('buyer','buyer@miu.edu', '$2a$12$IKEQb00u5QpZMx4v5zMweu.3wrq0pS7XLCHO4yHZ.BW/yvWu1feo2');
+-- -- Data for Role table
+INSERT INTO Role (role)
+VALUES ('ADMIN'),
+       ('SELLER'),
+       ('BUYER');
+--
+-- -- Insert Users
+INSERT INTO users (username, email, password, role_id)
+VALUES ('admin', 'admin@miu.edu', '$2a$12$IKEQb00u5QpZMx4v5zMweu.3wrq0pS7XLCHO4yHZ.BW/yvWu1feo2', 1),
+       ('seller', 'seller@miu.edu', '$2a$12$IKEQb00u5QpZMx4v5zMweu.3wrq0pS7XLCHO4yHZ.BW/yvWu1feo2', 2),
+       ('buyer','buyer@miu.edu', '$2a$12$IKEQb00u5QpZMx4v5zMweu.3wrq0pS7XLCHO4yHZ.BW/yvWu1feo2', 3);
 
 -- Insert Products
 -- INSERT INTO product (name, description, price, seller_id)
@@ -19,16 +25,3 @@ VALUES ('admin', 'admin@miu.edu', '$2a$12$IKEQb00u5QpZMx4v5zMweu.3wrq0pS7XLCHO4y
 -- INSERT INTO review (buyer_id, product_id, comment, rating)
 -- VALUES (3, 1, 'Excellent laptop, works perfectly!', 5),
 --        (3, 2, 'Good headphones but could be more comfortable.', 4);
-
--- Data for Role table
-INSERT INTO Role (role)
-VALUES ('ADMIN'),
-       ('SELLER'),
-       ('BUYER');
-
--- Data for the join table between Users and Role
--- Assuming the join table is named user_roles
-INSERT INTO users_roles (user_id, roles_id)
-VALUES (1, 1), -- ADMIN
-       (2, 2), -- SELLER
-       (3, 3); -- BUYER

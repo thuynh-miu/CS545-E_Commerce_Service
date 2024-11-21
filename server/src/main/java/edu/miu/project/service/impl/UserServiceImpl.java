@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
         if (user.isEmpty())
             return "Error: User not found with ID: " + userId;
 
-        if (user.get().getRoles().stream().anyMatch(role -> role.getRole().equalsIgnoreCase("SELLER"))) {
+        if (user.get().getRole().getRole().equalsIgnoreCase(RoleEnum.SELLER.toString())) {
             User updatedUser = userRepository.save(user.get());
             return "Seller approved: " + updatedUser.getUsername();
         } else {

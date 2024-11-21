@@ -4,6 +4,7 @@ package edu.miu.project.controller;
 import edu.miu.project.entity.dto.LoginRequest;
 import edu.miu.project.entity.dto.LoginResponse;
 import edu.miu.project.entity.dto.RefreshTokenRequest;
+import edu.miu.project.entity.dto.RegisterRequest;
 import edu.miu.project.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -67,21 +68,12 @@ public class AuthController {
     }
 
     // Register as a buyer
-    @PostMapping("/register-buyer")
-    public ResponseEntity<?> registerAsBuyer(@RequestBody LoginRequest loginRequest) {
-        boolean ret = authService.registerAsBuyer(loginRequest);
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest) {
+        boolean ret = authService.registerUser(registerRequest);
         if (ret) {
             return ResponseEntity.status(HttpStatus.CREATED).body("Buyer registered successfully");
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: Buyer registration failed");
-    }
-
-    @PostMapping("/register-seller")
-    public ResponseEntity<?> registerAsSeller(@RequestBody LoginRequest loginRequest) {
-        boolean ret = authService.registerAsSeller(loginRequest);
-        if (ret) {
-            return ResponseEntity.status(HttpStatus.CREATED).body("Seller registered successfully");
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: Seller registration failed");
     }
 }

@@ -16,16 +16,17 @@ public class UserDetailsImpl implements UserDetails {
     private final String email;
     @JsonIgnore
     private final String password;
-    private final List<Role> roles;
+    private final Role role;
 
     public UserDetailsImpl(User user) {
         this.email = user.getEmail();
         this.password = user.getPassword();
-        this.roles = user.getRoles();
+        this.role = user.getRole();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<Role> roles = List.of(role);
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getRole())).collect(Collectors.toList());
     }
 

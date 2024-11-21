@@ -13,6 +13,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByUsername(String username);
     boolean existsByEmail(String email);
 
-    @Query("SELECT s FROM Seller s JOIN s.user u JOIN u.roles r WHERE s.isApproved = false AND r.role = 'SELLER'")
+    @Query("SELECT s FROM Seller s JOIN s.user u JOIN u.role r WHERE s.isApproved = false AND r.role = 'SELLER'")
     Optional<List<User>> findUnapprovedSellers();
 }

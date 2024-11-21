@@ -1,11 +1,12 @@
 package edu.miu.project.service.impl;
 
-import edu.miu.project.entity.Buyer;
-import edu.miu.project.entity.User;
-import edu.miu.project.entity.Role;
+import edu.miu.project.entity.*;
 import edu.miu.project.entity.dto.LoginRequest;
 import edu.miu.project.entity.dto.LoginResponse;
 import edu.miu.project.entity.dto.RefreshTokenRequest;
+import edu.miu.project.entity.dto.RegisterRequest;
+import edu.miu.project.repo.BuyerRepository;
+import edu.miu.project.repo.SellerRepository;
 import edu.miu.project.repo.UserRepository;
 import edu.miu.project.service.AuthService;
 import edu.miu.project.util.JwtUtil;
@@ -32,6 +33,10 @@ public class AuthServiceImpl implements AuthService {
     private final BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private BuyerRepository buyerRepository;
+    @Autowired
+    private SellerRepository sellerRepository;
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
@@ -83,37 +88,33 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
-    public boolean registerAsBuyer(LoginRequest loginRequest) {
-        if (userRepository.existsByEmail(loginRequest.getEmail())) {
+    public boolean registerUser(RegisterRequest registerRequest) {
+        if (userRepository.existsByEmail(registerRequest.getEmail())) {
             throw new IllegalArgumentException("User already exists.");
         }
 
         User user = new User();
-        user.setEmail(loginRequest.getEmail());
-        user.setPassword(passwordEncoder.encode(loginRequest.getPassword()));
-        Role role = new Role();
-        role.setRole("BUYER");
-        user.setRoles(List.of(role));
+        user.setUsername(registerRequest.getUserName());
+        user.setEmail(registerRequest.getEmail());
+        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        user.setRole(registerRequest.getRole());
 
-        Buyer buyer = new Buyer();
-        buyer.setUser(user);
-        return true;
-    }
-
-    public boolean registerAsSeller(LoginRequest loginRequest) {
-        if (userRepository.existsByEmail(loginRequest.getEmail())) {
-            throw new IllegalArgumentException("User already exists.");
+        if (registerRequest.getRole().getRole().equals(RoleEnum.BUYER.toString())) {
+            Buyer buyer = new Buyer();
+            buyer.setUser(user);
+            buyerRepository.save(buyer);
+        }
+        else if (registerRequest.getRole().getRole().equals(RoleEnum.SELLER.toString())) {
+            Seller seller = new Seller();
+            seller.setUser(user);
+            sellerRepository.save(seller);
+        }
+        else {
+            throw new IllegalArgumentException("Invalid role.");
         }
 
-        User user = new User();
-        user.setEmail(loginRequest.getEmail());
-        user.setPassword(passwordEncoder.encode(loginRequest.getPassword()));
-        Role role = new Role();
-        role.setRole("SELLER");
-        user.setRoles(List.of(role));
+        userRepository.save(user);
 
-        Buyer buyer = new Buyer();
-        buyer.setUser(user);
         return true;
     }
 }
