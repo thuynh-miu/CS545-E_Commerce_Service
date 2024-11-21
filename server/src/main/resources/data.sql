@@ -10,6 +10,15 @@ VALUES ('admin', 'admin@miu.edu', '$2a$12$IKEQb00u5QpZMx4v5zMweu.3wrq0pS7XLCHO4y
        ('seller', 'seller@miu.edu', '$2a$12$IKEQb00u5QpZMx4v5zMweu.3wrq0pS7XLCHO4yHZ.BW/yvWu1feo2', 2),
        ('buyer','buyer@miu.edu', '$2a$12$IKEQb00u5QpZMx4v5zMweu.3wrq0pS7XLCHO4yHZ.BW/yvWu1feo2', 3);
 
+-- Insert Sellers
+INSERT INTO seller (user_id, is_approved)
+VALUES (2, false);
+
+-- Insert Buyers
+INSERT INTO buyer (user_id)
+VALUES (3);
+
+
 -- Insert Products
 -- INSERT INTO product (name, description, price, seller_id)
 -- VALUES ('Laptop', 'High-performance laptop', 1200.00, 2),
