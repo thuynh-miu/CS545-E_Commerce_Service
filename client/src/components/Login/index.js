@@ -1,39 +1,42 @@
 import { useRef } from "react";
 import { Link } from "react-router-dom";
+import { login } from "../../api";
 
 
 export default function Login(props) {
-    const usernameRef = useRef(null);
+    const emailRef = useRef(null);
     const passwordRef = useRef(null);
 
-    const handleLogin = () => {
-        const username = usernameRef.current.value;
+    const handleLogin = (e) => {
+        e.preventDefault();
+        const email = emailRef.current.value;
         const password = passwordRef.current.value;
 
-        if (username && password) {
-            alert(`Logging in with Username: ${username}`);
-            return;
-        } else {
+        if (!email || !password) {
             alert("Please fill in both fields.");
             return;
-        }
-
-        
+        } 
+        login(
+            {
+                email: email,
+                password: password
+            }
+        )
     };
     return (
         <form className="container mt-5">
             <div className="card shadow p-4" style={{ maxWidth: "400px", margin: "auto" }}>
                 <h3 className="text-center mb-4">Login</h3>
                 <div className="mb-3">
-                    <label htmlFor="username" className="form-label">
-                        Username
+                    <label htmlFor="email" className="form-label">
+                        Email
                     </label>
                     <input
                         type="text"
-                        id="username"
-                        ref={usernameRef}
+                        id="email"
+                        ref={emailRef}
                         className="form-control"
-                        placeholder="Enter your username"
+                        placeholder="Enter your email"
                         required={true}
                     />
                 </div>

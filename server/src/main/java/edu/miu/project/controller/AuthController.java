@@ -48,7 +48,6 @@ public class AuthController {
         // Add the cookie to the response
         response.addCookie(new Cookie("accessToken", loginResponse.getAccessToken()));
         response.addCookie(new Cookie("refreshToken", loginResponse.getRefreshToken()));
-        response.sendRedirect("/");
     }
 
     @Operation(
