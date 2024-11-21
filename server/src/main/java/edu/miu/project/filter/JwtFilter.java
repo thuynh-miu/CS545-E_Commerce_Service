@@ -58,17 +58,18 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final LoginResponse loginResponse = extractTokenFromRequest(request);
         String accessToken = loginResponse.getAccessToken();
+        String refreshToken = loginResponse.getRefreshToken();
 
         boolean isAccessTokenExpired = jwtUtil.isTokenExpired(accessToken);
-        if (isAccessTokenExpired) {
+        if (isAccessTokenExpired && !refreshToken.isEmpty()) {
             // refresh token
             // Generate a new access token using the subject from the refresh token
-            final UserDetails userDetails = jwtUtil.extractUserDetails(loginResponse.getRefreshToken());
+            final UserDetails userDetails = jwtUtil.extractUserDetails(refreshToken);
             String newAccessToken = jwtUtil.generateToken(userDetails);
             response.addCookie(new Cookie("accessToken", newAccessToken));
         }
 
-        if (accessToken != null && jwtUtil.validateToken(accessToken)) {
+        if (!accessToken.isEmpty() && jwtUtil.validateToken(accessToken)) {
             SecurityContextHolder.getContext().setAuthentication(jwtUtil.getAuthentication(accessToken));
         }
         filterChain.doFilter(request, response);

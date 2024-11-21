@@ -10,11 +10,15 @@ export default function Login(props) {
         const username = usernameRef.current.value;
         const password = passwordRef.current.value;
 
-        // if (username && password) {
-        //     alert(`Logging in with Username: ${username}`);
-        // } else {
-        //     alert("Please fill in both fields.");
-        // }
+        if (username && password) {
+            alert(`Logging in with Username: ${username}`);
+            return;
+        } else {
+            alert("Please fill in both fields.");
+            return;
+        }
+
+        
     };
     return (
         <form className="container mt-5">
