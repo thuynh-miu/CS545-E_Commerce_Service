@@ -11,10 +11,13 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Objects;
 
 @RestController
@@ -39,8 +42,12 @@ public class AuthController {
     @Parameter(name = "loginRequest", description = "User login credentials", required = true)
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public LoginResponse login(@RequestBody LoginRequest loginRequest) {
-        return authService.login(loginRequest);
+    public void login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) throws IOException {
+        LoginResponse loginResponse = authService.login(loginRequest);
+        // Add the cookie to the response
+        response.addCookie(new Cookie("accessToken", loginResponse.getAccessToken()));
+        response.addCookie(new Cookie("refreshToken", loginResponse.getRefreshToken()));
+        response.sendRedirect("/");
     }
 
     @Operation(

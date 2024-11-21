@@ -1,14 +1,17 @@
 package edu.miu.project.filter;
 
+import edu.miu.project.entity.dto.LoginResponse;
 import edu.miu.project.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -30,20 +33,43 @@ public class JwtFilter extends OncePerRequestFilter {
         this.userDetailsService = userDetailsService;
     }
 
-    public String extractTokenFromRequest(HttpServletRequest request) {
-        final String authorizationHeader = request.getHeader("Authorization");
+    public LoginResponse extractTokenFromRequest(HttpServletRequest request) {
+        // Get all cookies from the request
+        Cookie[] cookies = request.getCookies();
 
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            return authorizationHeader.substring(7);
+        String accessToken = "";
+        String refreshToken = "";
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                // Check for the cookie named "token" (or any name you use)
+                if ("accessToken".equals(cookie.getName())) {
+                    accessToken = cookie.getValue();
+                }
+                if ("refreshToken".equals(cookie.getName())) {
+                    refreshToken = cookie.getValue();
+                }
+            }
         }
-        return null;
+
+        return new LoginResponse(accessToken, refreshToken);
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        final String token = extractTokenFromRequest(request);
-        if (token != null && jwtUtil.validateToken(token)) {
-            SecurityContextHolder.getContext().setAuthentication(jwtUtil.getAuthentication(token));
+        final LoginResponse loginResponse = extractTokenFromRequest(request);
+        String accessToken = loginResponse.getAccessToken();
+
+        boolean isAccessTokenExpired = jwtUtil.isTokenExpired(accessToken);
+        if (isAccessTokenExpired) {
+            // refresh token
+            // Generate a new access token using the subject from the refresh token
+            final UserDetails userDetails = jwtUtil.extractUserDetails(loginResponse.getRefreshToken());
+            String newAccessToken = jwtUtil.generateToken(userDetails);
+            response.addCookie(new Cookie("accessToken", newAccessToken));
+        }
+
+        if (accessToken != null && jwtUtil.validateToken(accessToken)) {
+            SecurityContextHolder.getContext().setAuthentication(jwtUtil.getAuthentication(accessToken));
         }
         filterChain.doFilter(request, response);
     }

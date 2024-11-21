@@ -26,13 +26,6 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
     private final JwtFilter jwtFilter;
 
-    String[] roles = {"CLIENT","ADMIN"};
-
-//    @Bean
-//    public UserDetailsService userDetailsSvc() {
-//        return userDetailsService;
-//    }
-
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
