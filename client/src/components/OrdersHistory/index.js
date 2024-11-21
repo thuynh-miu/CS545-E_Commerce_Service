@@ -4,7 +4,7 @@ export default function OrdersHistory(props) {
   const orders = [
     {
       id: "200012291239038",
-      status: "Delivered",
+      status: "DELIVERED",
       created_date: new Date("2024-09-20"),
       updated_date: new Date("2024-09-21"),
       items: [
@@ -14,10 +14,13 @@ export default function OrdersHistory(props) {
         },
       ],
       total: 14.45,
+      review: {
+        rating: 0
+      }
     },
     {
       id: "54896298617020560799",
-      status: "Delivered",
+      status: "SHIPPED",
       created_date: new Date("2024-09-20"),
       updated_date: new Date("2024-10-19"),
       items: [
@@ -39,10 +42,13 @@ export default function OrdersHistory(props) {
         },
       ],
       total: 14.45,
+      review: {
+        rating: 4
+      }
     },
     {
       id: "75555761531878243150",
-      status: "Delivered",
+      status: "TRANSISTING",
       created_date: new Date("2024-09-20"),
       updated_date: new Date("2024-09-18"),
       items: [
@@ -52,6 +58,9 @@ export default function OrdersHistory(props) {
         },
       ],
       total: 14.45,
+      review: {
+        rating: 3
+      }
     },
   ];
   return (

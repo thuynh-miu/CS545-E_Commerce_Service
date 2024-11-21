@@ -13,6 +13,9 @@ import SellerDashboard from "./components/SellerDashboard";
 import SellerOrders from "./components/SellerOrders";
 import BuyerDashboard from "./components/BuyerDashboard";
 import OrdersHistory from "./components/OrdersHistory";
+import Inventories from "./components/Inventories";
+import AddNewInventory from "./components/AddNewInventory";
+import UpdateInventory from "./components/UpdateInventory";
 
 
 function App() {
@@ -36,7 +39,9 @@ function App() {
 
         <Route path="/seller" element={<SellerDashboard />} >
           <Route path="orders" element={<SellerOrders />} />
-          <Route path="products" />
+          <Route path="inventories" element={<Inventories />} />
+          <Route path="add-inventory" element={<AddNewInventory />} />
+          <Route path="update-inventory" element={<UpdateInventory />} />
         </Route>
         <Route path="/buyer" element={<BuyerDashboard />} >
           <Route path="orders" element={<OrdersHistory />} />
