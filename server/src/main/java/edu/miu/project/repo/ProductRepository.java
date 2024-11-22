@@ -18,7 +18,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p ORDER BY p.name ASC")
     List<Product> find10ProductByNameDesc();
 
-    @Query("SELECT p FROM Product p JOIN p.attributes a " +
+    @Query("SELECT DISTINCT p FROM Product p LEFT JOIN p.attributes a " +
             "WHERE (:minPrice is null or p.price >= :minPrice) " +
             "AND (:name IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%'))) " +
             "AND (:maxPrice is null or p.price <= :maxPrice) " +
