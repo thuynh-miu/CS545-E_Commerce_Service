@@ -8,21 +8,19 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class Seller {
+@Entity
+public class Attribute {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    private User user;
+    private String name;
+    private String value;
 
-    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "attributes")
     @JsonIgnore
     private List<Product> products;
-
-    private boolean isApproved; // For sellers to check admin approval
 }

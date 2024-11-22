@@ -1,46 +1,50 @@
-import { useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import AddToCartButton from "../AddToCartButton";
 import ProductReview from "../ProductReviews";
-import { Link } from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import Rating from "react-rating";
 import { StarFilled, StarOutlined } from "@ant-design/icons";
+import axios from "axios";
+import { useUserContext } from "../../contexts/UserContextProvider";
 
 export default function ProductDetailPage(props) {
-  const [productDetail, setProductDetail] = useState({
-    name: "Apple iPhone 15 Pro 128GB Black Titanium",
-    brand: "Apple",
-    rating: "4.3",
-    price: 1049.0,
-    stock_left: 10,
-    img_url:
-      "https://i5.walmartimages.com/seo/Apple-iPhone-15-Pro-128GB-Black-Titanium_9f6f8b16-d4ea-4ecc-86f8-114386e6381e.88e5b55ab4cd0b6325266a880c055f64.jpeg?odnHeight=2000&odnWidth=2000&odnBg=FFFFFF",
-    stock: 10,
-    reviews: [
-      {
-        author: "Cuong",
-        title: "It sucks!",
-        content: "Samsung makes better phones",
-        rating: 0,
-      },
-      {
-        author: "Ronaldo",
-        title: "I love it!",
-        content: "This is my 1000-th phone",
-        rating: 5,
-      },
-    ],
-    about: `<ul>   <li>FORGED IN TITANIUM - iPhone 15 Pro has a strong and light aerospace-grade titanium design with a textured matte-glass back. It also features a Ceramic Shield front that's tougher than any smartphone glass. And it's splash, water, and dust resistant.</li>   <li>ADVANCED DISPLAY - The 6.1" Super Retina XDR display with ProMotion ramps up refresh rates to 120Hz when you need exceptional graphics performance. Dynamic Island bubbles up alerts and Live Activities. Plus, with Always-On display, your Lock Screen stays glanceable, so you don't have to tap it to stay in the know.</li> </ul>`,
-  });
+  const { cartItems, addProduct, removeProduct } = useUserContext();
+  const [productDetail, setProductDetail] = useState(null);
+  // get id from http://localhost:3000/products/detail/2
+  const { productId } = useParams();
 
-  const [addedQuantity, setAddedQuantity] = useState(0);
+  useEffect(() => {
+    // fetch product detail from API http://localhost:8080/api/v1/products/1
+    axios.get(`http://localhost:8080/api/v1/products/${productId}`).then((res) => {
+      setProductDetail({
+        id: res.data.id,
+        name: res.data.name,
+        description: res.data.description,
+        price: res.data.price,
+        quantity: res.data.quantity,
+        img_url: res.data.imageUrl,
+        reviews: res.data.reviews
+      });
+    });
+  }, []);
+
+  const product = useMemo(() => {
+    return cartItems.find(item => item.id == productId);
+  }, [cartItems, productId]);
+
 
   const increase = () => {
-    setAddedQuantity((addedQuantity) => addedQuantity + 1);
+    addProduct(productDetail);
   };
 
   const decrease = () => {
-    setAddedQuantity((addedQuantity) => addedQuantity - 1);
+    removeProduct(productDetail)
   };
+
+  if (!productDetail){
+    return <>
+    </>
+  }
 
   return (
     <div className="container py-4">
@@ -71,19 +75,30 @@ export default function ProductDetailPage(props) {
               <div dangerouslySetInnerHTML={{ __html: productDetail.about }} className="small" />
             </div>
           </div>
+          <div className="row">
+            <h4 className="mb-4">Reviews ({productDetail.reviews.length})</h4>
+            {productDetail.reviews.map((review) => (
+              <div key={review.id}>
+                <div style={{ height: "150px" }}>
+                  <ProductReview
+                    author={review.author}
+                    title={review.title}
+                    content={review.content}
+                    rating={review.rating}
+                  />
+                </div>
+                <hr />
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Price and Add to Cart */}
-        <div className="col-12 col-lg-3">
-          <div className="bg-light p-4 rounded shadow-sm">
-            <h3 className="fw-bold">${parseFloat(productDetail.price).toLocaleString()}</h3>
-            <p className="text-muted small mb-3">Stock Left: {productDetail.stock_left}</p>
-            <div className="mb-3">
-              <AddToCartButton quantity={addedQuantity} increase={increase} decrease={decrease} />
-            </div>
-            <Link to="/cart" className="btn btn-primary w-100 py-2 rounded-pill">
-              Checkout Now
-            </Link>
+        <div className="p-3 col-3 bg-light-subtle">
+          <h3>
+            <b>${parseFloat(productDetail.price).toLocaleString()}</b>
+          </h3>
+          <div className="mb-3">
+            <AddToCartButton quantity={(product && product.quantity) || 0} increase={increase} decrease={decrease} />
           </div>
         </div>
 

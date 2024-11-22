@@ -1,9 +1,22 @@
-import { useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Navbar, Nav, Form, Button, InputGroup } from 'react-bootstrap';
-import { SearchOutlined, ShoppingCartOutlined, UserOutlined } from '@ant-design/icons';
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import { Dropdown, DropdownButton, InputGroup } from "react-bootstrap";
+import {
+    DownOutlined,
+    SearchOutlined,
+    ShoppingCartOutlined,
+    UserOutlined,
+} from "@ant-design/icons";
+import { Link, redirect, useNavigate } from "react-router-dom";
+import { useContext, useRef } from "react";
+import { UserContext } from "../../contexts/UserContextProvider";
+import _ from "lodash";
 
-export default function NavBar() {
+export default function NavBar(props) {
     const searchInputRef = useRef();
     const navigate = useNavigate();
 
@@ -16,6 +29,7 @@ export default function NavBar() {
         navigate(`/products/search?${queryParams.toString()}`);
     };
 
+    const { userData, userDispatch } = useContext(UserContext);
     return (
         <Navbar collapseOnSelect bg="primary" expand="lg" className="px-3" data-bs-theme="light">
             <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
@@ -43,10 +57,17 @@ export default function NavBar() {
                         </InputGroup>
                     </Form>
                     <div className="d-flex align-items-center gap-3">
-                        <Nav.Link as={Link} to="/login" className="d-flex align-items-center text-white">
-                            <UserOutlined style={{ fontSize: '20px', marginRight: '8px' }} />
-                            <span className="d-none d-md-inline">Login</span>
-                        </Nav.Link>
+                        {_.isNull(userData) || _.isEmpty(userData) ? (
+                            <Nav.Link as={Link} to="/login" className="d-flex align-items-center text-white">
+                                <UserOutlined style={{ fontSize: '20px', marginRight: '8px' }} />
+                                <span className="d-none d-md-inline">Login</span>
+                            </Nav.Link>
+                        ) : (
+                            <Nav.Link as={Link} to="/logout" className="d-flex align-items-center text-white">
+                                <UserOutlined style={{ fontSize: '20px', marginRight: '8px' }} />
+                                <span className="d-none d-md-inline">Log out</span>
+                            </Nav.Link>
+                        )}
                         <Nav.Link as={Link} to="/cart" className="d-flex align-items-center text-white">
                             <ShoppingCartOutlined style={{ fontSize: '20px', marginRight: '8px' }} />
                             <span className="d-none d-md-inline">Cart</span>

@@ -139,4 +139,12 @@ public class ProductServiceImpl implements ProductService {
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Review not found with ID: " + reviewId));
     }
+
+    @Override
+    public List<Product> getBestProducts() {
+        if (productRepository.findTop10OrderProduct().isEmpty()) {
+            return productRepository.find10ProductByNameDesc();
+        }
+        return productRepository.findTop10OrderProduct();
+    }
 }

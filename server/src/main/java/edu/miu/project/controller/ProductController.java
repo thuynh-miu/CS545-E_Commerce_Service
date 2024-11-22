@@ -38,6 +38,12 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
+    @GetMapping("/best")
+    public ResponseEntity<List<Product>> getBestProducts() {
+        List<Product> products = productService.getBestProducts();
+        return ResponseEntity.ok(products);
+    }
+
     @Operation(
             summary = "Add a product",
             description = "Adds a new product to the database.",

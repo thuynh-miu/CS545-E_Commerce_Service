@@ -10,7 +10,7 @@ export default function CartItems(props) {
             <div className="list-group">
                 {cartItems.map((item, index) => (
                     <div key={index} className="list-group-item bg-light rounded mb-3 p-3 shadow-sm">
-                        <CartItem item={item} />
+                        <CartItem key={item.id} item={item} />
                     </div>
                 ))}
             </div>

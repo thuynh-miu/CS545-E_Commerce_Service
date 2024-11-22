@@ -1,19 +1,24 @@
-import { PlusOutlined, StarFilled, StarOutlined } from "@ant-design/icons";
+import { useMemo } from "react";
+import { StarFilled, StarOutlined } from "@ant-design/icons";
 import Rating from "react-rating";
 import { Link } from "react-router-dom";
 import AddToCartButton from "../AddToCartButton";
-import { useState } from "react";
+import { useUserContext } from '../../contexts/UserContextProvider';
 
 export default function Product({ product }) {
   const { name, price, rating, img_url } = product;
+  const { cartItems, addProduct, removeProduct } = useUserContext();
 
-  const [quantity, setQuantity] = useState(0);
   const increase = () => {
-    setQuantity((quantity) => quantity + 1);
+    addProduct(product);
   };
   const decrease = () => {
-    setQuantity((quantity) => quantity - 1);
+    removeProduct(product);
   };
+
+  const productInfo = useMemo(() => {
+    return cartItems.find(item => item.id == product.id);
+  }, [cartItems, product.id]);
 
   return (
     <div className="card">
@@ -34,15 +39,13 @@ export default function Product({ product }) {
         </div>
         <div className="card-body">
           <h5 className="card-title">${parseFloat(price).toFixed(2)}</h5>
-          <p className="card-text">
-            <div>{name}</div>
-          </p>
+          <p className="card-text">{name}</p>
         </div>
       </Link>
       <div className="card-body pt-0">
         <div className="d-flex">
           <AddToCartButton
-            quantity={quantity}
+            quantity={(productInfo && productInfo.quantity) || 0}
             increase={increase}
             decrease={decrease}
           />

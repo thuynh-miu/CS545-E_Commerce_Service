@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,12 +40,8 @@ public class AuthController {
     @Parameter(name = "loginRequest", description = "User login credentials", required = true)
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public UserDto login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) throws IOException {
-        LoginResponse loginResponse = authService.login(loginRequest);
-        // Add the cookie to the response
-        response.addCookie(new Cookie("accessToken", loginResponse.getAccessToken()));
-        response.addCookie(new Cookie("refreshToken", loginResponse.getRefreshToken()));
-        return userService.findByEmail(loginRequest.getEmail());
+    public LoginResponse login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) throws IOException {
+        return authService.login(loginRequest);
     }
 
     @Operation(
