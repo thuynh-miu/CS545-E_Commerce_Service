@@ -36,6 +36,7 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<Page<ProductDto>> filterProducts(
+            @RequestParam(name = "q", defaultValue = "", required = false) String name,
             @RequestParam(name = "price_range", required = false) String priceRange,
             @RequestParam(name = "color", required = false) List<String> colors,
             @RequestParam(name = "brand", required = false) List<String> brands,
@@ -62,7 +63,7 @@ public class ProductController {
             brands = brands.stream().map(String::toLowerCase).toList();
 
         Pageable pageable = PageRequest.of(page, pageSize);
-        Page<ProductDto> products = productService.filterProducts(minPrice, maxPrice, colors, brands, pageable);
+        Page<ProductDto> products = productService.filterProducts(name, minPrice, maxPrice, colors, brands, pageable);
         return ResponseEntity.ok(products);
     }
 

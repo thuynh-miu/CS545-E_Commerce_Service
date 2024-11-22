@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -19,10 +20,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p JOIN p.attributes a " +
             "WHERE (:minPrice is null or p.price >= :minPrice) " +
+            "AND (:name IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%'))) " +
             "AND (:maxPrice is null or p.price <= :maxPrice) " +
             "AND (" +
             "(:colors is null or (a.name = 'color' AND LOWER(a.value) IN :colors)) " +
             "OR (:brands is null or (a.name = 'brand' AND LOWER(a.value) IN :brands))" +
             ") ")
-    Page<Product> filterProducts(Double minPrice, Double maxPrice, List<String> colors, List<String> brands, Pageable pageable);
+    Page<Product> filterProducts(String name, Double minPrice, Double maxPrice, List<String> colors, List<String> brands, Pageable pageable);
 }
