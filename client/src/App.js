@@ -21,6 +21,7 @@ import LogOut from "./components/LogOut";
 import CataLogue from "./components/Catalogue";
 import { LoginContextProvider } from "./contexts/LoginStatusProvider";
 import OrderDetail from "./components/OrderDetail";
+import ReviewProduct from "./components/ReviewProduct";
 
 function App() {
     return (
@@ -50,6 +51,7 @@ function App() {
 
                         <Route path="/seller" element={<SellerDashboard />}>
                             <Route path="orders" element={<SellerOrders />} />
+                            <Route path="orders/:id" element={<OrderDetail />} />
                             <Route
                                 path="inventories"
                                 element={<Inventories />}
@@ -65,7 +67,8 @@ function App() {
                         </Route>
                         <Route path="/buyer" element={<BuyerDashboard />}>
                             <Route path="orders" element={<OrdersHistory />} />
-                            <Route path="orders/:id" element={<OrderDetail />} />
+                            <Route path="orders/:orderId" element={<OrderDetail />} />
+                            <Route path="orders/:orderId/review/:productId" element={<ReviewProduct />} />
                         </Route>
                     </Routes>
                 </UserContextProvider>

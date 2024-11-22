@@ -1,6 +1,9 @@
 import { PrinterOutlined, StarOutlined } from "@ant-design/icons";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function OrderDetail(props) {
+    const navigate = useNavigate();
+
     const orderDetail = {
         id: "ABCDX123",
         order_date: new Date(2024, 1, 1),
@@ -29,6 +32,11 @@ export default function OrderDetail(props) {
             zipcode: "52557",
         },
     };
+
+    const goBack = () => {
+        navigate(-1);
+    };
+
     return (
         <div className="container w-75">
             <div>
@@ -48,7 +56,7 @@ export default function OrderDetail(props) {
                         <PrinterOutlined /> Print
                     </button>
                 </div>
-                <div className="d-flex">
+                <div className="d-flex mb-3">
                     <div className="container border rounded me-5">
                         {orderDetail.items.map((item, index) => (
                             <div>
@@ -69,9 +77,11 @@ export default function OrderDetail(props) {
                                 </div>
                                 <div className="d-flex">
                                     <StarOutlined />
-                                    <button className="btn btn-link text-black">
-                                        Write a review
-                                    </button>
+                                    <Link to={`review/${item.id}`}>
+                                        <button className="btn btn-link text-black">
+                                            Write a review
+                                        </button>
+                                    </Link>
                                 </div>
                                 {index < orderDetail.items.length - 1 && <hr />}
                             </div>
@@ -93,6 +103,14 @@ export default function OrderDetail(props) {
 
                         <h5>Total</h5>
                     </div>
+                </div>
+                <div className="d-flex">
+                    <button
+                        className="btn btn-warning mx-auto"
+                        onClick={goBack}
+                    >
+                        Back
+                    </button>
                 </div>
             </div>
         </div>
