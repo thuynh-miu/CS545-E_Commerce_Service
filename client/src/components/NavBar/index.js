@@ -13,7 +13,8 @@ import {
 } from "@ant-design/icons";
 import { Link, redirect, useNavigate } from "react-router-dom";
 import { useContext, useRef } from "react";
-import { UserContext } from "../../contexts/UserContextProvider";
+import { UserContext, useUserContext } from "../../contexts/UserContextProvider";
+import { UserRole } from "../../constants/UserRole/index";
 import _ from "lodash";
 
 export default function NavBar(props) {
@@ -79,10 +80,14 @@ export default function NavBar(props) {
                                 </Dropdown.Item>
                             </DropdownButton>
                         )}
+                        { userData.role === UserRole.ADMIN || userData.role === UserRole.SELLER ? (
+                        ''
+                        ):(
                         <Nav.Link as={Link} to="/cart" className="d-flex align-items-center text-white">
                             <ShoppingCartOutlined style={{ fontSize: '20px', marginRight: '8px' }} />
                             <span className="d-none d-md-inline">Cart</span>
                         </Nav.Link>
+                        )}
                     </div>
                 </Nav>
             </Navbar.Collapse>
