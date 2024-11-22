@@ -10,7 +10,7 @@ export default function Cart(props) {
     const navigate = useNavigate();
     const { userData } = useUserContext();
     const { cartItems } = useContext(CartContext);
-    if (userData.role === UserRole.ADMIN || userData.role === UserRole.SELLER) {
+    if (userData.role !== UserRole.BUYER) {
         navigate("/403");
     }
     return (

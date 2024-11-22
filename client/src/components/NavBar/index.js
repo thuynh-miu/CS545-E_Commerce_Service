@@ -80,13 +80,13 @@ export default function NavBar(props) {
                                 </Dropdown.Item>
                             </DropdownButton>
                         )}
-                        { userData.role === UserRole.ADMIN || userData.role === UserRole.SELLER ? (
-                        ''
-                        ):(
+                        { userData.role === UserRole.BUYER ? (
                         <Nav.Link as={Link} to="/cart" className="d-flex align-items-center text-white">
                             <ShoppingCartOutlined style={{ fontSize: '20px', marginRight: '8px' }} />
                             <span className="d-none d-md-inline">Cart</span>
                         </Nav.Link>
+                        ):(
+                        ''
                         )}
                     </div>
                 </Nav>

@@ -57,13 +57,22 @@ export const deleteReview = async (reviewId) => {
 };
 
 export const createReview = async (productId, payload) => {
-    const accessToken = localStorage.getItem("accessToken");
-    return fetch(`${hostname}/api/v1/products/${productId}/reviews`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            accessToken: accessToken,
-        },
-        body: JSON.stringify(payload),
-    });
+    try {
+        const accessToken = localStorage.getItem("accessToken");
+        const response = await  fetch(`${hostname}/api/v1/products/${productId}/reviews`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                accessToken: accessToken,
+            },
+            body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+            throw new Error("Review failed");
+        }
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
 };

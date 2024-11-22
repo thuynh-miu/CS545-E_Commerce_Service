@@ -4,7 +4,7 @@ import { UserRole } from "../../constants/UserRole/index";
 
 export default function AddToCartButton({ quantity, increase, decrease }) {
   const { userData } = useUserContext();
-  if (userData.role === UserRole.ADMIN || userData.role === UserRole.SELLER) {
+  if (userData.role !== UserRole.BUYER) {
     return null;
   }
   return (
