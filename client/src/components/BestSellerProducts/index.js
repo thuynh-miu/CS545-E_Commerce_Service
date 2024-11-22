@@ -1,4 +1,3 @@
-import {Link} from "react-router-dom";
 import Product from "../Product";
 import {useEffect, useState} from "react";
 import axios from "axios";
@@ -31,8 +30,8 @@ export default function BestSellerProducts(props) {
             <div className="d-flex flex-wrap">
                 {
                     products.map(
-                        product => <div className="product-overview me-4 mb-4">
-                            <Product product={product}/>
+                        product => <div key={product.id} className="product-overview me-4 mb-4">
+                            <Product product={product} />
                         </div>
                     )
                 }

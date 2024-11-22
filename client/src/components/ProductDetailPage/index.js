@@ -1,10 +1,11 @@
-import {useEffect, useState} from "react";
+import { useMemo, useState, useEffect } from "react";
 import AddToCartButton from "../AddToCartButton";
 import ProductReview from "../ProductReviews";
 import {Link, useParams} from "react-router-dom";
 import Rating from "react-rating";
 import { StarFilled, StarOutlined } from "@ant-design/icons";
 import axios from "axios";
+import { useUserContext } from "../../contexts/UserContextProvider";
 
 export default function ProductDetailPage(props) {
   const [productDetail, setProductDetail] = useState(null);
@@ -26,16 +27,18 @@ export default function ProductDetailPage(props) {
     });
   }, []);
 
+  const product = useMemo(() => {
+    return cartItems.find(item => item.id == productId);
+  }, [cartItems, productId]);
 
-
-  const [addedQuantity, setAddedQuantity] = useState(0);
+  const { cartItems, addProduct, removeProduct } = useUserContext();
 
   const increase = () => {
-    setAddedQuantity((addedQuantity) => addedQuantity + 1);
+    addProduct(productDetail);
   };
 
   const decrease = () => {
-    setAddedQuantity((addedQuantity) => addedQuantity - 1);
+    removeProduct(productDetail)
   };
 
   if (!productDetail){
@@ -79,7 +82,7 @@ export default function ProductDetailPage(props) {
           <div className="row">
             <h4 className="mb-4">Reviews ({productDetail.reviews.length})</h4>
             {productDetail.reviews.map((review) => (
-              <div id="Reviews">
+              <div key={review.id}>
                 <div style={{ height: "150px" }}>
                   <ProductReview
                     author={review.author}
@@ -100,7 +103,7 @@ export default function ProductDetailPage(props) {
           </h3>
           <div className="mb-3">
             <AddToCartButton
-              quantity={addedQuantity}
+              quantity={(product && product.quantity) || 0}
               increase={increase}
               decrease={decrease}
             />

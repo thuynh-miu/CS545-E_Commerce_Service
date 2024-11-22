@@ -8,7 +8,7 @@ export default function CartItems(props) {
         <div>
             {
                 cartItems.map(
-                    item => <CartItem item={item} />
+                    item => <CartItem key={item.id} item={item} />
                 )
             }
             <hr />
