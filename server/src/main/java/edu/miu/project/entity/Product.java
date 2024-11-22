@@ -27,6 +27,7 @@ public class Product {
 
     @Column(nullable = false, columnDefinition = "int default 0")
     private Integer quantity = 0;
+    private Integer soldQuantity = 0;
 
     private String imageUrl;
 
