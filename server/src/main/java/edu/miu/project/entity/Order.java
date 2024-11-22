@@ -29,6 +29,8 @@ public class Order {
 
     @Column(nullable = false)
     private LocalDateTime orderDate;
+    @Column(nullable = false)
+    private LocalDateTime updateDate;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status; // Enum for order status
