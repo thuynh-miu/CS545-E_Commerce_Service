@@ -1,6 +1,9 @@
 package edu.miu.project.repo;
 
 import edu.miu.project.entity.Product;
+import edu.miu.project.entity.dto.ProductDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -15,4 +18,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT p FROM Product p ORDER BY p.name ASC")
     List<Product> find10ProductByNameDesc();
 
+    @Query("SELECT p FROM Product p JOIN p.attributes a " +
+            "WHERE (:minPrice is null or p.price >= :minPrice) " +
+            "AND (:maxPrice is null or p.price <= :maxPrice) " +
+            "AND (:color is null or (a.name = 'color' AND a.value like %:color%)) " +
+            "AND (:branch is null or (a.name = 'branch' AND a.value like %:branch%)) ")
+    Page<Product> filterProducts(Double minPrice, Double maxPrice, String color, String branch, Pageable pageable);
 }

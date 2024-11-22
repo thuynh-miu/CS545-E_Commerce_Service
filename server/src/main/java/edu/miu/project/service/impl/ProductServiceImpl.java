@@ -4,12 +4,17 @@ import edu.miu.project.entity.Product;
 import edu.miu.project.entity.Review;
 import edu.miu.project.entity.Seller;
 import edu.miu.project.entity.User;
+import edu.miu.project.entity.dto.ProductDto;
+import edu.miu.project.helper.ListMapper;
 import edu.miu.project.repo.CartRepository;
 import edu.miu.project.repo.ProductRepository;
 import edu.miu.project.repo.UserRepository;
 import edu.miu.project.service.ProductService;
 import edu.miu.project.service.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +30,10 @@ public class ProductServiceImpl implements ProductService {
     CartRepository cartRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ModelMapper modelMapper;
+    @Autowired
+    private ListMapper listMapper;
 
     @Override
     public List<Product> getAllProducts() {
@@ -146,5 +155,13 @@ public class ProductServiceImpl implements ProductService {
             return productRepository.find10ProductByNameDesc();
         }
         return productRepository.findTop10OrderProduct();
+    }
+
+    @Override
+    public Page<ProductDto> filterProducts(
+            Double minPrice, Double maxPrice,
+            String color, String branch, Pageable pageable) {
+        Page<Product> products = productRepository.filterProducts(minPrice, maxPrice, color, branch, pageable);
+        return products.map(product -> modelMapper.map(product, ProductDto.class));
     }
 }

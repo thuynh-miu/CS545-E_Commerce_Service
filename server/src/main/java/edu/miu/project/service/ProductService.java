@@ -2,6 +2,9 @@ package edu.miu.project.service;
 
 import edu.miu.project.entity.Product;
 import edu.miu.project.entity.Review;
+import edu.miu.project.entity.dto.ProductDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -32,4 +35,6 @@ public interface ProductService {
     Review getReviewByProductId(Long productId, Long reviewId);
 
     List<Product> getBestProducts();
+
+    Page<ProductDto> filterProducts(Double minPrice, Double maxPrice, String color, String branch, Pageable pageable);
 }

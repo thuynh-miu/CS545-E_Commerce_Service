@@ -1,7 +1,9 @@
 package edu.miu.project.controller;
 
 import edu.miu.project.entity.Product;
+import edu.miu.project.entity.dto.ProductDto;
 import edu.miu.project.service.ProductService;
+import edu.miu.project.util.Constants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -9,6 +11,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +26,20 @@ public class ProductController {
 
     @Autowired
     ProductService productService;
+
+    @GetMapping("/filter")
+    public ResponseEntity<Page<ProductDto>> filterProducts(
+            @RequestParam(name = "minprice", required = false) Double minPrice,
+            @RequestParam(name = "maxprice", required = false) Double maxPrice,
+            @RequestParam(required = false) String color,
+            @RequestParam(required = false) String brand,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "pagesize", defaultValue = Constants.PAGE_SIZE) int pageSize
+    ) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        Page<ProductDto> products = productService.filterProducts(minPrice, maxPrice, color, brand, pageable);
+        return ResponseEntity.ok(products);
+    }
 
     @Operation(
             summary = "Get all products",

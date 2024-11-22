@@ -89,8 +89,10 @@ public class OrderController {
 
     @PreAuthorize("hasRole('BUYER')")
     @GetMapping("/history")
-    public ResponseEntity<?> getOrderHistory(@RequestParam(name = "page", defaultValue = "0") int page,
-                                             @RequestParam(name = "pagesize", defaultValue = Constants.PAGE_SIZE) int pageSize) {
+    public ResponseEntity<?> getOrderHistory(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "pagesize", defaultValue = Constants.PAGE_SIZE) int pageSize
+    ) {
         try {
             Pageable pageable = PageRequest.of(page, pageSize);
             return ResponseEntity.ok(orderService.getOrderHistory(pageable));
