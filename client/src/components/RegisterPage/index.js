@@ -1,24 +1,61 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { register } from "../../api";
 
 export default function RegisterPage() {
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
   const roleRef = useRef(null);
 
-  const handleRegister = (e) => {
+  const [message, setMessage] = useState(null);
+
+  const registerHandler = async (requestBody) => {
+    try {
+      const response = await register(requestBody);
+      if (!response.ok) {
+        throw new Error("Registration failed.");
+      }
+      return await response.json();
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const handleRegister = async (e) => {
     e.preventDefault();
     const username = usernameRef.current.value;
     const password = passwordRef.current.value;
     const role = roleRef.current.value;
 
-    console.log({ username, password, role });
+    const requestBody = {
+      userName: username,
+      email: username,
+      password: password,
+      role: role,
+    };
+
+    try {
+      await registerHandler(requestBody);
+      setMessage({ type: "success", text: "Registration successful!" });
+    } catch (error) {
+      setMessage({ type: "error", text: error.message || "Registration failed." });
+    }
   };
 
   return (
     <form className="container py-5">
       <div className="card shadow p-4" style={{ maxWidth: "400px", margin: "auto" }}>
         <h3 className="text-center mb-4">Register</h3>
+        {message && (
+          <div
+            className={`alert ${
+              message.type === "success" ? "alert-success" : "alert-danger"
+            }`}
+            role="alert"
+          >
+            {message.text}
+          </div>
+        )}
         <div className="mb-3">
           <label htmlFor="username" className="form-label">
             Username
@@ -50,8 +87,8 @@ export default function RegisterPage() {
             Role
           </label>
           <select className="form-select" ref={roleRef}>
-            <option value="Buyer">Buyer</option>
-            <option value="Seller">Seller</option>
+            <option value="BUYER">Buyer</option>
+            <option value="SELLER">Seller</option>
           </select>
         </div>
         <button
