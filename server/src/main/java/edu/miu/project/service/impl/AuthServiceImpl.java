@@ -102,6 +102,7 @@ public class AuthServiceImpl implements AuthService {
         user.setEmail(registerRequest.getEmail());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         roleRepository.findByRole(registerRequest.getRole()).ifPresent(user::setRole);
+        userRepository.save(user);
 
         if (registerRequest.getRole().equals(RoleEnum.BUYER.toString())) {
             Buyer buyer = new Buyer();
@@ -116,8 +117,6 @@ public class AuthServiceImpl implements AuthService {
         else {
             throw new IllegalArgumentException("Invalid role.");
         }
-
-        userRepository.save(user);
 
         return true;
     }

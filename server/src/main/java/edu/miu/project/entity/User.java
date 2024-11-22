@@ -22,6 +22,6 @@ public class User {
     private String email;
     private String password;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Role role;
 }
