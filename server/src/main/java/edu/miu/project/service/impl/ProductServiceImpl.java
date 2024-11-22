@@ -170,8 +170,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Page<ProductDto> filterProducts(
             Double minPrice, Double maxPrice,
-            String color, String branch, Pageable pageable) {
-        Page<Product> products = productRepository.filterProducts(minPrice, maxPrice, color, branch, pageable);
+            List<String> colors, List<String> branchs, Pageable pageable) {
+        Page<Product> products = productRepository.filterProducts(minPrice, maxPrice, colors, branchs, pageable);
         return products.map(product -> modelMapper.map(product, ProductDto.class));
     }
 }

@@ -34,35 +34,36 @@ public class ProductController {
     @Autowired
     ModelMapper modelMapper;
 
-    @GetMapping("/filter")
+    @GetMapping
     public ResponseEntity<Page<ProductDto>> filterProducts(
-            @RequestParam(name = "minprice", required = false) Double minPrice,
-            @RequestParam(name = "maxprice", required = false) Double maxPrice,
-            @RequestParam(required = false) String color,
-            @RequestParam(required = false) String brand,
+            @RequestParam(name = "price_range", required = false) String priceRange,
+            @RequestParam(name = "color", required = false) List<String> colors,
+            @RequestParam(name = "brand", required = false) List<String> brands,
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "pagesize", defaultValue = Constants.PAGE_SIZE) int pageSize
     ) {
-        Pageable pageable = PageRequest.of(page, pageSize);
-        Page<ProductDto> products = productService.filterProducts(minPrice, maxPrice, color, brand, pageable);
-        return ResponseEntity.ok(products);
-    }
+        Double minPrice = null;
+        Double maxPrice = null;
 
-    @Operation(
-            summary = "Get all products",
-            description = "Retrieves a list of all available products.",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Products retrieved successfully",
-                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class))),
-                    @ApiResponse(responseCode = "400", description = "Bad request",
-                            content = @Content(mediaType = "application/json"))
+        // Parse price_range into minPrice and maxPrice
+        if (priceRange != null && priceRange.contains("..")) {
+            String[] parts = priceRange.split("\\.\\.");
+            try {
+                minPrice = Double.valueOf(parts[0]);
+                maxPrice = Double.valueOf(parts[1]);
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Invalid price_range format. Use 'min..max'.");
             }
-    )
-    @GetMapping
-    public ResponseEntity<List<ProductDto>> getAllProducts() {
-        List<ProductDto> productDtos = listMapper.mapList(productService.getAllProducts(), ProductDto.class);
+        }
 
-        return ResponseEntity.ok(productDtos);
+        if (colors != null)
+            colors = colors.stream().map(String::toLowerCase).toList();
+        if (brands != null)
+            brands = brands.stream().map(String::toLowerCase).toList();
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+        Page<ProductDto> products = productService.filterProducts(minPrice, maxPrice, colors, brands, pageable);
+        return ResponseEntity.ok(products);
     }
 
     @GetMapping("/best")

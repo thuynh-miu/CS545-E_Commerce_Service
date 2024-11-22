@@ -36,5 +36,5 @@ public interface ProductService {
 
     List<Product> getBestProducts();
 
-    Page<ProductDto> filterProducts(Double minPrice, Double maxPrice, String color, String branch, Pageable pageable);
+    Page<ProductDto> filterProducts(Double minPrice, Double maxPrice, List<String> colors, List<String> branchs, Pageable pageable);
 }
