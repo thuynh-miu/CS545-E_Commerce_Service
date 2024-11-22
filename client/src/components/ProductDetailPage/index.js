@@ -8,6 +8,7 @@ import axios from "axios";
 import { useUserContext } from "../../contexts/UserContextProvider";
 
 export default function ProductDetailPage(props) {
+  const { cartItems, addProduct, removeProduct } = useUserContext();
   const [productDetail, setProductDetail] = useState(null);
   // get id from http://localhost:3000/products/detail/2
   const { productId } = useParams();
@@ -31,7 +32,6 @@ export default function ProductDetailPage(props) {
     return cartItems.find(item => item.id == productId);
   }, [cartItems, productId]);
 
-  const { cartItems, addProduct, removeProduct } = useUserContext();
 
   const increase = () => {
     addProduct(productDetail);
@@ -45,8 +45,6 @@ export default function ProductDetailPage(props) {
     return <>
     </>
   }
-
-  console.log(productDetail)
 
   return (
     <div className="container">

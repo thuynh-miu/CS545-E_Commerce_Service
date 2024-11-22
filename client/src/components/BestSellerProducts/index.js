@@ -2,7 +2,6 @@ import Product from "../Product";
 import {useEffect, useState} from "react";
 import axios from "axios";
 
-
 export default function BestSellerProducts(props) {
     const [products, setProducts] = useState([])
 
