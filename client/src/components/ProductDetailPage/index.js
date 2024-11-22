@@ -88,7 +88,7 @@ export default function ProductDetailPage(props) {
                     fullSymbol={<StarFilled />}
                     className="me-2"
                   />
-                  <a href="#Reviews" className="text-decoration-none">({reviews.length} reviews)</a>
+                  <a href="#Reviews" className="text-decoration-none">({reviews?.length} reviews)</a>
                 </span>
               </div>
               <h1 className="h4 fw-bold">{productDetail.name}</h1>
@@ -110,7 +110,7 @@ export default function ProductDetailPage(props) {
 
         {/* Reviews Section */}
         <div className="col-12">
-          <h4 className="mb-4">Reviews ({reviews.length})</h4>
+          <h4 className="mb-4">Reviews ({reviews?.length})</h4>
           {reviews.map((review, index) => (
             <div key={index} id="Reviews" className="mb-4">
               <ProductReview
