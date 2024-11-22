@@ -6,25 +6,37 @@ import Rating from "react-rating";
 import { StarFilled, StarOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { useUserContext } from "../../contexts/UserContextProvider";
+import { getReviewsByProductId, getProductById } from "../../api";
+import { deleteReview } from "../../api/products";
 
 export default function ProductDetailPage(props) {
   const { cartItems, addProduct, removeProduct } = useUserContext();
   const [productDetail, setProductDetail] = useState(null);
-  // get id from http://localhost:3000/products/detail/2
+  const [reviews, setReviews] = useState(null);
   const { productId } = useParams();
 
   useEffect(() => {
-    // fetch product detail from API http://localhost:8080/api/v1/products/1
-    axios.get(`http://localhost:8080/api/v1/products/${productId}`).then((res) => {
+    getProductById(productId).then((res) => {
+      console.log(res.data);
       setProductDetail({
-        id: res.data.id,
-        name: res.data.name,
-        description: res.data.description,
-        price: res.data.price,
-        quantity: res.data.quantity,
-        img_url: res.data.imageUrl,
-        reviews: res.data.reviews
+        id: res.id,
+        name: res.name,
+        description: res.description,
+        price: res.price,
+        quantity: res.quantity,
+        img_url: res.imageUrl
       });
+    });
+    getReviewsByProductId(productId).then((res) => {
+      setReviews(res.map(review => {
+        return {
+          id: review.id,
+          title: review.title,
+          comment: review.comment,
+          rating: review.rating,
+          buyer: review.buyer
+        };
+      }));
     });
   }, []);
 
@@ -39,6 +51,15 @@ export default function ProductDetailPage(props) {
 
   const decrease = () => {
     removeProduct(productDetail)
+  };
+
+  const deleteReviewHandler = async (reviewId) => {
+    try {
+      await deleteReview(reviewId);
+      setReviews(reviews.filter(review => review.id !== reviewId));
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   if (!productDetail){
@@ -66,7 +87,7 @@ export default function ProductDetailPage(props) {
                     fullSymbol={<StarFilled />}
                     className="me-2"
                   />
-                  <a href="#Reviews" className="text-decoration-none">({productDetail.reviews.length} reviews)</a>
+                  <a href="#Reviews" className="text-decoration-none">({reviews.length} reviews)</a>
                 </span>
               </div>
               <h1 className="h4 fw-bold">{productDetail.name}</h1>
@@ -88,14 +109,15 @@ export default function ProductDetailPage(props) {
 
         {/* Reviews Section */}
         <div className="col-12">
-          <h4 className="mb-4">Reviews ({productDetail.reviews.length})</h4>
-          {productDetail.reviews.map((review, index) => (
+          <h4 className="mb-4">Reviews ({reviews.length})</h4>
+          {reviews.map((review, index) => (
             <div key={index} id="Reviews" className="mb-4">
               <ProductReview
-                author={review.author}
+                author={review.author || "Anonymous"}
                 title={review.title}
-                content={review.content}
+                content={review.comment}
                 rating={review.rating}
+                onDelete={() => deleteReviewHandler(review.id)}
               />
               <hr />
             </div>

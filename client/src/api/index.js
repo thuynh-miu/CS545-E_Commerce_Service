@@ -1,13 +1,22 @@
 const hostname = process.env.REACT_APP_BACKEND_URL;
 
 export const register = async (payload) => {
-    return fetch(`${hostname}/api/v1/authenticate/register`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-    }).then((response) => response.json());
+  try {
+    const response = await fetch(`${hostname}/api/v1/authenticate/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      throw new Error("Registration failed");
+    }
+    return await response.json();
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const login = async (payload) => {
@@ -30,6 +39,12 @@ export const getProducts = async (params) => {
 
 export const getProductById = async (id) => {
     return fetch(`${hostname}/api/v1/products/${id}`).then((response) =>
+        response.json()
+    );
+};
+
+export const getReviewsByProductId = async (id) => {
+    return fetch(`${hostname}/api/v1/products/${id}/reviews`).then((response) =>
         response.json()
     );
 };

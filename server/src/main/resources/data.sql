@@ -104,6 +104,19 @@ VALUES
 (8, (SELECT id FROM Attribute WHERE name = 'branch' AND value = 'Apple')),
 (8, (SELECT id FROM Attribute WHERE name = 'color' AND value = 'Silver'));
 
+-- Insert Reviews
+INSERT INTO review (rating, buyer_id, product_id, title, comment)
+VALUES (5, 1, 1, 'I love this product', 'I absolutely love this product! It''s the best I''ve ever purchased.'),
+         (4, 1, 1, 'Great product', 'This is a great product. I would recommend it to anyone.'),
+         (3, 1, 1, 'Good product', 'This is a good product. I would recommend it to anyone.'),
+         (2, 1, 1, 'Not bad', 'This product is not bad. I would recommend it to anyone.'),
+         (1, 1, 1, 'I hate this product', 'I absolutely hate this product! It''s the worst I''ve ever purchased.'),
+         (5, 1, 1, 'I love this product', 'I absolutely love this product! It''s the best I''ve ever purchased.'),
+         (4, 1, 1, 'Great product', 'This is a great product. I would recommend it to anyone.'),
+         (3, 1, 1, 'Good product', 'This is a good product. I would recommend it to anyone.'),
+         (2, 1, 1, 'Not bad', 'This product is not bad. I would recommend it to anyone.'),
+         (1, 1, 1, 'I hate this product', 'I absolutely hate this product! It''s the worst I''ve ever purchased.');
+
 -- Insert Addresses
 INSERT INTO address (street, city, state, zip_code)
 VALUES ('1234 Elm St', 'Fairfield', 'IA', '52557'),

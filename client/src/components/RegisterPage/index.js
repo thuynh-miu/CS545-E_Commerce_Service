@@ -9,18 +9,6 @@ export default function RegisterPage() {
 
   const [message, setMessage] = useState(null);
 
-  const registerHandler = async (requestBody) => {
-    try {
-      const response = await register(requestBody);
-      if (!response.ok) {
-        throw new Error("Registration failed.");
-      }
-      return await response.json();
-    } catch (error) {
-      throw error;
-    }
-  };
-
   const handleRegister = async (e) => {
     e.preventDefault();
     const username = usernameRef.current.value;
@@ -35,7 +23,7 @@ export default function RegisterPage() {
     };
 
     try {
-      await registerHandler(requestBody);
+      await register(requestBody);
       setMessage({ type: "success", text: "Registration successful!" });
     } catch (error) {
       setMessage({ type: "error", text: error.message || "Registration failed." });

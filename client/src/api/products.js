@@ -44,3 +44,15 @@ export const createProduct = async (payload) => {
         body: JSON.stringify(payload),
     });
 };
+
+// delete review by reviewId
+export const deleteReview = async (reviewId) => {
+    const accessToken = localStorage.getItem("accessToken");
+    return fetch(`${hostname}/api/v1/admin/reviews/${reviewId}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            accessToken: accessToken,
+        },
+    });
+};
