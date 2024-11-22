@@ -56,9 +56,14 @@ export default function SellerOrders(props) {
   ];
 
   return (
-    <div>
-      <h1 className="mb-3">Your Orders</h1>
-      <Orders orders={orders} />
+    <div className="container py-4">
+      <div className="text-center mb-4">
+        <h1 className="h4">Your Orders</h1>
+        <p className="text-muted">Manage and view your recent orders</p>
+      </div>
+      <div className="bg-light p-4 rounded shadow-sm">
+        <Orders orders={orders} />
+      </div>
     </div>
   );
 }

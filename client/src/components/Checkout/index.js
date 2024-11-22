@@ -2,7 +2,7 @@ import { useRef } from "react";
 import Collapsible from "../Collapsible";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 
-export default function Checkout(props) {
+export default function Checkout() {
   const fullNameInputRef = useRef();
   const fullNameValidationRef = useRef();
 
@@ -12,16 +12,16 @@ export default function Checkout(props) {
   const emailInputRef = useRef();
   const emailValidationRef = useRef();
 
-  const validatePhone = (phone) => {
-    return phone && phone.length === 10;
-  };
+  const validatePhone = (phone) => phone && phone.length === 10;
 
   const validateEmail = (email) => {
     var re = /\S+@\S+\.\S+/;
     return re.test(email);
   };
+
   const validateForm = () => {
     var isValid = true;
+
     fullNameValidationRef.current.hidden = true;
     if (!fullNameInputRef.current.value) {
       fullNameValidationRef.current.hidden = false;
@@ -39,22 +39,27 @@ export default function Checkout(props) {
       emailValidationRef.current.hidden = false;
       isValid = false;
     }
+
+    return isValid;
   };
+
   const submit = () => {
     if (!validateForm()) {
       return;
     }
-    const fullName = fullNameInputRef.current.value;
+    alert("Payment submitted successfully!");
   };
+
   return (
-    <div className="container">
-      <div className="mb-3">
+    <div className="container py-4">
+      
+      <div className="mb-4">
         <Collapsible
           id="contact-information"
-          title={<h2>Contact Information</h2>}
+          title={<h2 className="h5">Contact Information</h2>}
         >
-          <div>
-            <div className="mb-3">
+          <div className="row g-3">
+            <div className="col-12">
               <label htmlFor="full-name" className="form-label">
                 Full Name
               </label>
@@ -69,13 +74,13 @@ export default function Checkout(props) {
                 <ExclamationCircleOutlined /> Invalid name
               </small>
             </div>
-            <div className="mb-3">
+            <div className="col-12">
               <label htmlFor="phone" className="form-label">
                 Phone
               </label>
               <input
                 ref={phoneInputRef}
-                type="number"
+                type="text"
                 className="form-control"
                 id="phone"
                 required
@@ -84,7 +89,7 @@ export default function Checkout(props) {
                 <ExclamationCircleOutlined /> Invalid phone
               </small>
             </div>
-            <div className="mb-3">
+            <div className="col-12">
               <label htmlFor="email" className="form-label">
                 Email
               </label>
@@ -96,16 +101,17 @@ export default function Checkout(props) {
                 required
               />
               <small className="text-danger" ref={emailValidationRef} hidden>
-                <ExclamationCircleOutlined /> Invalid Email
+                <ExclamationCircleOutlined /> Invalid email
               </small>
             </div>
           </div>
         </Collapsible>
       </div>
-      <div className="mb-3">
-        <Collapsible id="shipping-address" title={<h2>Shipping Address</h2>}>
-          <div>
-            <div className="mb-3">
+
+      <div className="mb-4">
+        <Collapsible id="shipping-address" title={<h2 className="h5">Shipping Address</h2>}>
+          <div className="row g-3">
+            <div className="col-12">
               <label htmlFor="street" className="form-label">
                 Street
               </label>
@@ -116,88 +122,85 @@ export default function Checkout(props) {
                 required
               />
             </div>
-            <div className="d-flex justify-content-between">
-              <div className="mb-3">
-                <label htmlFor="city" className="form-label">
-                  City
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="city"
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="state" className="form-label">
-                  State
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="state"
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="zipcode" className="form-label">
-                  Zipcode
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="zipcode"
-                  required
-                />
-              </div>
+            <div className="col-6 col-md-4">
+              <label htmlFor="city" className="form-label">
+                City
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="city"
+                required
+              />
+            </div>
+            <div className="col-6 col-md-4">
+              <label htmlFor="state" className="form-label">
+                State
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="state"
+                required
+              />
+            </div>
+            <div className="col-6 col-md-4">
+              <label htmlFor="zipcode" className="form-label">
+                Zipcode
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="zipcode"
+                required
+              />
             </div>
           </div>
         </Collapsible>
       </div>
-      <div className="mb-3">
-        <Collapsible id="payment-method" title={<h2>Payment Method</h2>}>
-          <div>
-            <div className="d-flex justify-content-between">
-              <div className="mb-3 w-50">
-                <label htmlFor="card-number" className="form-label">
-                  Card Number
-                </label>
-                <input
-                  type="number"
-                  className="form-control"
-                  id="card-number"
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="expiration-date" className="form-label">
-                  Expiration Date
-                </label>
-                <input
-                  type="month"
-                  pattern="\d{2}-\d{2}"
-                  className="form-control"
-                  id="expiration-date"
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="ccv" className="form-label">
-                  CCV
-                </label>
-                <input
-                  type="number"
-                  className="form-control"
-                  id="ccv"
-                  required
-                />
-              </div>
+
+      <div className="mb-4">
+        <Collapsible id="payment-method" title={<h2 className="h5">Payment Method</h2>}>
+          <div className="row g-3">
+            <div className="col-12 col-md-6">
+              <label htmlFor="card-number" className="form-label">
+                Card Number
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="card-number"
+                required
+              />
+            </div>
+            <div className="col-6 col-md-3">
+              <label htmlFor="expiration-date" className="form-label">
+                Expiration Date
+              </label>
+              <input
+                type="month"
+                className="form-control"
+                id="expiration-date"
+                required
+              />
+            </div>
+            <div className="col-6 col-md-3">
+              <label htmlFor="ccv" className="form-label">
+                CCV
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="ccv"
+                required
+              />
             </div>
           </div>
         </Collapsible>
       </div>
-      <div className="d-flex">
-        <button className="btn btn-primary mx-auto w-100" onClick={submit}>
+
+      <div className="text-center">
+        <button className="btn btn-primary w-100 py-2 rounded-pill" onClick={submit}>
           Pay Now
         </button>
       </div>

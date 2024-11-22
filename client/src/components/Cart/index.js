@@ -6,16 +6,21 @@ export default function Cart(props) {
     const { cartItems } = useUserContext();
 
     return (
-        <div className="container-lg">
-            <h2 className="mb-5">Cart</h2>
-            <div className="d-flex">
-                <div className="cart-detail">
-                    <CartItems cartItems={cartItems} />
+        <div className="container py-4">
+            <h2 className="text-center mb-4">Your Cart</h2>
+            <div className="row g-4">
+                <div className="col-12 col-lg-8">
+                    <div className="bg-light p-3 rounded shadow-sm">
+                        <CartItems cartItems={cartItems} />
+                    </div>
                 </div>
-                <div className="cart-preview ms-auto">
-                    <CartPreview cartItems={cartItems} />
+
+                <div className="col-12 col-lg-4">
+                    <div className="bg-light p-3 rounded shadow-sm">
+                        <CartPreview cartItems={cartItems} />
+                    </div>
                 </div>
             </div>
         </div>
-    )
+    );
 }

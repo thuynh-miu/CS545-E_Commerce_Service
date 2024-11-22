@@ -41,6 +41,7 @@ export default function Login(props) {
                 alert("Incorrect username or password");
             });
     };
+
     return (
         <form className="container mt-5">
             <div
@@ -53,12 +54,12 @@ export default function Login(props) {
                         Email
                     </label>
                     <input
-                        type="text"
+                        type="email"
                         id="email"
                         ref={emailRef}
                         className="form-control"
                         placeholder="Enter your email"
-                        required={true}
+                        required
                     />
                 </div>
                 <div className="mb-3">

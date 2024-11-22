@@ -17,15 +17,21 @@ export default function UpdateInventory(prop) {
 
   }
   return (
-    <div className="container">
-      <InventoryDetail
-        name={inventory.name}
-        price={inventory.price}
-        stock={inventory.stock}
-        description={inventory.description}
-        imageUrl={inventory.img_url}
-        onSave={onSave}
-      />
+    <div className="container py-4">
+      <div className="text-center mb-4">
+        <h1 className="h4">Update Inventory</h1>
+        <p className="text-muted">Modify the details of your inventory item below</p>
+      </div>
+      <div className="bg-light p-4 rounded shadow-sm">
+        <InventoryDetail
+          name={inventory.name}
+          price={inventory.price}
+          stock={inventory.stock}
+          description={inventory.description}
+          imageUrl={inventory.img_url}
+          onSave={onSave}
+        />
+      </div>
     </div>
   );
 }

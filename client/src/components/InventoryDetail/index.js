@@ -14,8 +14,6 @@ export default function InventoryDetail(props) {
 
   const { name, price, stock, description, imageUrl } = props;
 
-  console.log(imageUrl)
-
   const validate = () => {
     const name = formRef.current["name"].value;
     const price = parseFloat(formRef.current["price"].value);
@@ -23,37 +21,30 @@ export default function InventoryDetail(props) {
     const description = formRef.current["description"].value;
     const imageUrl = formRef.current["image-url"].value;
 
-    var flag = true;
-    if (_.isNull(name) || _.isUndefined(name) || name.length === 0) {
+    let isValid = true;
+    if (_.isEmpty(name)) {
       nameValidationRef.current.hidden = false;
-      flag = false;
+      isValid = false;
     }
-    if (_.isNull(price) || _.isNaN(price) || !_.isNumber(price)) {
+    if (_.isNaN(price) || price <= 0) {
       priceValidationRef.current.hidden = false;
-      flag = false;
+      isValid = false;
     }
-    if (_.isNull(stock) || _.isNaN(stock) || !_.isNumber(stock)) {
+    if (_.isNaN(stock) || stock < 0) {
       stockValidationRef.current.hidden = false;
-      flag = false;
+      isValid = false;
     }
-    if (
-      _.isNull(description) ||
-      _.isUndefined(description) ||
-      description.length === 0
-    ) {
+    if (_.isEmpty(description)) {
       descriptionValidationRef.current.hidden = false;
-      flag = false;
+      isValid = false;
     }
-    if (
-      _.isNull(imageUrl) ||
-      _.isUndefined(imageUrl) ||
-      imageUrl.length === 0
-    ) {
+    if (_.isEmpty(imageUrl)) {
       imageUrlValidationRef.current.hidden = false;
-      flag = false;
+      isValid = false;
     }
-    return flag;
+    return isValid;
   };
+
   const onSubmit = (e) => {
     e.preventDefault();
     nameValidationRef.current.hidden = true;
@@ -61,91 +52,112 @@ export default function InventoryDetail(props) {
     stockValidationRef.current.hidden = true;
     descriptionValidationRef.current.hidden = true;
     imageUrlValidationRef.current.hidden = true;
-    if (!validate()) {
-      return;
+
+    if (validate()) {
+      const newInventory = {
+        name: formRef.current["name"].value,
+        price: parseFloat(formRef.current["price"].value),
+        stock: parseInt(formRef.current["stock"].value),
+        description: formRef.current["description"].value,
+        imageUrl: formRef.current["image-url"].value,
+      };
+      props.onSave(newInventory);
     }
   };
+
   return (
-    <form ref={formRef} onSubmit={onSubmit}>
-      <div class="mb-3">
-        <label for="name" class="form-label">
-          Product name
+    <form ref={formRef} onSubmit={onSubmit} className="bg-light p-4 rounded shadow-sm">
+      <div className="mb-3">
+        <label htmlFor="name" className="form-label">
+          Product Name
         </label>
-        <input type="text" class="form-control" id="name" defaultValue={name} />
+        <input
+          type="text"
+          className="form-control"
+          id="name"
+          defaultValue={name}
+          placeholder="Enter product name"
+        />
         <small className="text-danger" ref={nameValidationRef} hidden>
-          <ExclamationCircleOutlined /> Invalid name
+          <ExclamationCircleOutlined /> Please enter a valid product name
         </small>
       </div>
-      <div class="mb-3">
-        <label for="price" class="form-label">
+
+      <div className="mb-3">
+        <label htmlFor="price" className="form-label">
           Price
         </label>
         <input
-          type="text"
-          class="form-control"
+          type="number"
+          className="form-control"
           id="price"
           defaultValue={price}
+          placeholder="Enter product price"
         />
         <small className="text-danger" ref={priceValidationRef} hidden>
-          <ExclamationCircleOutlined /> Invalid price
+          <ExclamationCircleOutlined /> Please enter a valid price
         </small>
       </div>
-      <div class="mb-3">
-        <label for="stock" class="form-label">
+
+      <div className="mb-3">
+        <label htmlFor="stock" className="form-label">
           Stock
         </label>
         <input
-          type="text"
-          class="form-control"
+          type="number"
+          className="form-control"
           id="stock"
           defaultValue={stock}
+          placeholder="Enter stock quantity"
         />
         <small className="text-danger" ref={stockValidationRef} hidden>
-          <ExclamationCircleOutlined /> Invalid stock
+          <ExclamationCircleOutlined /> Please enter a valid stock quantity
         </small>
       </div>
-      <div class="mb-3">
-        <label for="description" class="form-label">
+
+      <div className="mb-3">
+        <label htmlFor="description" className="form-label">
           Description
         </label>
         <textarea
-          class="form-control"
+          className="form-control"
           id="description"
+          rows="3"
           defaultValue={description}
+          placeholder="Enter product description"
         ></textarea>
         <small className="text-danger" ref={descriptionValidationRef} hidden>
-          <ExclamationCircleOutlined /> Invalid description
+          <ExclamationCircleOutlined /> Please provide a description
         </small>
       </div>
-      <div class="mb-3">
-        <label for="image-url" class="form-label">
-          Product Image
+
+      <div className="mb-3">
+        <label htmlFor="image-url" className="form-label">
+          Product Image URL
         </label>
         <input
           type="text"
-          class="form-control"
+          className="form-control"
           id="image-url"
           defaultValue={imageUrl}
+          placeholder="Enter image URL"
         />
         <small className="text-danger" ref={imageUrlValidationRef} hidden>
-          <ExclamationCircleOutlined /> Invalid image url
+          <ExclamationCircleOutlined /> Please provide a valid image URL
         </small>
       </div>
-      <div className="d-flex">
-        <div className="mx-auto">
-          <button
-            className="btn btn-warning me-2"
-            onClick={(e) => {
-              e.preventDefault();
-              navigate(-1);
-            }}
-          >
-            Cancel
-          </button>
-          <button className="btn btn-primary" type="submit">
-            Save
-          </button>
-        </div>
+
+      <div className="d-flex justify-content-center mt-4">
+        <button
+          type="button"
+          className="btn btn-secondary me-3"
+          onClick={() => navigate(-1)}
+        >
+          Cancel
+        </button>
+        <button type="submit" className="btn btn-primary">
+          Save
+        </button>
       </div>
     </form>
   );
