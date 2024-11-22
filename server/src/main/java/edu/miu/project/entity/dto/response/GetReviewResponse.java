@@ -8,4 +8,5 @@ public class GetReviewResponse {
     private String title;
     private String comment;
     private int rating; // Example: from 1 to 5
+    private String author;
 }

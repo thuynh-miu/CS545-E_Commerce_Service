@@ -155,8 +155,11 @@ public class ProductServiceImpl implements ProductService {
     public List<GetReviewResponse> getReviewsByProductId(Long productId) {
         Product product = productRepository.findById(productId)
             .orElseThrow(() -> new RuntimeException("Product not found with ID: " + productId));
-        return product.getReviews().stream().map(m -> modelMapper.map(m, GetReviewResponse.class))
-            .collect(Collectors.toList());
+        return product.getReviews().stream().map(m -> {
+            var result= modelMapper.map(m, GetReviewResponse.class);
+            result.setAuthor(m.getBuyer().getUser().getEmail());
+            return result;
+        }).collect(Collectors.toList());
     }
 
     // Get Review by Product Id, Review Id
