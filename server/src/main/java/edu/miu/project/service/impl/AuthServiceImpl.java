@@ -6,11 +6,11 @@ import edu.miu.project.entity.dto.LoginResponse;
 import edu.miu.project.entity.dto.RefreshTokenRequest;
 import edu.miu.project.entity.dto.RegisterRequest;
 import edu.miu.project.repo.BuyerRepository;
+import edu.miu.project.repo.RoleRepository;
 import edu.miu.project.repo.SellerRepository;
 import edu.miu.project.repo.UserRepository;
 import edu.miu.project.service.AuthService;
 import edu.miu.project.util.JwtUtil;
-import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,8 +21,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +35,8 @@ public class AuthServiceImpl implements AuthService {
     private BuyerRepository buyerRepository;
     @Autowired
     private SellerRepository sellerRepository;
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
@@ -101,14 +101,14 @@ public class AuthServiceImpl implements AuthService {
         user.setUsername(registerRequest.getUserName());
         user.setEmail(registerRequest.getEmail());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setRole(registerRequest.getRole());
+        roleRepository.findByRole(registerRequest.getRole()).ifPresent(user::setRole);
 
-        if (registerRequest.getRole().getRole().equals(RoleEnum.BUYER.toString())) {
+        if (registerRequest.getRole().equals(RoleEnum.BUYER.toString())) {
             Buyer buyer = new Buyer();
             buyer.setUser(user);
             buyerRepository.save(buyer);
         }
-        else if (registerRequest.getRole().getRole().equals(RoleEnum.SELLER.toString())) {
+        else if (registerRequest.getRole().equals(RoleEnum.SELLER.toString())) {
             Seller seller = new Seller();
             seller.setUser(user);
             sellerRepository.save(seller);
