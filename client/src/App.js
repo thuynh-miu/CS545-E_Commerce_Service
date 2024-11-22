@@ -22,55 +22,76 @@ import CataLogue from "./components/Catalogue";
 import { LoginContextProvider } from "./contexts/LoginStatusProvider";
 import OrderDetail from "./components/OrderDetail";
 import ReviewProduct from "./components/ReviewProduct";
+import { CartContextProvider } from "./contexts/CartContextProvider";
 
 function App() {
     return (
         <div>
             <LoginContextProvider>
                 <UserContextProvider>
-                    <header className="mb-3">
-                        <NavBar />
-                        <CataLogue />
-                    </header>
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/logout" element={<LogOut />} />
-                        <Route path="/register" element={<RegisterPage />} />
-                        <Route path="/cart" element={<Cart />} />
-                        <Route
-                            path="/products/search"
-                            element={<ProductsSearch />}
-                        />
-                        <Route
-                            path="/products/detail/:productId"
-                            element={<ProductDetailPage />}
-                        />
-                        <Route path="/admin" element={<AdminDashboard />} />
-                        <Route path="/checkout" element={<Checkout />} />
+                    <CartContextProvider>
+                        <header className="mb-3">
+                            <NavBar />
+                            <CataLogue />
+                        </header>
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/logout" element={<LogOut />} />
+                            <Route
+                                path="/register"
+                                element={<RegisterPage />}
+                            />
+                            <Route path="/cart" element={<Cart />} />
+                            <Route
+                                path="/products/search"
+                                element={<ProductsSearch />}
+                            />
+                            <Route
+                                path="/products/detail/:productId"
+                                element={<ProductDetailPage />}
+                            />
+                            <Route path="/admin" element={<AdminDashboard />} />
+                            <Route path="/checkout" element={<Checkout />} />
 
-                        <Route path="/seller" element={<SellerDashboard />}>
-                            <Route path="orders" element={<SellerOrders />} />
-                            <Route path="orders/:id" element={<OrderDetail />} />
-                            <Route
-                                path="inventories"
-                                element={<Inventories />}
-                            />
-                            <Route
-                                path="add-inventory"
-                                element={<AddNewInventory />}
-                            />
-                            <Route
-                                path="update-inventory"
-                                element={<UpdateInventory />}
-                            />
-                        </Route>
-                        <Route path="/buyer" element={<BuyerDashboard />}>
-                            <Route path="orders" element={<OrdersHistory />} />
-                            <Route path="orders/:orderId" element={<OrderDetail />} />
-                            <Route path="orders/:orderId/review/:productId" element={<ReviewProduct />} />
-                        </Route>
-                    </Routes>
+                            <Route path="/seller" element={<SellerDashboard />}>
+                                <Route
+                                    path="orders"
+                                    element={<SellerOrders />}
+                                />
+                                <Route
+                                    path="orders/:id"
+                                    element={<OrderDetail />}
+                                />
+                                <Route
+                                    path="inventories"
+                                    element={<Inventories />}
+                                />
+                                <Route
+                                    path="add-inventory"
+                                    element={<AddNewInventory />}
+                                />
+                                <Route
+                                    path="update-inventory"
+                                    element={<UpdateInventory />}
+                                />
+                            </Route>
+                            <Route path="/buyer" element={<BuyerDashboard />}>
+                                <Route
+                                    path="orders"
+                                    element={<OrdersHistory />}
+                                />
+                                <Route
+                                    path="orders/:orderId"
+                                    element={<OrderDetail />}
+                                />
+                                <Route
+                                    path="orders/:orderId/review/:productId"
+                                    element={<ReviewProduct />}
+                                />
+                            </Route>
+                        </Routes>
+                    </CartContextProvider>
                 </UserContextProvider>
             </LoginContextProvider>
         </div>

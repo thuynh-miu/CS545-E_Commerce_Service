@@ -39,7 +39,6 @@ export default function Login(props) {
                 navigate('/')
             })
             .catch((error) => {
-                console.log(error);
                 alert("Incorrect username or password");
             });
     };

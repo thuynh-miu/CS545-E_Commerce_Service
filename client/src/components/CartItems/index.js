@@ -2,8 +2,7 @@ import CartItem from "../CartItem";
 
 
 export default function CartItems(props) {
-    const {cartItems} = props;
-
+    const {cartItems} = props;   
     return (
         <div>
             <h4 className="mb-4">Items in Your Cart</h4>

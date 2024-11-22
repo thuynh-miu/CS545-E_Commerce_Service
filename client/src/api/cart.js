@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const hostname = process.env.REACT_APP_BACKEND_URL;
+
 const host = "http://localhost:8080";
 export const getCart = async () => {
     const accessToken = localStorage.getItem('accessToken');
@@ -10,18 +12,23 @@ export const getCart = async () => {
         },
     });
 
-    if (response.status === 200 && response.data) {
+    if (response.status === 200) {
         return response.json();
     }
     return null;
 }
 
 export const addToCart = async (productId, quantity) => {
-    const data = await axios.get(`${host}/api/v1/cart?productId=${productId}&quantity=${quantity}`);
-    console.log(data)
+    const accessToken = localStorage.getItem('accessToken');
+    return fetch(`${hostname}/api/v1/cart?productId=${productId}&quantity=${quantity}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "accessToken": accessToken
+        },
+    });
 }
 
 export const removeFromCart = async (productId) => {
     const data = await axios.get(`${host}/api/v1/cart?productId=${productId}`);
-    console.log(data)
 }

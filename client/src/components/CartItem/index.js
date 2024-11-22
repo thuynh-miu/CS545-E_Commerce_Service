@@ -1,11 +1,11 @@
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
-import { useUserContext } from '../../contexts/UserContextProvider';
 import AddToCartButton from "../AddToCartButton";
+import { CartContext } from "../../contexts/CartContextProvider";
 
 export default function CartItem({ item }) {
-    const {img_url, name, price, quantity, id} = item;
-    const { cartItems, addProduct, removeProduct } = useUserContext();
+    const {imageUrl, name, price, quantity, id} = item;
+    const { cartItems, addProduct, reduceProduct, removeProduct } = useContext(CartContext);
 
     const productInfo = useMemo(() => {
         return cartItems.find(item => item.id == id);
@@ -15,14 +15,17 @@ export default function CartItem({ item }) {
         addProduct(item);
     };
     const decrease = () => {
-        removeProduct(item);
+        reduceProduct(item);
     };
+    const remove = () => {
+        removeProduct(item);
+    }
 
     return (
         <div>
             <div className="d-flex w-100">
                 <div>
-                    <img src={img_url} height={96} width={96} />
+                    <img src={imageUrl} height={96} width={96} />
                 </div>
                 <div className="d-flex w-100 ps-3">
                     <p>{name}</p>
@@ -30,7 +33,7 @@ export default function CartItem({ item }) {
                 </div>
             </div>
             <div className="d-flex justify-content-end">
-                <button className="btn btn-link">Remove</button>
+                <button className="btn btn-link" onClick={remove}>Remove</button>
                 <div className="d-flex quantity-selector">
                     <MinusOutlined className="decrease-quantity-button" onClick={decrease} />
                     <div className="m-auto">{(productInfo && productInfo.quantity) || 0}</div>

@@ -6,5 +6,5 @@ public interface CartService {
     Cart getCart();
     Cart addToCart(Long productId, int quantity);
     Cart removeFromCart(Long productId);
-    Cart updateCartItemQuantity(Long productId, int quantity);
+//    Cart updateCartItemQuantity(Long productId, int quantity);
 }

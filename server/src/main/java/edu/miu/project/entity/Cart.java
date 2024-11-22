@@ -22,6 +22,12 @@ public class Cart {
     @OneToOne
     private Buyer buyer;
 
+    @Transient
     private double totalPrice;
+
+    @PostLoad
+    private void onLoad() {
+        this.totalPrice = items.stream().map(CartItem::getSubTotal).reduce(0.0, Double::sum);
+    }
 }
 

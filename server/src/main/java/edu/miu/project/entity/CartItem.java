@@ -21,5 +21,9 @@ public class CartItem {
     private Cart cart;
 
     private int quantity;
-    private double price;
+
+    public Double getSubTotal() {
+        return product.getPrice() * quantity;
+    }
+
 }

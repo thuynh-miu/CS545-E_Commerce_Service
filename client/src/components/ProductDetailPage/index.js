@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useContext } from "react";
 import AddToCartButton from "../AddToCartButton";
 import ProductReview from "../ProductReviews";
 import {Link, useParams} from "react-router-dom";
@@ -8,9 +8,10 @@ import axios from "axios";
 import { useUserContext } from "../../contexts/UserContextProvider";
 import { getReviewsByProductId, getProductById } from "../../api";
 import { deleteReview } from "../../api/products";
+import { CartContext } from "../../contexts/CartContextProvider";
 
 export default function ProductDetailPage(props) {
-  const { cartItems, addProduct, removeProduct } = useUserContext();
+  const { cartItems, addProduct, reduceProduct } = useContext(CartContext);
   const [productDetail, setProductDetail] = useState(null);
   const [reviews, setReviews] = useState(null);
   const { productId } = useParams();
@@ -50,7 +51,7 @@ export default function ProductDetailPage(props) {
   };
 
   const decrease = () => {
-    removeProduct(productDetail)
+    reduceProduct(productDetail)
   };
 
   const deleteReviewHandler = async (reviewId) => {

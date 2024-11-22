@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface CartRepository extends JpaRepository<Cart, Long> {
-    Optional<Object> findByBuyer_Id(Long buyerId);
+//    @Query("select c from Cart c join Buyer b where b.id = :buyerId")
+    Optional<Cart> findByBuyer_Id(Long buyerId);
     Optional<Product> findByItems_Product_Id(Long productId);
 }

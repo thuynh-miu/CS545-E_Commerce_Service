@@ -1,19 +1,19 @@
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { StarFilled, StarOutlined } from "@ant-design/icons";
 import Rating from "react-rating";
 import { Link } from "react-router-dom";
 import AddToCartButton from "../AddToCartButton";
-import { useUserContext } from '../../contexts/UserContextProvider';
+import { CartContext } from "../../contexts/CartContextProvider";
 
 export default function Product({ product }) {
   const { name, price, rating, imageUrl } = product;
-  const { cartItems, addProduct, removeProduct } = useUserContext();
+  const { cartItems, addProduct, reduceProduct } = useContext(CartContext);
 
   const increase = () => {
     addProduct(product);
   };
   const decrease = () => {
-    removeProduct(product);
+    reduceProduct(product);
   };
 
   const productInfo = useMemo(() => {
