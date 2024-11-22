@@ -139,8 +139,8 @@ public class OrderServiceImpl implements OrderService {
         }
 
         if ((currentStatus == OrderStatus.PENDING && newStatus != OrderStatus.SHIPPED) ||
-                (currentStatus == OrderStatus.SHIPPED && newStatus != OrderStatus.ON_THE_WAY) ||
-                (currentStatus == OrderStatus.ON_THE_WAY && newStatus != OrderStatus.DELIVERED)) {
+                (currentStatus == OrderStatus.SHIPPED && newStatus != OrderStatus.TRANSIT) ||
+                (currentStatus == OrderStatus.TRANSIT && newStatus != OrderStatus.DELIVERED)) {
             throw new RuntimeException("Invalid status transition.");
         }
     }

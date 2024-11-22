@@ -104,3 +104,20 @@ VALUES
 (8, (SELECT id FROM Attribute WHERE name = 'branch' AND value = 'Apple')),
 (8, (SELECT id FROM Attribute WHERE name = 'color' AND value = 'Silver'));
 
+-- Insert Orders
+INSERT INTO orders (buyer_id, seller_id, order_date, status) VALUES (1, 1, '2024-11-19', 'PENDING');
+INSERT INTO orders (buyer_id, seller_id, order_date, status) VALUES (1, 1, '2024-11-20', 'SHIPPED');
+INSERT INTO orders (buyer_id, seller_id, order_date, status) VALUES (1, 1, '2024-11-21', 'DELIVERED');
+INSERT INTO orders (buyer_id, seller_id, order_date, status) VALUES (1, 1, '2024-11-22', 'CANCELED');
+
+-- Insert Order Items
+INSERT INTO order_item (product_id, order_id, quantity, price) VALUES (1, 1, 2, 19.99);
+INSERT INTO order_item (product_id, order_id, quantity, price) VALUES (2, 1, 1, 9.99);
+INSERT INTO order_item (product_id, order_id, quantity, price) VALUES (3, 1, 3, 29.99);
+INSERT INTO order_item (product_id, order_id, quantity, price) VALUES (1, 2, 1, 19.99);
+INSERT INTO order_item (product_id, order_id, quantity, price) VALUES (2, 2, 2, 9.99);
+INSERT INTO order_item (product_id, order_id, quantity, price) VALUES (1, 3, 1, 19.99);
+INSERT INTO order_item (product_id, order_id, quantity, price) VALUES (2, 3, 2, 9.99);
+INSERT INTO order_item (product_id, order_id, quantity, price) VALUES (1, 4, 1, 19.99);
+INSERT INTO order_item (product_id, order_id, quantity, price) VALUES (2, 4, 2, 9.99);
+
