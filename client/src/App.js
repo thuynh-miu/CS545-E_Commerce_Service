@@ -23,6 +23,7 @@ import { LoginContextProvider } from "./contexts/LoginStatusProvider";
 import OrderDetail from "./components/OrderDetail";
 import ReviewProduct from "./components/ReviewProduct";
 import { CartContextProvider } from "./contexts/CartContextProvider";
+import Forbidden from "./components/Forbidden";
 
 function App() {
     return (
@@ -35,6 +36,7 @@ function App() {
                             <CataLogue />
                         </header>
                         <Routes>
+                            <Route path="/403" element={<Forbidden />} />
                             <Route path="/" element={<Home />} />
                             <Route path="/login" element={<Login />} />
                             <Route path="/logout" element={<LogOut />} />
