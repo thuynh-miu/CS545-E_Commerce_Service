@@ -17,7 +17,7 @@ export default function Product({ product }) {
   };
 
   const productInfo = useMemo(() => {
-    return cartItems.find(item => item.id == product.id);
+    return cartItems?.find(item => item.id == product.id);
   }, [cartItems, product.id]);
 
   return (

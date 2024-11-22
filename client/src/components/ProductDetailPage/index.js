@@ -42,7 +42,7 @@ export default function ProductDetailPage(props) {
   }, []);
 
   const product = useMemo(() => {
-    return cartItems.find(item => item.id == productId);
+    return cartItems?.find(item => item.id == productId);
   }, [cartItems, productId]);
 
 
@@ -111,7 +111,7 @@ export default function ProductDetailPage(props) {
         {/* Reviews Section */}
         <div className="col-12">
           <h4 className="mb-4">Reviews ({reviews?.length})</h4>
-          {reviews.map((review, index) => (
+          {reviews?.map((review, index) => (
             <div key={index} id="Reviews" className="mb-4">
               <ProductReview
                 author={review.author || "Anonymous"}
