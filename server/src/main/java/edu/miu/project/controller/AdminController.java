@@ -1,5 +1,6 @@
 package edu.miu.project.controller;
 
+import edu.miu.project.entity.dto.SellerDto;
 import edu.miu.project.service.ReviewService;
 import edu.miu.project.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Tag(name = "Admin Controller", description = "Admin management APIs")
@@ -39,8 +42,8 @@ public class AdminController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @GetMapping("/unapproved")
-    public ResponseEntity<?> getUnapprovedSellers() {
+    @GetMapping("/sellers/unapproved")
+    public ResponseEntity<List<SellerDto>> getUnapprovedSellers() {
         return ResponseEntity.ok(userService.getUnapprovedSellers());
     }
 
@@ -55,7 +58,7 @@ public class AdminController {
             @ApiResponse(responseCode = "409", description = "Conflict error if the seller cannot be approved",
                     content = @Content(mediaType = "text/plain", schema = @Schema(example = "Error: Seller approval failed")))
     })
-    @PatchMapping("/approved/{sellerId}")
+    @PostMapping("/sellers/{sellerId}/approve")
     public ResponseEntity<?> approveSeller(@PathVariable Long sellerId) {
         String responseMessage = userService.approveSeller(sellerId);
         if (responseMessage.contains("Error")) {

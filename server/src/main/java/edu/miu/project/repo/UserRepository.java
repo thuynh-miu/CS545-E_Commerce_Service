@@ -1,5 +1,6 @@
 package edu.miu.project.repo;
 
+import edu.miu.project.entity.Seller;
 import edu.miu.project.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,5 +15,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByEmail(String email);
 
     @Query("SELECT s FROM Seller s JOIN s.user u JOIN u.role r WHERE s.isApproved = false AND r.role = 'SELLER'")
-    Optional<List<User>> findUnapprovedSellers();
+    List<Seller> findUnapprovedSellers();
 }

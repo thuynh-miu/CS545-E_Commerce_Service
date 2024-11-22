@@ -1,6 +1,7 @@
 package edu.miu.project.service.impl;
 
 import edu.miu.project.entity.*;
+import edu.miu.project.entity.dto.SellerDto;
 import edu.miu.project.entity.dto.UserDto;
 import edu.miu.project.helper.ListMapper;
 import edu.miu.project.helper.UserHelper;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -41,17 +44,15 @@ public class UserServiceImpl implements UserService {
     }
 
     // Approve a seller by Admin
-    public String approveSeller(Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isEmpty())
-            return "Error: User not found with ID: " + userId;
-
-        if (user.get().getRole().getRole().equalsIgnoreCase(RoleEnum.SELLER.toString())) {
-            User updatedUser = userRepository.save(user.get());
-            return "Seller approved: " + updatedUser.getUsername();
-        } else {
-            return "Error: Can't approve a non-seller user: " + user.get().getUsername();
+    public String approveSeller(Long sellerId) {
+        Seller seller = sellerRepository.findById(sellerId).orElse(null);
+        if (seller == null) {
+            return "Error: User not found with ID: " + sellerId;
         }
+
+        seller.setApproved(true);
+        sellerRepository.save(seller);
+        return "Approved";
     }
 
     public Optional<Buyer> getCurrentBuyer() {
@@ -70,12 +71,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getUnapprovedSellers() {
-        Optional<List<User>> unapprovedSellers = userRepository.findUnapprovedSellers();
-        if (unapprovedSellers.isEmpty())
-            throw new RuntimeException("No unapproved sellers found.");
-
-        return listMapper.mapList(unapprovedSellers.get(), UserDto.class);
+    public List<SellerDto> getUnapprovedSellers() {
+        List<Seller> unapprovedSellers = userRepository.findUnapprovedSellers();
+        return listMapper.mapList(unapprovedSellers, SellerDto.class);
     }
 
     @Override

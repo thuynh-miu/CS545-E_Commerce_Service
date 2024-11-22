@@ -3,6 +3,7 @@ package edu.miu.project.service;
 import edu.miu.project.entity.Buyer;
 import edu.miu.project.entity.Seller;
 import edu.miu.project.entity.User;
+import edu.miu.project.entity.dto.SellerDto;
 import edu.miu.project.entity.dto.UserDto;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public interface UserService {
 
     Optional<User> getCurrentUser();
 
-    List<UserDto> getUnapprovedSellers();
+    List<SellerDto> getUnapprovedSellers();
 
     UserDto findByEmail(String email);
 }
