@@ -98,30 +98,55 @@ export default function ProductsFilters(props) {
       ],
     },
   ];
-
   const setFilter = (filter, option, checked) => {
-    if (checked) {
-      searchParams.append(filter, option);
+    if (filter === "price_range") {
+      if (checked) {
+        searchParams.set(filter, option);
+      } else {
+        searchParams.delete(filter);
+      }
     } else {
-      searchParams.delete(filter, option);
+      const existingValues = searchParams.get(filter)?.split(",") || [];
+      let updatedValues;
+
+      if (checked) {
+        updatedValues = [...new Set([...existingValues, option])];
+      } else {
+        updatedValues = existingValues.filter((value) => value !== option);
+      }
+
+      if (updatedValues.length > 0) {
+        searchParams.set(filter, updatedValues.join(","));
+      } else {
+        searchParams.delete(filter);
+      }
     }
-    setSearchParams(searchParams);
+
+    const queryString = decodeURIComponent(searchParams.toString());
+    setSearchParams(queryString);
   };
+
 
   return (
     <div className="d-flex flex-column">
       {filters.map((filter) => (
-        <div className="mb-1">
+        <div className="mb-1" key={filter.key}>
           <Collapsible title={filter.name} id={filter.key}>
             {filter.options.map((option) => (
               <div
+                key={option.key}
                 className="form-check"
                 id={`${filter.key}-filter-${option.key}-options`}
               >
                 <input
                   className="form-check-input"
                   type="checkbox"
-                  checked={searchParams.has(filter.value, option.value)}
+                  checked={
+                    searchParams
+                      .get(filter.value)
+                      ?.split(",")
+                      .includes(option.value) || false
+                  }
                   id={`${filter.key}-filter-${option.key}-options-${option.key}`}
                   onChange={(e) =>
                     setFilter(filter.value, option.value, e.target.checked)

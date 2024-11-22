@@ -30,7 +30,7 @@ export default function Pagination({ current, maximum, onSelectPage }) {
   return (
     <ul className="pagination justify-content-center">
       <li
-        className={`page-item ${current === 1 ? "disabled" : ""}`}
+        className={`page-item ${current === 0 ? "disabled" : ""}`}
         onClick={() => handleOnClick(current - 1)}
       >
         <span className="page-link">Previous</span>
@@ -39,7 +39,7 @@ export default function Pagination({ current, maximum, onSelectPage }) {
         <li
           key={index}
           className={`page-item ${
-            page === current ? "active" : page === "..." ? "disabled" : ""
+            page === current+1 ? "active" : page === "..." ? "disabled" : ""
           }`}
           onClick={() => typeof page === "number" && handleOnClick(page)}
         >

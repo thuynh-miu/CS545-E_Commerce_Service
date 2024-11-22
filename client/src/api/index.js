@@ -21,7 +21,9 @@ export const login = async (payload) => {
 };
 
 export const getProducts = async (params) => {
-    return fetch(`${hostname}/api/v1/products`).then((response) =>
+    const queryString = new URLSearchParams(params).toString();
+    const url = `${hostname}/api/v1/products?${queryString}`;
+    return fetch(url).then((response) =>
         response.json()
     );
 };

@@ -9,32 +9,34 @@ export default function ProductsSearch() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const currentPage = parseInt(searchParams.get("page")) || 1;
-  const query = searchParams.get("q") || "";
+  const currentPage = parseInt(searchParams.get("page")) || 0;
+  const keyword = searchParams.get("q") || "";
+  const queryParams = Object.fromEntries(
+    [...searchParams.entries()].map(([key, value]) => [key, decodeURIComponent(value)])
+  );
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
-    getProducts({ query, page: currentPage })
+    getProducts({ ...queryParams, page: currentPage })
       .then((products) => setProducts(products))
       .finally(() => setLoading(false));
   }, [searchParams]);
 
   const goToPage = (pageIndex) => {
-    searchParams.set("page", pageIndex);
+    searchParams.set("page", pageIndex-1);
     setSearchParams(searchParams);
   };
 
   useEffect(() => {
     navigate(`?${searchParams.toString()}`);
   }, [searchParams]);
-
   return (
     <div className="container w-100 py-4">
       <h2 className="text-center mb-4">
-        {query ? `Search results for "${query}"` : "All Products"}
+        {keyword ? `Search results for "${keyword}"` : "All Products"}
       </h2>
       <div className="row">
         <div className="col-12 col-md-3 mb-4">
@@ -46,8 +48,8 @@ export default function ProductsSearch() {
           ) : (
             <>
               <div className="row">
-                {products.length > 0 ? (
-                  products.map((product) => (
+                {products?.content?.length > 0 ? (
+                  products.content.map((product) => (
                     <div
                       className="col-6 col-sm-6 col-md-4 mb-4"
                       key={product.id}
@@ -62,7 +64,7 @@ export default function ProductsSearch() {
               <div className="d-flex justify-content-center mt-4">
                 <Pagination
                   current={currentPage}
-                  maximum={10}
+                  maximum={products.totalPages+1}
                   onSelectPage={goToPage}
                 />
               </div>
