@@ -24,7 +24,7 @@ export default function NavBar(props) {
         event.preventDefault();
         const queryParams = new URLSearchParams({
             q: searchInputRef.current.value,
-            page: 1,
+            page: 0,
         });
         navigate(`/products/search?${queryParams.toString()}`);
     };
