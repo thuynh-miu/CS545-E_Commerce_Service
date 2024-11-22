@@ -96,29 +96,33 @@ export default function ProductsSearch(props) {
     )
 
     return (
-        <div className="container w-100">
-            <h2 className="text-center">Search results for {searchParams.get('q')} </h2>
-            <div className="d-flex justify-content-between">
-                <div className="me-5 sticky-top" style={{width: "500px"}}>
-                    <ProductsFilters />
-                </div>
-                <div className="d-flex flex-column">
-                    <div className="d-flex flex-wrap">
-                        {
-                            products.map(
-                                product => <div className="product-overview me-4 mb-4">
-                                    <Product product={product} />
-                                </div>
-                            )
-                        }
+        <div className="container">
+            <h2 className="text-center mt-4">Search results for "{searchParams.get("q")}"</h2>
+            <div className="row">
+                {/* Sidebar filters */}
+                <div className="col-12 col-md-3 mb-4">
+                    <div className="sticky-top">
+                        <ProductsFilters />
                     </div>
-                    <div>
-                        <Pagination current={currentPage} maximum={10} onSelectPage={goToPage} />
+                </div>
+                {/* Products and Pagination */}
+                <div className="col-12 col-md-9">
+                    <div className="row g-4">
+                        {products.map((product) => (
+                            <div key={product.id} className="col-6 col-sm-6 col-md-4 col-lg-3">
+                                <Product product={product} />
+                            </div>
+                        ))}
+                    </div>
+                    <div className="d-flex justify-content-center mt-4">
+                        <Pagination
+                            current={currentPage}
+                            maximum={10}
+                            onSelectPage={goToPage}
+                        />
                     </div>
                 </div>
             </div>
-
-
         </div>
     )
 }

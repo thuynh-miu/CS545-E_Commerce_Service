@@ -1,7 +1,7 @@
 import Collapsible from "../Collapsible";
 import SellerRequest from "../SellerRequest";
 
-export default function SellerRequets(props) {
+export default function SellerRequests() {
   const requests = [
     {
       username: "seller01",
@@ -12,15 +12,19 @@ export default function SellerRequets(props) {
   ];
 
   return (
-    <div>
+    <div className="bg-light p-3 rounded shadow-sm">
       <Collapsible
-        title={<h2>Requests ({requests.length})</h2>}
+        title={
+          <h2 className="h5 mb-0">
+            Requests <span className="badge bg-primary">{requests.length}</span>
+          </h2>
+        }
         collapsed={false}
       >
-        {requests.map((request) => (
-          <div>
+        {requests.map((request, index) => (
+          <div key={index} className="mb-3">
             <SellerRequest username={request.username} />
-            <hr />
+            {index < requests.length - 1 && <hr />}
           </div>
         ))}
       </Collapsible>

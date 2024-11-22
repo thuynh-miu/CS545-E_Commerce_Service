@@ -43,72 +43,64 @@ export default function ProductDetailPage(props) {
   };
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-9">
-          <div className="row">
-            <div className="col-6">
-              <img src={productDetail.img_url} className="w-100" />
+    <div className="container py-4">
+      <div className="row g-4">
+        {/* Product Image and Details */}
+        <div className="col-12 col-lg-9">
+          <div className="row g-4">
+            <div className="col-12 col-md-6">
+              <img src={productDetail.img_url} alt={productDetail.name} className="img-fluid rounded" />
             </div>
-            <div className="col-6">
-              <div className="d-flex">
-                <button className="btn btn-link ps-0">
-                  {productDetail.brand}
-                </button>
-                <span className="ms-auto my-auto me-2">
+            <div className="col-12 col-md-6">
+              <div className="d-flex align-items-center mb-3">
+                <button className="btn btn-link p-0 text-primary">{productDetail.brand}</button>
+                <span className="ms-auto d-flex align-items-center">
                   <Rating
                     initialRating={productDetail.rating}
                     readonly={true}
                     emptySymbol={<StarOutlined />}
                     fullSymbol={<StarFilled />}
+                    className="me-2"
                   />
-                </span>
-                <span className="my-auto">
-                  <a href="#Reviews">({productDetail.reviews.length} reviews)</a>
+                  <a href="#Reviews" className="text-decoration-none">({productDetail.reviews.length} reviews)</a>
                 </span>
               </div>
-              <h1>{productDetail.name}</h1>
+              <h1 className="h4 fw-bold">{productDetail.name}</h1>
               <hr />
               <h5>About this item</h5>
-              <p dangerouslySetInnerHTML={{ __html: productDetail.about }} />
+              <div dangerouslySetInnerHTML={{ __html: productDetail.about }} className="small" />
             </div>
-          </div>
-          <div className="row">
-            <h4 className="mb-4">Reviews ({productDetail.reviews.length})</h4>
-            {productDetail.reviews.map((review) => (
-              <div id="Reviews">
-                <div style={{ height: "150px" }}>
-                  <ProductReview
-                    author={review.author}
-                    title={review.title}
-                    content={review.content}
-                    rating={review.rating}
-                  />
-                </div>
-                <hr />
-              </div>
-            ))}
           </div>
         </div>
 
-        <div className="p-3 col-3 bg-light-subtle">
-          <h3>
-            <b>${parseFloat(productDetail.price).toLocaleString()}</b>
-          </h3>
-          <div className="mb-3">
-            <AddToCartButton
-              quantity={addedQuantity}
-              increase={increase}
-              decrease={decrease}
-            />
+        {/* Price and Add to Cart */}
+        <div className="col-12 col-lg-3">
+          <div className="bg-light p-4 rounded shadow-sm">
+            <h3 className="fw-bold">${parseFloat(productDetail.price).toLocaleString()}</h3>
+            <p className="text-muted small mb-3">Stock Left: {productDetail.stock_left}</p>
+            <div className="mb-3">
+              <AddToCartButton quantity={addedQuantity} increase={increase} decrease={decrease} />
+            </div>
+            <Link to="/cart" className="btn btn-primary w-100 py-2 rounded-pill">
+              Checkout Now
+            </Link>
           </div>
-          <Link
-            to={"/cart"}
-            className="btn btn-primary w-100 p-2"
-            style={{ borderRadius: "9999px" }}
-          >
-            Checkout Now
-          </Link>
+        </div>
+
+        {/* Reviews Section */}
+        <div className="col-12">
+          <h4 className="mb-4">Reviews ({productDetail.reviews.length})</h4>
+          {productDetail.reviews.map((review, index) => (
+            <div key={index} id="Reviews" className="mb-4">
+              <ProductReview
+                author={review.author}
+                title={review.title}
+                content={review.content}
+                rating={review.rating}
+              />
+              <hr />
+            </div>
+          ))}
         </div>
       </div>
     </div>

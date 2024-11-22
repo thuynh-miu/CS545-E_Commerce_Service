@@ -121,49 +121,64 @@ export default function Inventories(props) {
   };
 
   return (
-    <div className="container">
-      <Link to={"/seller/add-inventory"}>
-        <button className="btn btn-primary">New Inventory</button>
-      </Link>
-      <table className="table table-hover align-middle">
-        <thead>
-          <tr>
-            <th scope="col">Product Name</th>
-            <th scope="col">Price</th>
-            <th scope="col">Stock</th>
-            <th scope="col">Sold</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {inventories.map((inventory) => (
+    <div className="container py-4">
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h2 className="h4">Inventories</h2>
+        <Link to={"/seller/add-inventory"}>
+          <button className="btn btn-primary rounded-pill">New Inventory</button>
+        </Link>
+      </div>
+      <div className="table-responsive">
+        <table className="table table-hover align-middle">
+          <thead className="table-light">
             <tr>
-              <td>
-                <img
-                  className="me-2"
-                  src={inventory.img_url}
-                  width={60}
-                  height={60}
-                />
-                {inventory.name}
-              </td>
-              <td>{parseFloat(inventory.price).toFixed(2)}</td>
-              <td>{inventory.stock}</td>
-              <td>{inventory.sold}</td>
-              <td>
-                <div>
-                  <button className="btn btn-warning me-2" onClick={handleUpdate.bind(this, inventory.id)}>
+              <th scope="col">Product</th>
+              <th scope="col">Price</th>
+              <th scope="col">Stock</th>
+              <th scope="col">Sold</th>
+              <th scope="col" className="text-center">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {inventories.map((inventory) => (
+              <tr key={inventory.id}>
+                <td className="d-flex align-items-center">
+                  <img
+                    src={inventory.img_url}
+                    alt={inventory.name}
+                    className="me-3 rounded"
+                    width={60}
+                    height={60}
+                    style={{ objectFit: "cover" }}
+                  />
+                  <span className="text-truncate" style={{ maxWidth: "150px" }}>
+                    {inventory.name}
+                  </span>
+                </td>
+                <td>${parseFloat(inventory.price).toFixed(2)}</td>
+                <td>{inventory.stock}</td>
+                <td>{inventory.sold}</td>
+                <td className="text-center">
+                  <button
+                    className="btn btn-warning btn-sm me-2"
+                    onClick={() => handleUpdate(inventory.id)}
+                  >
                     <EditFilled />
                   </button>
-                  <button className="btn btn-danger" onClick={handleDelete.bind(this, inventory.id)}>
+                  <button
+                    className="btn btn-danger btn-sm"
+                    onClick={() => handleDelete(inventory.id)}
+                  >
                     <DeleteFilled />
                   </button>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

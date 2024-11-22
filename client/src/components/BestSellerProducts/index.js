@@ -77,18 +77,17 @@ export default function BestSellerProducts(props) {
     ];
 
     return (
-        <div>
-            <h2 className="mb-3">Best seller products</h2>
-            <div className="d-flex flex-wrap">
-                {
-                    products.map(
-                        product => <div className="product-overview me-4 mb-4">
+        <div className="best-seller-products">
+            <h2 className="text-center mb-4">Best Seller Products</h2>
+            <div className="row g-4">
+                {products.map((product) => (
+                    <div key={product.id} className="col-6 col-md-4 col-lg-3">
+                        <div className="product-card shadow-sm">
                             <Product product={product} />
                         </div>
-                    )
-                }
+                    </div>
+                ))}
             </div>
         </div>
-
     )
 }

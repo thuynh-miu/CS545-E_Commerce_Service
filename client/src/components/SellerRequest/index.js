@@ -1,18 +1,18 @@
 import { UserOutlined } from "@ant-design/icons";
 
-export default function SellerRequest(props) {
-    const {username} = props;
-    return (
-    <div className="d-flex p-3">
-      <div>
-        <UserOutlined className="me-2" /> {username}
+export default function SellerRequest({ username }) {
+  return (
+    <div className="d-flex align-items-center p-3 bg-white rounded shadow-sm mb-2">
+      <div className="d-flex align-items-center">
+        <UserOutlined className="me-2 text-primary" style={{ fontSize: "1.2rem" }} />
+        <span className="fw-bold">{username}</span>
       </div>
-      <div className="d-flex ms-auto">
-        <button className="btn btn-danger me-3">
-            Decline
+      <div className="ms-auto">
+        <button className="btn btn-outline-danger btn-sm me-2">
+          Decline
         </button>
-        <button className="btn btn-success">
-            Approve
+        <button className="btn btn-outline-success btn-sm">
+          Approve
         </button>
       </div>
     </div>

@@ -2,8 +2,7 @@ import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { login } from "../../api";
 
-
-export default function Login(props) {
+export default function Login() {
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
 
@@ -15,14 +14,13 @@ export default function Login(props) {
         if (!email || !password) {
             alert("Please fill in both fields.");
             return;
-        } 
-        login(
-            {
-                email: email,
-                password: password
-            }
-        )
+        }
+        login({
+            email,
+            password,
+        });
     };
+
     return (
         <form className="container mt-5">
             <div className="card shadow p-4" style={{ maxWidth: "400px", margin: "auto" }}>
@@ -32,12 +30,12 @@ export default function Login(props) {
                         Email
                     </label>
                     <input
-                        type="text"
+                        type="email"
                         id="email"
                         ref={emailRef}
                         className="form-control"
                         placeholder="Enter your email"
-                        required={true}
+                        required
                     />
                 </div>
                 <div className="mb-3">
@@ -53,13 +51,15 @@ export default function Login(props) {
                         required
                     />
                 </div>
-                <button className="btn btn-primary w-100 mb-3" onClick={handleLogin}>
+                <button className="btn btn-primary w-100 py-2 rounded-pill mb-3" onClick={handleLogin}>
                     Log In
                 </button>
-                <Link to={'/register'} className="text-center">
-                    Not a user? Register
-                </Link>
+                <div className="text-center">
+                    <Link to="/register" className="text-decoration-none text-primary">
+                        Not a user? Register
+                    </Link>
+                </div>
             </div>
         </form>
-    )
+    );
 }

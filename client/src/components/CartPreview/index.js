@@ -1,8 +1,7 @@
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 
-export default function CartPreview(props) {
-  const { cartItems } = props;
+export default function CartPreview({ cartItems }) {
   const total = useMemo(() => {
     return cartItems
       .map((item) => item.price * item.quantity)
@@ -10,23 +9,16 @@ export default function CartPreview(props) {
   }, [cartItems]);
 
   return (
-    <div className="d-flex flex-column border p-3">
-      <Link to={"/checkout"} className="w-100">
-        <button
-          className="btn btn-primary p-2 w-100"
-          style={{ borderRadius: "9999px" }}
-        >
-          <b>Continue to checkout</b>
+    <div className="bg-light p-4 rounded shadow-sm">
+      <Link to="/checkout" className="w-100 mb-3">
+        <button className="btn btn-primary w-100 py-2 rounded-pill">
+          <b>Continue to Checkout</b>
         </button>
       </Link>
       <hr />
-      <div className="d-flex">
-        <p>
-          <b>Total</b>
-        </p>
-        <p className="ms-auto">
-          <b>${parseFloat(total).toFixed(2)}</b>
-        </p>
+      <div className="d-flex justify-content-between align-items-center">
+        <p className="mb-0 fw-bold">Total</p>
+        <p className="mb-0 fw-bold text-primary">${total.toFixed(2)}</p>
       </div>
     </div>
   );

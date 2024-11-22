@@ -6,12 +6,14 @@ export default function CartItems(props) {
 
     return (
         <div>
-            {
-                cartItems.map(
-                    item => <CartItem item={item} />
-                )
-            }
-            <hr />
+            <h4 className="mb-4">Items in Your Cart</h4>
+            <div className="list-group">
+                {cartItems.map((item, index) => (
+                    <div key={index} className="list-group-item bg-light rounded mb-3 p-3 shadow-sm">
+                        <CartItem item={item} />
+                    </div>
+                ))}
+            </div>
         </div>
     )
 }
