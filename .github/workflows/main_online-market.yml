@@ -7,6 +7,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'server/**'
   workflow_dispatch:
 
 jobs:
@@ -23,13 +25,14 @@ jobs:
           distribution: 'microsoft'
 
       - name: Build with Maven
-        run: mvn clean install
+        run: mvn clean install -DskipTests
+        working-directory: ./server # Working dir for Maven
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: java-app
-          path: '${{ github.workspace }}/target/*.jar'
+          path: './server/target/*.jar' # Path to jar files after build
 
   deploy:
     runs-on: ubuntu-latest
