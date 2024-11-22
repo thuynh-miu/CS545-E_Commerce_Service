@@ -4,6 +4,7 @@ import edu.miu.project.entity.Product;
 import edu.miu.project.entity.Review;
 import edu.miu.project.entity.dto.ProductDto;
 import edu.miu.project.entity.dto.request.PostReviewRequest;
+import edu.miu.project.entity.dto.response.GetReviewResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -31,7 +32,7 @@ public interface ProductService {
     // Update Product imageUrl
     Product updateProductImageUrl(Long productId, String imageUrl);
     // Get Reviews by Product Id
-    List<Review> getReviewsByProductId(Long productId);
+    List<GetReviewResponse> getReviewsByProductId(Long productId);
     // Get Review by Product Id, Review Id
     Review getReviewByProductId(Long productId, Long reviewId);
 

@@ -5,7 +5,9 @@ import edu.miu.project.entity.Review;
 import edu.miu.project.entity.Seller;
 import edu.miu.project.entity.User;
 import edu.miu.project.entity.dto.ProductDto;
+import edu.miu.project.entity.dto.ReviewDto;
 import edu.miu.project.entity.dto.request.PostReviewRequest;
+import edu.miu.project.entity.dto.response.GetReviewResponse;
 import edu.miu.project.helper.ListMapper;
 import edu.miu.project.repo.*;
 import edu.miu.project.service.ProductService;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -149,11 +152,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     // Get Reviews by Product Id
-    public List<Review> getReviewsByProductId(Long productId) {
+    public List<GetReviewResponse> getReviewsByProductId(Long productId) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found with ID: " + productId));
-
-        return product.getReviews();
+            .orElseThrow(() -> new RuntimeException("Product not found with ID: " + productId));
+        return product.getReviews().stream().map(m -> modelMapper.map(m, GetReviewResponse.class))
+            .collect(Collectors.toList());
     }
 
     // Get Review by Product Id, Review Id
