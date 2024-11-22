@@ -17,6 +17,8 @@ import Inventories from "./components/Inventories";
 import AddNewInventory from "./components/AddNewInventory";
 import UpdateInventory from "./components/UpdateInventory";
 import { UserContextProvider } from "./contexts/UserContextProvider";
+import LogOut from "./components/LogOut";
+import CataLogue from "./components/Catalogue";
 
 function App() {
   return (
@@ -24,10 +26,12 @@ function App() {
       <UserContextProvider>
         <header className="mb-3">
           <NavBar />
+          <CataLogue />
         </header>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/logout" element={<LogOut />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/products/search" element={<ProductsSearch />} />

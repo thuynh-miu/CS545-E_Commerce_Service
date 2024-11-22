@@ -46,7 +46,11 @@ export const getCurrentUserInfo = async () => {
             }
             throw new Error();
         })
-        .then((data) => data)
+        .then(({username, email, role}) => ({
+            username: username,
+            email: email,
+            role: role.role
+        }))
         .catch((error) => {
             return null;
         });

@@ -4,7 +4,7 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { InputGroup } from "react-bootstrap";
+import { Dropdown, DropdownButton, InputGroup } from "react-bootstrap";
 import {
     DownOutlined,
     SearchOutlined,
@@ -29,7 +29,6 @@ export default function NavBar(props) {
     };
 
     const { userData, userDispatch } = useContext(UserContext);
-    console.log("userData", userData);
     return (
         <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary px-5">
             <Link className="navbar-brand" to={"/"}>
@@ -59,10 +58,22 @@ export default function NavBar(props) {
                 </div>
             ) : (
                 <div className="d-flex">
-                    <button className="d-flex btn me-3">
-                        <span className="me-2">{userData.username}</span>
-                        <UserOutlined />
-                    </button>
+                    <DropdownButton
+                        className="me-2"
+                        title={
+                            <span className="me">
+                                <span className="me-2">
+                                    {userData.username}
+                                </span>
+                                <UserOutlined />
+                            </span>
+                        }
+                    >
+                        <Dropdown.Item>
+                            <Link className="text-decoration-none" to={"/logout"}>Log out</Link>
+                        </Dropdown.Item>
+                    </DropdownButton>
+
                     <div className="my-auto">
                         <Link className="nav-link" to={"/cart"}>
                             <ShoppingCartOutlined />
