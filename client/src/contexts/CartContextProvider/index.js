@@ -82,8 +82,8 @@ export const CartContextProvider = (props) => {
     const syncCart = async () => {
         const cartData = await getCart();
 
-        setTotalPrice(cartData.totalPrice);
-        const items = cartData.cartItems.map((item) => ({
+        setTotalPrice(cartData?.totalPrice);
+        const items = cartData?.cartItems?.map((item) => ({
             id: item.product.id,
             name: item.product.name,
             description: item.product.description,
