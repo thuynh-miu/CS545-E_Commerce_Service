@@ -6,7 +6,7 @@ import AddToCartButton from "../AddToCartButton";
 import { useUserContext } from '../../contexts/UserContextProvider';
 
 export default function Product({ product }) {
-  const { name, price, rating, img_url } = product;
+  const { name, price, rating, imageUrl } = product;
   const { cartItems, addProduct, removeProduct } = useUserContext();
 
   const increase = () => {
@@ -26,7 +26,7 @@ export default function Product({ product }) {
         to={`/products/detail/${product.id}`}
         className="text-decoration-none"
       >
-        <img className="card-img-top" src={img_url} />
+        <img className="card-img-top" src={imageUrl} />
         <div className="d-flex">
           <span className="ms-auto me-3">
             <Rating

@@ -2,6 +2,7 @@ import { useContext, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../api";
 import { UserContext } from "../../contexts/UserContextProvider";
+import { LoginContext } from "../../contexts/LoginStatusProvider";
 
 export default function Login(props) {
     const emailRef = useRef(null);
@@ -9,7 +10,7 @@ export default function Login(props) {
     const navigate = useNavigate();
 
     const {userData, userDispatch} = useContext(UserContext);
-    console.log(userData)
+    const {setIsLoggedIn} = useContext(LoginContext)
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -34,6 +35,7 @@ export default function Login(props) {
             .then(({accessToken, refreshToken}) => {
                 localStorage.setItem('accessToken', accessToken);
                 localStorage.setItem('refreshToken', refreshToken);
+                setIsLoggedIn(true);
                 navigate('/')
             })
             .catch((error) => {

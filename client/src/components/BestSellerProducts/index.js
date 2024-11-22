@@ -15,7 +15,7 @@ export default function BestSellerProducts(props) {
                     description: product.description,
                     price: product.price,
                     quantity: product.quantity,
-                    img_url: product.imageUrl,
+                    imageUrl: product.imageUrl,
                     reviews: product.reviews
                 }
             }))

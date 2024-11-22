@@ -30,7 +30,7 @@ export default function ProductsSearch(props) {
             <h2 className="text-center">
                 Search results for {searchParams.get("q")}{" "}
             </h2>
-            <div className="d-flex justify-content-between">
+            <div className="d-flex w-100">
                 <div className="me-5 sticky-top" style={{ width: "500px" }}>
                     <ProductsFilters />
                 </div>

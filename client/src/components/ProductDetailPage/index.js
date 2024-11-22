@@ -72,7 +72,7 @@ export default function ProductDetailPage(props) {
               <h1 className="h4 fw-bold">{productDetail.name}</h1>
               <hr />
               <h5>About this item</h5>
-              <div dangerouslySetInnerHTML={{ __html: productDetail.about }} className="small" />
+              <div dangerouslySetInnerHTML={{ __html: productDetail.description }} className="small" />
             </div>
           </div>
         </div>
