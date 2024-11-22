@@ -63,10 +63,21 @@ export default function NavBar(props) {
                                 <span className="d-none d-md-inline">Login</span>
                             </Nav.Link>
                         ) : (
-                            <Nav.Link as={Link} to="/logout" className="d-flex align-items-center text-white">
-                                <UserOutlined style={{ fontSize: '20px', marginRight: '8px' }} />
-                                <span className="d-none d-md-inline">Log out</span>
-                            </Nav.Link>
+                            <DropdownButton
+                                className="d-flex align-items-center text-white"
+                                title={
+                                    <span className="me">
+                                        <span className="me-2">
+                                            {userData.username}
+                                        </span>
+                                        <UserOutlined />
+                                    </span>
+                                }
+                            >
+                                <Dropdown.Item>
+                                    <Link className="text-decoration-none" to={"/logout"}>Log out</Link>
+                                </Dropdown.Item>
+                            </DropdownButton>
                         )}
                         <Nav.Link as={Link} to="/cart" className="d-flex align-items-center text-white">
                             <ShoppingCartOutlined style={{ fontSize: '20px', marginRight: '8px' }} />
