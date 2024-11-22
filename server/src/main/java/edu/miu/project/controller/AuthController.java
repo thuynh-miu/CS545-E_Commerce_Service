@@ -17,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/authenticate")
@@ -61,9 +63,13 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest) {
         boolean ret = authService.registerUser(registerRequest);
+        Map<String, String> response = new HashMap<>();
         if (ret) {
-            return ResponseEntity.status(HttpStatus.CREATED).body("Buyer registered successfully");
+            response.put("message", "Buyer registered successfully");
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } else {
+            response.put("error", "Buyer registration failed");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: Buyer registration failed");
     }
 }
