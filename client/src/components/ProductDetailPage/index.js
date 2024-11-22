@@ -75,22 +75,6 @@ export default function ProductDetailPage(props) {
               <div dangerouslySetInnerHTML={{ __html: productDetail.about }} className="small" />
             </div>
           </div>
-          <div className="row">
-            <h4 className="mb-4">Reviews ({productDetail.reviews.length})</h4>
-            {productDetail.reviews.map((review) => (
-              <div key={review.id}>
-                <div style={{ height: "150px" }}>
-                  <ProductReview
-                    author={review.author}
-                    title={review.title}
-                    content={review.content}
-                    rating={review.rating}
-                  />
-                </div>
-                <hr />
-              </div>
-            ))}
-          </div>
         </div>
 
         <div className="p-3 col-3 bg-light-subtle">
