@@ -6,11 +6,13 @@ import edu.miu.project.entity.Seller;
 import edu.miu.project.entity.User;
 import edu.miu.project.entity.dto.ProductDto;
 import edu.miu.project.helper.ListMapper;
+import edu.miu.project.repo.CartItemRepository;
 import edu.miu.project.repo.CartRepository;
 import edu.miu.project.repo.ProductRepository;
 import edu.miu.project.repo.UserRepository;
 import edu.miu.project.service.ProductService;
 import edu.miu.project.service.UserService;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,6 +30,8 @@ public class ProductServiceImpl implements ProductService {
     UserRepository userRepository;
     @Autowired
     CartRepository cartRepository;
+    @Autowired
+    CartItemRepository cartItemRepository;
     @Autowired
     private UserService userService;
     @Autowired
@@ -92,6 +96,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     // Delete product if not ordered
+    @Transactional
     public void deleteProduct(Long productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found with ID: " + productId));
@@ -99,6 +104,8 @@ public class ProductServiceImpl implements ProductService {
         if (product.getSoldQuantity() > 0) {
             throw new RuntimeException("Cannot delete product because it has been sold before.");
         }
+
+//        cartItemRepository.deleteBy(productId);
 
         // TODO: added cascade for cart_items, validate if it works
 

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 
 import java.util.List;
 
@@ -27,6 +28,8 @@ public class Product {
 
     @Column(nullable = false, columnDefinition = "int default 0")
     private Integer quantity = 0;
+
+    @Formula("(SELECT COUNT(*) FROM order_item i WHERE i.product_id = id)")
     private Integer soldQuantity = 0;
 
     private String imageUrl;
@@ -41,4 +44,7 @@ public class Product {
 
     @ManyToMany(fetch = FetchType.LAZY)
     List<Attribute> attributes;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    List<CartItem> cartItems;
 }
