@@ -1,11 +1,15 @@
 package edu.miu.project.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class Product {
 
@@ -34,6 +38,6 @@ public class Product {
     @JoinColumn(name = "product_id")
     private List<Review> reviews; // Reviews for this product
 
-    @ManyToMany()
-    private List<Category> categories;
+    @ManyToMany(fetch = FetchType.LAZY)
+    List<Attribute> attributes;
 }
