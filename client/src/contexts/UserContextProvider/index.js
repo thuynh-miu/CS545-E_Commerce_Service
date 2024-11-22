@@ -1,18 +1,18 @@
 import React, { useContext, useReducer, useState } from "react";
+import { getCurrentUserInfo } from "../../api";
 
 export const UserContext = React.createContext();
 
+
 function reducer(state, action) {
-    switch (action) {
+    switch (action.type) {
         case "set_user_data":
             return action.data;
     }
+    throw Error(`Can not find action type ${action.type}`)
 }
 
-const initUserData = {
-    name: "Cuong",
-    roles: [],
-};
+const initUserData = await getCurrentUserInfo();
 
 export const UserContextProvider = (props) => {
     const [state, dispatch] = useReducer(reducer, initUserData);
