@@ -1,5 +1,6 @@
 package edu.miu.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class Buyer {
     private User user;
 
     @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Order> orders;
 
     @OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL)
