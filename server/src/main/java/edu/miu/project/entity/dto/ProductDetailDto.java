@@ -2,8 +2,10 @@ package edu.miu.project.entity.dto;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
-public class ProductDto {
+public class ProductDetailDto {
     private Long id;
     private String name;
     private String description;
@@ -11,4 +13,5 @@ public class ProductDto {
     private int quantity;
     private int soldQuantity;
     private String imageUrl;
+    List<ReviewDto> reviews;
 }

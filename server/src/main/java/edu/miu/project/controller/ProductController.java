@@ -1,7 +1,9 @@
 package edu.miu.project.controller;
 
 import edu.miu.project.entity.Product;
+import edu.miu.project.entity.dto.ProductDetailDto;
 import edu.miu.project.entity.dto.ProductDto;
+import edu.miu.project.helper.ListMapper;
 import edu.miu.project.service.ProductService;
 import edu.miu.project.util.Constants;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,6 +12,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +29,10 @@ public class ProductController {
 
     @Autowired
     ProductService productService;
+    @Autowired
+    private ListMapper listMapper;
+    @Autowired
+    ModelMapper modelMapper;
 
     @GetMapping("/filter")
     public ResponseEntity<Page<ProductDto>> filterProducts(
@@ -52,15 +59,16 @@ public class ProductController {
             }
     )
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> products = productService.getAllProducts();
-        return ResponseEntity.ok(products);
+    public ResponseEntity<List<ProductDto>> getAllProducts() {
+        List<ProductDto> productDtos = listMapper.mapList(productService.getAllProducts(), ProductDto.class);
+
+        return ResponseEntity.ok(productDtos);
     }
 
     @GetMapping("/best")
-    public ResponseEntity<List<Product>> getBestProducts() {
-        List<Product> products = productService.getBestProducts();
-        return ResponseEntity.ok(products);
+    public ResponseEntity<List<ProductDto>> getBestProducts() {
+        List<ProductDto> productDtos = listMapper.mapList(productService.getBestProducts(), ProductDto.class);
+        return ResponseEntity.ok(productDtos);
     }
 
     @Operation(
@@ -100,7 +108,7 @@ public class ProductController {
     public ResponseEntity<?> getProductById(@PathVariable Long productId) {
         try {
             Product product = productService.getProductById(productId);
-            return ResponseEntity.ok(product);
+            return ResponseEntity.ok(modelMapper.map(product, ProductDetailDto.class));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -162,9 +170,8 @@ public class ProductController {
             }
     )
     @GetMapping("/seller")
-    public ResponseEntity<List<Product>> getProductsBySeller() {
-        List<Product> products = productService.getProductsBySeller();
-        return ResponseEntity.ok(products);
+    public ResponseEntity<List<ProductDto>> getProductsBySeller() {
+        return ResponseEntity.ok(listMapper.mapList(productService.getProductsBySeller(), ProductDto.class));
     }
 
     @Operation(
