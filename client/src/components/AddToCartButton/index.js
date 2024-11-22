@@ -1,6 +1,12 @@
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
+import { useUserContext } from "../../contexts/UserContextProvider";
+import { UserRole } from "../../constants/UserRole/index";
 
 export default function AddToCartButton({ quantity, increase, decrease }) {
+  const { userData } = useUserContext();
+  if (userData.role === UserRole.ADMIN || userData.role === UserRole.SELLER) {
+    return null;
+  }
   return (
     <div className="quantity-selector w-100 p-2">
       {quantity === 0 ? (
