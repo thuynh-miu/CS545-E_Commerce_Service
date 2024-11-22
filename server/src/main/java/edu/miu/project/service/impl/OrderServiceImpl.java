@@ -126,7 +126,7 @@ public class OrderServiceImpl implements OrderService {
         }
         Optional<Seller> seller = userService.getCurrentSeller();
         if (seller.isPresent()) {
-            var orders = orderRepository.findByBuyer_IdAndStatus(seller.get().getId(), orderStatus, pageable);
+            var orders = orderRepository.findBySeller_IdAndStatus(seller.get().getId(), orderStatus, pageable);
             return orders.map(order -> modelMapper.map(order, OrderDto.class));
         }
         throw new RuntimeException("Cannot find buyer or seller.");
