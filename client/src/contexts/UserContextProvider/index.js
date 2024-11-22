@@ -1,8 +1,8 @@
-import React, { useContext, useReducer, useState } from "react";
-import { getCurrentUserInfo } from "../../api";
+import React, { useContext, useReducer, useState, useEffect } from "react";
+import { getCurrentUserInfo,  } from "../../api";
+import { getCart } from "../../api/cart"
 
 export const UserContext = React.createContext();
-
 
 function reducer(state, action) {
     switch (action.type) {
@@ -44,6 +44,15 @@ export const UserContextProvider = (props) => {
             return [...items];
         });
     };
+
+    const syncCart = async () => {
+        const data = await getCart();
+        console.log(data)
+    }
+
+    useEffect(() => {
+        syncCart();
+    }, [])
 
     return (
         <UserContext.Provider
