@@ -25,4 +25,7 @@ public class Seller {
     private List<Product> products;
 
     private boolean isApproved; // For sellers to check admin approval
+
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
+    private List<Order> orders;
 }

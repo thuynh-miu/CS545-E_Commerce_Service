@@ -1,7 +1,6 @@
 package edu.miu.project.repo;
 
 import edu.miu.project.entity.Product;
-import edu.miu.project.entity.dto.ProductDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

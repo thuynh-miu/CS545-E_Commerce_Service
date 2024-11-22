@@ -23,6 +23,10 @@ public class Order {
     @JoinColumn(name = "buyer_id", nullable = false)
     private Buyer buyer; // Reference back to the buyer
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "seller_id", nullable = false)
+    private Seller seller; // Reference back to the buyer
+
     @Column(nullable = false)
     private LocalDateTime orderDate;
 

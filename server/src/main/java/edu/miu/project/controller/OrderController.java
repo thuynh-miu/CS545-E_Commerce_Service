@@ -39,7 +39,6 @@ public class OrderController {
     @Parameters({
             @Parameter(name = "orderId", description = "ID of the order to cancel", required = true)
     })
-    @PreAuthorize("hasRole('SELLER')" + "|| hasRole('BUYER')")
     @PutMapping("/{orderId}/cancel")
     public ResponseEntity<?> cancelOrder(@PathVariable Long orderId) {
         try {
@@ -64,7 +63,6 @@ public class OrderController {
             @Parameter(name = "orderId", description = "ID of the order to update", required = true),
             @Parameter(name = "status", description = "New status of the order", required = true)
     })
-    @PreAuthorize("hasRole('SELLER')")
     @PutMapping("/{orderId}/status")
     public ResponseEntity<?> updateOrderStatus(@PathVariable Long orderId, @RequestBody String status) {
         try {
@@ -76,6 +74,16 @@ public class OrderController {
         }
     }
 
+    @Operation(
+            summary = "Place an order",
+            description = "Places a new order with the provided order details.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Order placed successfully",
+                            content = @Content(mediaType = "application/json")),
+                    @ApiResponse(responseCode = "400", description = "Bad request",
+                            content = @Content(mediaType = "application/json"))
+            }
+    )
     @PreAuthorize("hasRole('BUYER')")
     @PostMapping("/order")
     public ResponseEntity<?> placeOrder(@RequestBody OrderRequest order) {
@@ -87,7 +95,20 @@ public class OrderController {
         }
     }
 
-    @PreAuthorize("hasRole('BUYER')")
+    @Operation(
+            summary = "Get order history",
+            description = "Retrieves the order history for the authenticated buyer.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Order history retrieved successfully",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Order.class))),
+                    @ApiResponse(responseCode = "400", description = "Bad request",
+                            content = @Content(mediaType = "application/json"))
+            }
+    )
+    @Parameters({
+            @Parameter(name = "page", description = "Page number for pagination", required = false),
+            @Parameter(name = "pagesize", description = "Number of orders per page", required = false)
+    })
     @GetMapping("/history")
     public ResponseEntity<?> getOrderHistory(
             @RequestParam(name = "page", defaultValue = "0") int page,
@@ -96,6 +117,39 @@ public class OrderController {
         try {
             Pageable pageable = PageRequest.of(page, pageSize);
             return ResponseEntity.ok(orderService.getOrderHistory(pageable));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @Operation(
+            summary = "Get orders by status",
+            description = "Retrieves orders by their status for the authenticated buyer or seller.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Orders retrieved successfully",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Order.class))),
+                    @ApiResponse(responseCode = "400", description = "Bad request",
+                            content = @Content(mediaType = "application/json"))
+            }
+    )
+    @Parameters({
+            @Parameter(name = "status", description = "Status of the orders to retrieve", required = true),
+            @Parameter(name = "page", description = "Page number for pagination", required = false),
+            @Parameter(name = "pagesize", description = "Number of orders per page", required = false)
+    })
+    @GetMapping("")
+    public ResponseEntity<?> getOrderByStatus(
+            @RequestParam(name = "status", defaultValue = "") String status,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "pagesize", defaultValue = Constants.PAGE_SIZE) int pageSize
+    ) {
+        try {
+            Pageable pageable = PageRequest.of(page, pageSize);
+            if (status.isEmpty()) {
+                return ResponseEntity.ok(orderService.getOrderHistory(pageable));
+            }
+            OrderStatus orderStatus = OrderStatus.valueOf(status.toUpperCase());
+            return ResponseEntity.ok(orderService.getOrderByStatus(orderStatus, pageable));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

@@ -13,4 +13,6 @@ public interface OrderService {
     void placeOrder(OrderRequest orderRequest);
     boolean cancelOrder(Long orderId);
     Order updateOrderStatus(Long orderId, OrderStatus status);
+
+    Page<OrderDto> getOrderByStatus(OrderStatus orderStatus, Pageable pageable);
 }

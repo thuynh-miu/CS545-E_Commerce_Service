@@ -91,12 +91,16 @@ public class OrderServiceImpl implements OrderService {
     // Get order history
     public Page<OrderDto> getOrderHistory(Pageable pageable) {
         Optional<Buyer> buyer = userService.getCurrentBuyer();
-        if (buyer.isEmpty()) {
-            throw new RuntimeException("Buyer not found.");
+        if (buyer.isPresent()) {
+            var orders = orderRepository.findByBuyer_Id(buyer.get().getId(), pageable);
+            return orders.map(order -> modelMapper.map(order, OrderDto.class));
         }
-
-        var orders = orderRepository.findByBuyer_Id(buyer.get().getId(), pageable);
-        return orders.map(order -> modelMapper.map(order, OrderDto.class));
+        Optional<Seller> seller = userService.getCurrentSeller();
+        if (seller.isPresent()) {
+            var orders = orderRepository.findBySeller_Id(seller.get().getId(), pageable);
+            return orders.map(order -> modelMapper.map(order, OrderDto.class));
+        }
+        throw new RuntimeException("Cannot find buyer or seller.");
     }
 
     // Update order status (Shipped → On the Way → Delivered)
@@ -110,6 +114,21 @@ public class OrderServiceImpl implements OrderService {
         // Update status
         order.setStatus(status);
         return orderRepository.save(order);
+    }
+
+    @Override
+    public Page<OrderDto> getOrderByStatus(OrderStatus orderStatus, Pageable pageable) {
+        Optional<Buyer> buyer = userService.getCurrentBuyer();
+        if (buyer.isPresent()) {
+            var orders = orderRepository.findByBuyer_IdAndStatus(buyer.get().getId(), orderStatus, pageable);
+            return orders.map(order -> modelMapper.map(order, OrderDto.class));
+        }
+        Optional<Seller> seller = userService.getCurrentSeller();
+        if (seller.isPresent()) {
+            var orders = orderRepository.findByBuyer_IdAndStatus(seller.get().getId(), orderStatus, pageable);
+            return orders.map(order -> modelMapper.map(order, OrderDto.class));
+        }
+        throw new RuntimeException("Cannot find buyer or seller.");
     }
 
     // Helper to validate status transitions

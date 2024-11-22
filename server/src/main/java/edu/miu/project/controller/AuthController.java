@@ -25,9 +25,6 @@ public class AuthController {
     @Autowired
     AuthService authService;
 
-    @Autowired
-    UserService userService;
-
     @Operation(
             summary = "User login",
             description = "Authenticates a user and returns a JWT token.",
