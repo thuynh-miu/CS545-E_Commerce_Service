@@ -37,6 +37,5 @@ export default function BestSellerProducts(props) {
                 }
             </div>
         </div>
-
-    )
+    );
 }
