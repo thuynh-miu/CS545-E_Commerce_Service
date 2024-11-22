@@ -16,6 +16,9 @@ public class Review {
     private Buyer buyer; // Reference back to the buyer
 
     @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false)
     private String comment;
 
     private int rating; // Example: from 1 to 5

@@ -3,6 +3,7 @@ package edu.miu.project.controller;
 import edu.miu.project.entity.Product;
 import edu.miu.project.entity.dto.ProductDetailDto;
 import edu.miu.project.entity.dto.ProductDto;
+import edu.miu.project.entity.dto.request.PostReviewRequest;
 import edu.miu.project.helper.ListMapper;
 import edu.miu.project.service.ProductService;
 import edu.miu.project.util.Constants;
@@ -288,5 +289,10 @@ public class ProductController {
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @PostMapping("/{productId}/reviews")
+    public void addReview(@PathVariable Long productId, @RequestBody PostReviewRequest review) {
+        productService.postReview(productId, review);
     }
 }

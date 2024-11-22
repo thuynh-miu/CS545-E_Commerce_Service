@@ -3,6 +3,7 @@ package edu.miu.project.service;
 import edu.miu.project.entity.Product;
 import edu.miu.project.entity.Review;
 import edu.miu.project.entity.dto.ProductDto;
+import edu.miu.project.entity.dto.request.PostReviewRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -37,4 +38,6 @@ public interface ProductService {
     List<Product> getBestProducts();
 
     Page<ProductDto> filterProducts(String name, Double minPrice, Double maxPrice, List<String> colors, List<String> branchs, Pageable pageable);
+
+    void postReview(Long productId, PostReviewRequest reviewRequest);
 }

@@ -5,11 +5,9 @@ import edu.miu.project.entity.Review;
 import edu.miu.project.entity.Seller;
 import edu.miu.project.entity.User;
 import edu.miu.project.entity.dto.ProductDto;
+import edu.miu.project.entity.dto.request.PostReviewRequest;
 import edu.miu.project.helper.ListMapper;
-import edu.miu.project.repo.CartItemRepository;
-import edu.miu.project.repo.CartRepository;
-import edu.miu.project.repo.ProductRepository;
-import edu.miu.project.repo.UserRepository;
+import edu.miu.project.repo.*;
 import edu.miu.project.service.ProductService;
 import edu.miu.project.service.UserService;
 import jakarta.transaction.Transactional;
@@ -38,6 +36,9 @@ public class ProductServiceImpl implements ProductService {
     private ModelMapper modelMapper;
     @Autowired
     private ListMapper listMapper;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     @Override
     public List<Product> getAllProducts() {
@@ -181,5 +182,17 @@ public class ProductServiceImpl implements ProductService {
             List<String> colors, List<String> branchs, Pageable pageable) {
         Page<Product> products = productRepository.filterProducts(name, minPrice, maxPrice, colors, branchs, pageable);
         return products.map(product -> modelMapper.map(product, ProductDto.class));
+    }
+
+    @Override
+    public void postReview(Long productId, PostReviewRequest reviewRequest) {
+        var reviewEntity = new Review();
+        modelMapper.map(reviewRequest, reviewEntity);
+        var buyer = userService.getCurrentBuyer().orElseThrow();
+        reviewEntity.setBuyer(buyer);
+
+        var product = productRepository.findById(productId).orElseThrow();
+        product.getReviews().add(reviewEntity);
+        productRepository.save(product);
     }
 }
