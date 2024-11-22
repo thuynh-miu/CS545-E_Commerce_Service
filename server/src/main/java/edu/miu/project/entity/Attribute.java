@@ -1,5 +1,6 @@
 package edu.miu.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,5 +21,6 @@ public class Attribute {
     private String value;
 
     @ManyToMany(mappedBy = "attributes")
+    @JsonIgnore
     private List<Product> products;
 }
