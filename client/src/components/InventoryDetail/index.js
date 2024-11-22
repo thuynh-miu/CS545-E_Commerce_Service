@@ -7,17 +7,17 @@ export default function InventoryDetail(props) {
   const formRef = useRef();
   const nameValidationRef = useRef();
   const priceValidationRef = useRef();
-  const stockValidationRef = useRef();
+  const quantityValidationRef = useRef();
   const descriptionValidationRef = useRef();
   const imageUrlValidationRef = useRef();
   const navigate = useNavigate();
 
-  const { name, price, stock, description, imageUrl } = props;
+  const { name, price, quantity, description, imageUrl } = props;
 
   const validate = () => {
     const name = formRef.current["name"].value;
     const price = parseFloat(formRef.current["price"].value);
-    const stock = parseInt(formRef.current["stock"].value);
+    const quantity = parseInt(formRef.current["quantity"].value);
     const description = formRef.current["description"].value;
     const imageUrl = formRef.current["image-url"].value;
 
@@ -30,8 +30,8 @@ export default function InventoryDetail(props) {
       priceValidationRef.current.hidden = false;
       isValid = false;
     }
-    if (_.isNaN(stock) || stock < 0) {
-      stockValidationRef.current.hidden = false;
+    if (_.isNaN(quantity) || quantity < 0) {
+      quantityValidationRef.current.hidden = false;
       isValid = false;
     }
     if (_.isEmpty(description)) {
@@ -49,7 +49,7 @@ export default function InventoryDetail(props) {
     e.preventDefault();
     nameValidationRef.current.hidden = true;
     priceValidationRef.current.hidden = true;
-    stockValidationRef.current.hidden = true;
+    quantityValidationRef.current.hidden = true;
     descriptionValidationRef.current.hidden = true;
     imageUrlValidationRef.current.hidden = true;
 
@@ -57,7 +57,7 @@ export default function InventoryDetail(props) {
       const newInventory = {
         name: formRef.current["name"].value,
         price: parseFloat(formRef.current["price"].value),
-        stock: parseInt(formRef.current["stock"].value),
+        quantity: parseInt(formRef.current["quantity"].value),
         description: formRef.current["description"].value,
         imageUrl: formRef.current["image-url"].value,
       };
@@ -100,18 +100,18 @@ export default function InventoryDetail(props) {
       </div>
 
       <div className="mb-3">
-        <label htmlFor="stock" className="form-label">
-          Stock
+        <label htmlFor="quantity" className="form-label">
+          Quantity
         </label>
         <input
           type="number"
           className="form-control"
-          id="stock"
-          defaultValue={stock}
-          placeholder="Enter stock quantity"
+          id="quantity"
+          defaultValue={quantity}
+          placeholder="Enter quantity quantity"
         />
-        <small className="text-danger" ref={stockValidationRef} hidden>
-          <ExclamationCircleOutlined /> Please enter a valid stock quantity
+        <small className="text-danger" ref={quantityValidationRef} hidden>
+          <ExclamationCircleOutlined /> Please enter a valid quantity quantity
         </small>
       </div>
 

@@ -44,16 +44,16 @@ INSERT INTO Attribute (name, value) VALUES ('branch', 'Verizon');
 INSERT INTO Attribute (name, value) VALUES ('branch', 'T-Mobile');
 
 -- Insert Products
-INSERT INTO Product (name, description, price, quantity, image_url, seller_id)
-VALUES
-('iPhone 16 Pro Max 256GB Desert Titanium', 'Built for Apple Intelligence with stunning titanium design and A18 Pro chip.', 999.99, 10, 'https://i5.walmartimages.com/seo/Verizon-iPhone-16-Pro-Max-256GB-Desert-Titanium-Apple-Intelligence_2a3b7743-c254-4ea6-807e-173340f9184b.24f9f58f9c3d33fa07c0d1921bca65a1.jpeg', 1),
-('iPhone 16 Pro 128GB Starlight', 'Experience the power of the A18 Pro chip and 4K 120 fps video recording.', 899.99, 15, 'https://i5.walmartimages.com/seo/Verizon-iPhone-16-Pro-Max-256GB-Desert-Titanium-Apple-Intelligence_2a3b7743-c254-4ea6-807e-173340f9184b.24f9f58f9c3d33fa07c0d1921bca65a1.jpeg', 1),
-('iPhone 16 512GB Midnight', 'Built for everyday performance with 5G and A18 Bionic chip.', 849.99, 20, 'https://i5.walmartimages.com/seo/Verizon-iPhone-16-Pro-Max-256GB-Desert-Titanium-Apple-Intelligence_2a3b7743-c254-4ea6-807e-173340f9184b.24f9f58f9c3d33fa07c0d1921bca65a1.jpeg', 1),
-('iPhone 16 Mini 128GB Blue', 'Compact design with the power of A18 Bionic chip and advanced dual cameras.', 699.99, 30, 'https://i5.walmartimages.com/seo/Verizon-iPhone-16-Pro-Max-256GB-Desert-Titanium-Apple-Intelligence_2a3b7743-c254-4ea6-807e-173340f9184b.24f9f58f9c3d33fa07c0d1921bca65a1.jpeg', 1),
-('iPhone 16 Pro Max 1TB Gold', 'The ultimate iPhone experience with up to 1TB storage and premium titanium finish.', 1399.99, 5, 'https://i5.walmartimages.com/seo/Verizon-iPhone-16-Pro-Max-256GB-Desert-Titanium-Apple-Intelligence_2a3b7743-c254-4ea6-807e-173340f9184b.24f9f58f9c3d33fa07c0d1921bca65a1.jpeg', 1),
-('iPhone 16 Pro Max 256GB Graphite', 'Stylish graphite titanium design with A18 Pro chip and ProMotion technology.', 999.99, 8, 'https://i5.walmartimages.com/seo/Verizon-iPhone-16-Pro-Max-256GB-Desert-Titanium-Apple-Intelligence_2a3b7743-c254-4ea6-807e-173340f9184b.24f9f58f9c3d33fa07c0d1921bca65a1.jpeg', 1),
-('iPhone 16 256GB Red', 'Bold Product Red edition with stunning performance and all-day battery life.', 799.99, 12, 'https://i5.walmartimages.com/seo/Verizon-iPhone-16-Pro-Max-256GB-Desert-Titanium-Apple-Intelligence_2a3b7743-c254-4ea6-807e-173340f9184b.24f9f58f9c3d33fa07c0d1921bca65a1.jpeg', 1),
-('iPhone 16 Pro Max 256GB Silver', 'Silver titanium finish with best-in-class cameras and 120Hz refresh rate.', 999.99, 10, 'https://i5.walmartimages.com/seo/Verizon-iPhone-16-Pro-Max-256GB-Desert-Titanium-Apple-Intelligence_2a3b7743-c254-4ea6-807e-173340f9184b.24f9f58f9c3d33fa07c0d1921bca65a1.jpeg', 1);
+INSERT INTO Product (name, description, price, quantity, image_url, seller_id, sold_quantity)
+VALUES 
+('iPhone 16 Pro Max 256GB Desert Titanium', 'Built for Apple Intelligence with stunning titanium design and A18 Pro chip.', 999.99, 10, 'https://i5.walmartimages.com/seo/Verizon-iPhone-16-Pro-Max-256GB-Desert-Titanium-Apple-Intelligence_2a3b7743-c254-4ea6-807e-173340f9184b.24f9f58f9c3d33fa07c0d1921bca65a1.jpeg', 1, 0),
+('iPhone 16 Pro 128GB Starlight', 'Experience the power of the A18 Pro chip and 4K 120 fps video recording.', 899.99, 15, 'https://i5.walmartimages.com/seo/Verizon-iPhone-16-Pro-Max-256GB-Desert-Titanium-Apple-Intelligence_2a3b7743-c254-4ea6-807e-173340f9184b.24f9f58f9c3d33fa07c0d1921bca65a1.jpeg', 1, 0),
+('iPhone 16 512GB Midnight', 'Built for everyday performance with 5G and A18 Bionic chip.', 849.99, 20, 'https://i5.walmartimages.com/seo/Verizon-iPhone-16-Pro-Max-256GB-Desert-Titanium-Apple-Intelligence_2a3b7743-c254-4ea6-807e-173340f9184b.24f9f58f9c3d33fa07c0d1921bca65a1.jpeg', 1, 0),
+('iPhone 16 Mini 128GB Blue', 'Compact design with the power of A18 Bionic chip and advanced dual cameras.', 699.99, 30, 'https://i5.walmartimages.com/seo/Verizon-iPhone-16-Pro-Max-256GB-Desert-Titanium-Apple-Intelligence_2a3b7743-c254-4ea6-807e-173340f9184b.24f9f58f9c3d33fa07c0d1921bca65a1.jpeg', 1, 0),
+('iPhone 16 Pro Max 1TB Gold', 'The ultimate iPhone experience with up to 1TB storage and premium titanium finish.', 1399.99, 5, 'https://i5.walmartimages.com/seo/Verizon-iPhone-16-Pro-Max-256GB-Desert-Titanium-Apple-Intelligence_2a3b7743-c254-4ea6-807e-173340f9184b.24f9f58f9c3d33fa07c0d1921bca65a1.jpeg', 1, 0),
+('iPhone 16 Pro Max 256GB Graphite', 'Stylish graphite titanium design with A18 Pro chip and ProMotion technology.', 999.99, 8, 'https://i5.walmartimages.com/seo/Verizon-iPhone-16-Pro-Max-256GB-Desert-Titanium-Apple-Intelligence_2a3b7743-c254-4ea6-807e-173340f9184b.24f9f58f9c3d33fa07c0d1921bca65a1.jpeg', 1, 0),
+('iPhone 16 256GB Red', 'Bold Product Red edition with stunning performance and all-day battery life.', 799.99, 12, 'https://i5.walmartimages.com/seo/Verizon-iPhone-16-Pro-Max-256GB-Desert-Titanium-Apple-Intelligence_2a3b7743-c254-4ea6-807e-173340f9184b.24f9f58f9c3d33fa07c0d1921bca65a1.jpeg', 1, 0),
+('iPhone 16 Pro Max 256GB Silver', 'Silver titanium finish with best-in-class cameras and 120Hz refresh rate.', 999.99, 10, 'https://i5.walmartimages.com/seo/Verizon-iPhone-16-Pro-Max-256GB-Desert-Titanium-Apple-Intelligence_2a3b7743-c254-4ea6-807e-173340f9184b.24f9f58f9c3d33fa07c0d1921bca65a1.jpeg', 1, 0);
 
 
 -- Product 1 Attributes

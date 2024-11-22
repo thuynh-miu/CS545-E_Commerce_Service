@@ -77,6 +77,7 @@ public class ProductController {
     @PostMapping()
     public ResponseEntity<?> addProduct(@RequestBody Product product) {
         try {
+
             Product newProduct = productService.addProduct(product);
             return ResponseEntity.ok(newProduct);
         } catch (RuntimeException e) {

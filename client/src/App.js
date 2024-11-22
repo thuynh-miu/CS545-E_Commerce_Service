@@ -20,6 +20,7 @@ import { UserContextProvider } from "./contexts/UserContextProvider";
 import LogOut from "./components/LogOut";
 import CataLogue from "./components/Catalogue";
 import { LoginContextProvider } from "./contexts/LoginStatusProvider";
+import OrderDetail from "./components/OrderDetail";
 
 function App() {
     return (
@@ -64,6 +65,7 @@ function App() {
                         </Route>
                         <Route path="/buyer" element={<BuyerDashboard />}>
                             <Route path="orders" element={<OrdersHistory />} />
+                            <Route path="orders/:id" element={<OrderDetail />} />
                         </Route>
                     </Routes>
                 </UserContextProvider>

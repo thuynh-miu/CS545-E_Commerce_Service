@@ -42,6 +42,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product addProduct(Product product) {
+        final Seller seller = userService.getCurrentSeller().orElseThrow(
+                () -> new RuntimeException("Can not find current seller")
+        );
+        product.setSeller(seller);
         return productRepository.save(product);
     }
 
@@ -92,9 +96,15 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found with ID: " + productId));
 
-        cartRepository.findByItems_Product_Id(productId).ifPresent(p -> {
-            throw new RuntimeException("Cannot delete product because it is in a cart.");
-        });
+        if (product.getSoldQuantity() > 0) {
+            throw new RuntimeException("Cannot delete product because it has been sold before.");
+        }
+
+        // TODO: added cascade for cart_items, validate if it works
+
+//        cartRepository.findByItems_Product_Id(productId).ifPresent(p -> {
+//            throw new RuntimeException("Cannot delete product because it is in a cart.");
+//        });
 
         productRepository.delete(product);
     }
