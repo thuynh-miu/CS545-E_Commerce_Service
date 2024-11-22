@@ -63,13 +63,12 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest) {
         boolean ret = authService.registerUser(registerRequest);
-        Map<String, String> response = new HashMap<>();
         if (ret) {
-            response.put("message", "Buyer registered successfully");
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new CommonResponse("success", "Buyer registered successfully"));
         } else {
-            response.put("error", "Buyer registration failed");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new CommonResponse("error", "Buyer registration failed"));
         }
     }
 }
