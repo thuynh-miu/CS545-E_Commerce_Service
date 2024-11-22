@@ -1,80 +1,29 @@
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import Product from "../Product";
+import {useEffect, useState} from "react";
+import axios from "axios";
 
 
 export default function BestSellerProducts(props) {
-    const products = [
-        {
-            id: 1,
-            name: "Lenovo IdeaPad Slim 3",
-            price: 299.0,
-            img_url: "https://i5.walmartimages.com/seo/Lenovo-IdeaPad-1i-15-6-Intel-Core-i5-1235U-8GB-RAM-256-GB-SSD-Abyss-Blue-Windows-11-in-S-Mode-82QD00GNUS_6208c78c-db3f-41e6-8b16-4e121f57856a.473c2139b755df36f394ea7262b7f051.jpeg?odnHeight=2000&odnWidth=2000&odnBg=FFFFFF",
-            rating: 4.5
-        },
-        {
-            id: 2,
-            name: "Lenovo IdeaPad Slim 3",
-            price: 299.0,
-            img_url: "https://i5.walmartimages.com/seo/Lenovo-IdeaPad-1i-15-6-Intel-Core-i5-1235U-8GB-RAM-256-GB-SSD-Abyss-Blue-Windows-11-in-S-Mode-82QD00GNUS_6208c78c-db3f-41e6-8b16-4e121f57856a.473c2139b755df36f394ea7262b7f051.jpeg?odnHeight=2000&odnWidth=2000&odnBg=FFFFFF",
-            rating: 4.5
-        },
-        {
-            id: 3,
-            name: "Lenovo IdeaPad Slim 3",
-            price: 299.0,
-            img_url: "https://i5.walmartimages.com/seo/Lenovo-IdeaPad-1i-15-6-Intel-Core-i5-1235U-8GB-RAM-256-GB-SSD-Abyss-Blue-Windows-11-in-S-Mode-82QD00GNUS_6208c78c-db3f-41e6-8b16-4e121f57856a.473c2139b755df36f394ea7262b7f051.jpeg?odnHeight=2000&odnWidth=2000&odnBg=FFFFFF",
-            rating: 4.5
-        },
-        {
-            id: 4,
-            name: "Lenovo IdeaPad Slim 3",
-            price: 299.0,
-            img_url: "https://i5.walmartimages.com/seo/Lenovo-IdeaPad-1i-15-6-Intel-Core-i5-1235U-8GB-RAM-256-GB-SSD-Abyss-Blue-Windows-11-in-S-Mode-82QD00GNUS_6208c78c-db3f-41e6-8b16-4e121f57856a.473c2139b755df36f394ea7262b7f051.jpeg?odnHeight=2000&odnWidth=2000&odnBg=FFFFFF",
-            rating: 4.5
-        },
-        {
-            id: 5,
-            name: "Lenovo IdeaPad Slim 3",
-            price: 299.0,
-            img_url: "https://i5.walmartimages.com/seo/Lenovo-IdeaPad-1i-15-6-Intel-Core-i5-1235U-8GB-RAM-256-GB-SSD-Abyss-Blue-Windows-11-in-S-Mode-82QD00GNUS_6208c78c-db3f-41e6-8b16-4e121f57856a.473c2139b755df36f394ea7262b7f051.jpeg?odnHeight=2000&odnWidth=2000&odnBg=FFFFFF",
-            rating: 4.5
-        },
-        {
-            id: 6,
-            name: "Lenovo IdeaPad Slim 3",
-            price: 299.0,
-            img_url: "https://i5.walmartimages.com/seo/Lenovo-IdeaPad-1i-15-6-Intel-Core-i5-1235U-8GB-RAM-256-GB-SSD-Abyss-Blue-Windows-11-in-S-Mode-82QD00GNUS_6208c78c-db3f-41e6-8b16-4e121f57856a.473c2139b755df36f394ea7262b7f051.jpeg?odnHeight=2000&odnWidth=2000&odnBg=FFFFFF",
-            rating: 4.5
-        },
-        {
-            id: 7,
-            name: "Lenovo IdeaPad Slim 3",
-            price: 299.0,
-            img_url: "https://i5.walmartimages.com/seo/Lenovo-IdeaPad-1i-15-6-Intel-Core-i5-1235U-8GB-RAM-256-GB-SSD-Abyss-Blue-Windows-11-in-S-Mode-82QD00GNUS_6208c78c-db3f-41e6-8b16-4e121f57856a.473c2139b755df36f394ea7262b7f051.jpeg?odnHeight=2000&odnWidth=2000&odnBg=FFFFFF",
-            rating: 4.5
-        },
-        {
-            id: 8,
-            name: "Lenovo IdeaPad Slim 3",
-            price: 299.0,
-            img_url: "https://i5.walmartimages.com/seo/Lenovo-IdeaPad-1i-15-6-Intel-Core-i5-1235U-8GB-RAM-256-GB-SSD-Abyss-Blue-Windows-11-in-S-Mode-82QD00GNUS_6208c78c-db3f-41e6-8b16-4e121f57856a.473c2139b755df36f394ea7262b7f051.jpeg?odnHeight=2000&odnWidth=2000&odnBg=FFFFFF",
-            rating: 4.5
-        },
-        {
-            id: 9,
-            name: "Lenovo IdeaPad Slim 3",
-            price: 299.0,
-            img_url: "https://i5.walmartimages.com/seo/Lenovo-IdeaPad-1i-15-6-Intel-Core-i5-1235U-8GB-RAM-256-GB-SSD-Abyss-Blue-Windows-11-in-S-Mode-82QD00GNUS_6208c78c-db3f-41e6-8b16-4e121f57856a.473c2139b755df36f394ea7262b7f051.jpeg?odnHeight=2000&odnWidth=2000&odnBg=FFFFFF",
-            rating: 4.5
-        },
-        {
-            id: 10,
-            name: "Lenovo IdeaPad Slim 3",
-            price: 299.0,
-            img_url: "https://i5.walmartimages.com/seo/Lenovo-IdeaPad-1i-15-6-Intel-Core-i5-1235U-8GB-RAM-256-GB-SSD-Abyss-Blue-Windows-11-in-S-Mode-82QD00GNUS_6208c78c-db3f-41e6-8b16-4e121f57856a.473c2139b755df36f394ea7262b7f051.jpeg?odnHeight=2000&odnWidth=2000&odnBg=FFFFFF",
-            rating: 4.5
-        },
-    ];
+    const [products, setProducts] = useState([])
+
+    useEffect(() => {
+        // call api/v1/products/best
+        axios.get('http://localhost:8080/api/v1/products/best').then((res) => {
+            setProducts(res.data.map(product=>{
+                return {
+                    id: product.id,
+                    name: product.name,
+                    description: product.description,
+                    price: product.price,
+                    quantity: product.quantity,
+                    img_url: product.imageUrl,
+                    reviews: product.reviews
+                }
+            }))
+        });
+
+    }, []);
 
     return (
         <div>
@@ -83,7 +32,7 @@ export default function BestSellerProducts(props) {
                 {
                     products.map(
                         product => <div className="product-overview me-4 mb-4">
-                            <Product product={product} />
+                            <Product product={product}/>
                         </div>
                     )
                 }

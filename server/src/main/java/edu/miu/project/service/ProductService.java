@@ -30,4 +30,6 @@ public interface ProductService {
     List<Review> getReviewsByProductId(Long productId);
     // Get Review by Product Id, Review Id
     Review getReviewByProductId(Long productId, Long reviewId);
+
+    List<Product> getBestProducts();
 }
