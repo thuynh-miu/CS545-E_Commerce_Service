@@ -45,7 +45,6 @@ export const createProduct = async (payload) => {
     });
 };
 
-// delete review by reviewId
 export const deleteReview = async (reviewId) => {
     const accessToken = localStorage.getItem("accessToken");
     return fetch(`${hostname}/api/v1/admin/reviews/${reviewId}`, {
@@ -54,5 +53,17 @@ export const deleteReview = async (reviewId) => {
             "Content-Type": "application/json",
             accessToken: accessToken,
         },
+    });
+};
+
+export const createReview = async (productId, payload) => {
+    const accessToken = localStorage.getItem("accessToken");
+    return fetch(`${hostname}/api/v1/products/${productId}/reviews`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            accessToken: accessToken,
+        },
+        body: JSON.stringify(payload),
     });
 };

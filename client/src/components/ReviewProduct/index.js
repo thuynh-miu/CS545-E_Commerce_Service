@@ -1,96 +1,128 @@
 import { StarFilled, StarOutlined } from "@ant-design/icons";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Rating from "react-rating";
 import { useNavigate } from "react-router-dom";
+import { createReview } from "../../api/products";
+import { Alert, Button, Card, Col, Container, Form, Image, Row } from "react-bootstrap";
 
-export default function ReviewProduct(props) {
-    const navigate = useNavigate();
+export default function ReviewProduct() {
+  const navigate = useNavigate();
 
-    const ratingRef = useRef();
-    const commentRef = useRef();
+  const [rating, setRating] = useState(5);
+  const [loading, setLoading] = useState(false);
+  const [alert, setAlert] = useState({ type: "", message: "" });
 
-    const product = {
-        id: 1,
-        brand: "Mainstays",
-        name: "Mainstays 2.2 Qt -Compact Air Fryer, Black - Automatic Shutoff, Built-in Timer",
-        imageUrl:
-            "https://i5.walmartimages.com/seo/Mainstays-2-2-Qt-Compact-Air-Fryer-Non-Stick-Dishwasher-Safe-Basket-1150W-Black-Automatic-Shutoff-Built-in-Timer-New-Condition_1f151723-56df-47cb-bea4-cd24bc216d07.0155bba2f419511d81441e32814f8fd1.jpeg",
-    };
+  const titleRef = useRef();
+  const commentRef = useRef();
 
-    const onCancel = () => {
-        navigate(-1);
-    };
+  const product = {
+    id: 1,
+    brand: "Mainstays",
+    name: "Mainstays 2.2 Qt - Compact Air Fryer, Black - Automatic Shutoff, Built-in Timer",
+    imageUrl:
+      "https://i5.walmartimages.com/seo/Mainstays-2-2-Qt-Compact-Air-Fryer-Non-Stick-Dishwasher-Safe-Basket-1150W-Black-Automatic-Shutoff-Built-in-Timer-New-Condition_1f151723-56df-47cb-bea4-cd24bc216d07.0155bba2f419511d81441e32814f8fd1.jpeg",
+  };
 
-    const onSubmitReview = () => {
-        console.log(ratingRef.current.state.value);
-        console.log(commentRef.current.value);
-    };
+  const onCancel = () => {
+    navigate(-1);
+  };
 
-    return (
-        <div className="container w-50">
-            <div className="d-flex mb-3">
-                <h1>Write an item review</h1>
-                <button className="btn btn-link ms-auto" onClick={onCancel}>
-                    Cancel
-                </button>
+  const onSubmitReview = async () => {
+    const title = titleRef.current.value;
+    const comment = commentRef.current.value;
+
+    if (!title || !comment) {
+      setAlert({ type: "danger", message: "Title and comment are required!" });
+      return;
+    }
+
+    setLoading(true);
+    setAlert({ type: "", message: "" });
+
+    try {
+      await createReview(product.id, {
+        rating,
+        title,
+        comment
+      });
+
+      setAlert({ type: "success", message: "Your review has been submitted!" });
+      setTimeout(() => navigate(-1), 2000); // Navigate back after 2 seconds
+    } catch (error) {
+      console.error(error);
+      setAlert({ type: "danger", message: "Failed to submit the review. Please try again." });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Container className="py-4">
+      {alert.message && (
+        <Alert variant={alert.type} className="text-center">
+          {alert.message}
+        </Alert>
+      )}
+
+      <Card className="shadow-lg p-3 rounded">
+        <Card.Body>
+          <Row className="mb-3">
+            <Col xs={4}>
+              <Image src={product.imageUrl} fluid rounded />
+            </Col>
+            <Col xs={8}>
+              <h5>{product.brand}</h5>
+              <p>
+                <strong>{product.name}</strong>
+              </p>
+            </Col>
+          </Row>
+
+          <Form>
+            <Form.Group className="mb-3 text-center">
+              <Form.Label>Overall Rating</Form.Label>
+              <div>
+                <Rating
+                  initialRating={rating}
+                  onChange={(rate) => setRating(rate)}
+                  emptySymbol={<StarOutlined style={{ fontSize: "24px", color: "#ffc107" }} />}
+                  fullSymbol={<StarFilled style={{ fontSize: "24px", color: "#ffc107" }} />}
+                />
+              </div>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Title</Form.Label>
+              <Form.Control
+                ref={titleRef}
+                type="text"
+                placeholder="Write a title for your review"
+                disabled={loading}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Your Review</Form.Label>
+              <Form.Control
+                ref={commentRef}
+                as="textarea"
+                rows={4}
+                placeholder="Share your thoughts about the product..."
+                disabled={loading}
+              />
+            </Form.Group>
+
+            <div className="d-flex justify-content-between">
+              <Button variant="secondary" onClick={onCancel} disabled={loading}>
+                Cancel
+              </Button>
+              <Button variant="primary" onClick={onSubmitReview} disabled={loading}>
+                {loading ? "Submitting..." : "Submit Review"}
+              </Button>
             </div>
-            <div className="d-flex mb-3">
-                <div>
-                    <img src={product.imageUrl} width={100} height={100} />
-                </div>
-                <div>
-                    <div>
-                        <span>{product.brand}</span>
-                    </div>
-                    <div>
-                        <span>
-                            <b>{product.name}</b>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div className="container">
-                <h4>What do you think of it overall?</h4>
-                <h5>Like it or not, tell us everything.</h5>
-                <div className="py-5">
-                    <div className="d-flex">
-                        <div className="mx-auto">
-                            <span>Overall rating</span>
-                        </div>
-                    </div>
-                    <div className="d-flex">
-                        <div className="mx-auto">
-                            <h1>
-                                <Rating
-                                    initialRating={5}
-                                    ref={ratingRef}
-                                    emptySymbol={<StarOutlined />}
-                                    fullSymbol={<StarFilled />}
-                                />
-                            </h1>
-                        </div>
-                    </div>
-                </div>
-                <h5>What do you want others to know?</h5>
-                <div className="form-group py-2">
-                    <label htmlFor="review-textarea">Your review</label>
-                    <textarea
-                        ref={commentRef}
-                        class="form-control"
-                        id="review-textarea"
-                        rows="5"
-                        placeholder="Share what you liked or disliked, how you use the product, fun facts, etc..."
-                    ></textarea>
-                </div>
-                <div className="d-flex">
-                    <button
-                        className="btn btn-primary mx-auto"
-                        onClick={onSubmitReview}
-                    >
-                        Submit your review!
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
+          </Form>
+        </Card.Body>
+      </Card>
+    </Container>
+  );
 }

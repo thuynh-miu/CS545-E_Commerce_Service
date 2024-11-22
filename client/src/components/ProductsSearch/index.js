@@ -64,7 +64,7 @@ export default function ProductsSearch() {
               <div className="d-flex justify-content-center mt-4">
                 <Pagination
                   current={currentPage}
-                  maximum={products.totalPages+1}
+                  maximum={products.totalPages}
                   onSelectPage={goToPage}
                 />
               </div>
