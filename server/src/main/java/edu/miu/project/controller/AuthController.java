@@ -42,10 +42,7 @@ public class AuthController {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public UserDto login(@RequestBody LoginRequest loginRequest, HttpServletResponse response) throws IOException {
-        LoginResponse loginResponse = authService.login(loginRequest);
-        // Add the cookie to the response
-        response.addCookie(new Cookie("accessToken", loginResponse.getAccessToken()));
-        response.addCookie(new Cookie("refreshToken", loginResponse.getRefreshToken()));
+        authService.login(loginRequest);
         return userService.findByEmail(loginRequest.getEmail());
     }
 

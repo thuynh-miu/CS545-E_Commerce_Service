@@ -34,22 +34,9 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     public LoginResponse extractTokenFromRequest(HttpServletRequest request) {
-        // Get all cookies from the request
-        Cookie[] cookies = request.getCookies();
-
-        String accessToken = "";
-        String refreshToken = "";
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                // Check for the cookie named "token" (or any name you use)
-                if ("accessToken".equals(cookie.getName())) {
-                    accessToken = cookie.getValue();
-                }
-                if ("refreshToken".equals(cookie.getName())) {
-                    refreshToken = cookie.getValue();
-                }
-            }
-        }
+        // Get access Token from the request
+        String accessToken = request.getHeader("accessToken");
+        String refreshToken = request.getHeader("refreshToken");
 
         return new LoginResponse(accessToken, refreshToken);
     }
@@ -61,16 +48,16 @@ public class JwtFilter extends OncePerRequestFilter {
         String refreshToken = loginResponse.getRefreshToken();
 
         boolean isAccessTokenExpired = jwtUtil.isTokenExpired(accessToken);
-        if (isAccessTokenExpired && !refreshToken.isEmpty()) {
+
+        if (isAccessTokenExpired && refreshToken != null && !refreshToken.isEmpty()) {
             // refresh token
             // Generate a new access token using the subject from the refresh token
             final UserDetails userDetails = jwtUtil.extractUserDetails(refreshToken);
             String newAccessToken = jwtUtil.generateToken(userDetails);
             accessToken = newAccessToken;
-            response.addCookie(new Cookie("accessToken", newAccessToken));
         }
 
-        if (!accessToken.isEmpty() && jwtUtil.validateToken(accessToken)) {
+        if (accessToken != null && !accessToken.isEmpty() && jwtUtil.validateToken(accessToken)) {
             SecurityContextHolder.getContext().setAuthentication(jwtUtil.getAuthentication(accessToken));
         }
         filterChain.doFilter(request, response);

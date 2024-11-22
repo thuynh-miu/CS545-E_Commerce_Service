@@ -53,6 +53,10 @@ public class AuthServiceImpl implements AuthService {
 
         final String accessToken = jwtUtil.generateToken(userDetails);
         final String refreshToken = jwtUtil.generateRefreshToken(userDetails);
+
+        System.out.println("Access Token: " + accessToken);
+        System.out.println("Refresh Token: " + refreshToken);
+
         return new LoginResponse(accessToken, refreshToken);
     }
 

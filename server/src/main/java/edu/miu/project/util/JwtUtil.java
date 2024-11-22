@@ -23,8 +23,8 @@ import java.util.function.Function;
 public class JwtUtil {
 
     private final String secret = "mytopsecretIbetyoucannotguessithahahahahahaha";
-    private final long expiration = 1000 * 60 * 60; // 1 hour
-    private final long refreshExpiration = 7 * 1000 * 60 * 60 * 24; // 7 days
+    private final long expiration = 7 * 1000 * 60 * 60 * 24; // 7 days
+    private final long refreshExpiration = 14 * 1000 * 60 * 60 * 24; // 14 days
 
     private final UserDetailsService userDetailsService;
     @Autowired
