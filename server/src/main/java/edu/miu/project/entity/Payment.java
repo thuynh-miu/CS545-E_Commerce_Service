@@ -8,9 +8,7 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String paymentType; // "CreditCard", "PayPal", etc.
-    private String paymentDetails; // Simplified for demonstration
-
-    @OneToOne
-    private Order order;
+    private String cardNumber;
+    private String expirationDate;
+    private String cvv;
 }

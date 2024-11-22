@@ -104,11 +104,27 @@ VALUES
 (8, (SELECT id FROM Attribute WHERE name = 'branch' AND value = 'Apple')),
 (8, (SELECT id FROM Attribute WHERE name = 'color' AND value = 'Silver'));
 
+-- Insert Addresses
+INSERT INTO address (street, city, state, zip_code)
+VALUES ('1234 Elm St', 'Fairfield', 'IA', '52557'),
+       ('5678 Maple St', 'Fairfield', 'IA', '52557'),
+       ('9101 Oak St', 'Fairfield', 'IA', '52557'),
+       ('1122 Pine St', 'Fairfield', 'IA', '52557');
+
+
+-- Insert Payment
+INSERT INTO payment (card_number, expiration_date, cvv)
+VALUES ('1234567890123456', '2024-11-01', '123'),
+       ('2345678901234567', '2024-11-01', '234'),
+       ('3456789012345678', '2024-11-01', '345'),
+       ('4567890123456789', '2024-11-01', '456');
+
+
 -- Insert Orders
-INSERT INTO orders (buyer_id, seller_id, order_date, update_date, status) VALUES (1, 1, '2024-11-19', '2024-11-19', 'PENDING');
-INSERT INTO orders (buyer_id, seller_id, order_date, update_date, status) VALUES (1, 1, '2024-11-20', '2024-11-19', 'SHIPPED');
-INSERT INTO orders (buyer_id, seller_id, order_date, update_date, status) VALUES (1, 1, '2024-11-21', '2024-11-19', 'DELIVERED');
-INSERT INTO orders (buyer_id, seller_id, order_date, update_date, status) VALUES (1, 1, '2024-11-22', '2024-11-19', 'CANCELED');
+INSERT INTO orders (buyer_id, seller_id, order_date, update_date, status, address_id, payment_id) VALUES (1, 1, '2024-11-19', '2024-11-19', 'PENDING', 1, 1);
+INSERT INTO orders (buyer_id, seller_id, order_date, update_date, status, address_id, payment_id) VALUES (1, 1, '2024-11-20', '2024-11-19', 'SHIPPED', 2, 2);
+INSERT INTO orders (buyer_id, seller_id, order_date, update_date, status, address_id, payment_id) VALUES (1, 1, '2024-11-21', '2024-11-19', 'DELIVERED', 3, 3);
+INSERT INTO orders (buyer_id, seller_id, order_date, update_date, status, address_id, payment_id) VALUES (1, 1, '2024-11-22', '2024-11-19', 'CANCELED', 4, 4);
 
 -- Insert Order Items
 INSERT INTO order_item (product_id, order_id, quantity, price) VALUES (1, 1, 2, 19.99);
