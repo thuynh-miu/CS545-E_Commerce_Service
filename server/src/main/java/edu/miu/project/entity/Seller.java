@@ -1,5 +1,6 @@
 package edu.miu.project.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class Seller {
     private User user;
 
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Product> products;
 
     private boolean isApproved; // For sellers to check admin approval
