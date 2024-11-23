@@ -2,12 +2,14 @@ import Product from "../Product";
 import {useEffect, useState} from "react";
 import axios from "axios";
 
+const hostname = process.env.REACT_APP_BACKEND_URL;
+
 export default function BestSellerProducts(props) {
     const [products, setProducts] = useState([])
 
     useEffect(() => {
         // call api/v1/products/best
-        axios.get('http://localhost:8080/api/v1/products/best').then((res) => {
+        axios.get(`${hostname}/api/v1/products/best`).then((res) => {
             setProducts(res.data.map(product=>{
                 return {
                     id: product.id,
