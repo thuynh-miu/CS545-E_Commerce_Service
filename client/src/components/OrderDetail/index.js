@@ -9,6 +9,7 @@ import {
 import { getOrderById } from "../../api";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import OrderStatus from "../../constants/OrderStatus";
 
 export default function OrderDetail(props) {
     const navigate = useNavigate();
@@ -56,11 +57,13 @@ export default function OrderDetail(props) {
                     Order# {orderDetail?.id}
                 </h1>
                 <div>
-                    <button className="btn btn-link" onClick={printReceipt}>
-                        <PrinterOutlined /> Print
-                    </button>
+                    {orderDetail?.status == OrderStatus.DELIVERED && (
+                        <button className="btn btn-link" onClick={printReceipt}>
+                            <PrinterOutlined /> Print
+                        </button>
+                    )}
                 </div>
-                <div id="order-receipt"  className="d-flex mb-3">
+                <div id="order-receipt" className="d-flex mb-3">
                     <div className="container border rounded me-5">
                         {orderDetail?.items &&
                             orderDetail?.items.map((item, index) => (

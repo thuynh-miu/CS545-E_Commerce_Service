@@ -77,12 +77,12 @@ export default function Order(props) {
                         Mark as Delivered
                     </Button>
                 );
-            case OrderStatus.DELIVERED:
-                return (
-                    <Button variant="primary" className="me-2">
-                        Write a Review
-                    </Button>
-                );
+            // case OrderStatus.DELIVERED:
+            //     return (
+            //         <Button variant="primary" className="me-2">
+            //             Write a Review
+            //         </Button>
+            //     );
             default:
                 return null;
         }
@@ -162,14 +162,16 @@ export default function Order(props) {
                         />
                     ))}
                 </div>
-                <div className="ms-md-auto mt-3 mt-md-0 text-center text-md-end">
-                    <Button
-                        variant="secondary"
-                        onClick={() => printReceipt(id)}
-                    >
-                        Print Receipt
-                    </Button>
-                </div>
+                {/* <div className="ms-md-auto mt-3 mt-md-0 text-center text-md-end">
+                    {orderStatus === OrderStatus.DELIVERED && (
+                        <Button
+                            variant="secondary"
+                            onClick={() => printReceipt(id)}
+                        >
+                            Print Receipt
+                        </Button>
+                    )}
+                </div> */}
             </div>
         </div>
     );
