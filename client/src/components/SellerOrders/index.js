@@ -17,7 +17,7 @@ export default function SellerOrders() {
           orderDate: new Date(order.orderDate),
           updateDate: new Date(order.updateDate),
           items: order.items.map((item) => ({
-            img_url: item.imageUrl,
+            imageUrl: item.imageUrl,
           }))
         }));
         setOrders(formattedOrders);

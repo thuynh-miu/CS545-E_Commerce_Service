@@ -13,7 +13,6 @@ export default function Order(props) {
     const [orderStatus, setOrderStatus] = useState(status);
     const [message, setMessage] = useState(null);
     const [messageType, setMessageType] = useState(""); // "success" or "danger"
-
     const printReceipt = async (orderId) => {
         try {
             console.log(`Printing receipt for order: ${orderId}`);

@@ -24,7 +24,7 @@ export default function ProductDetailPage(props) {
         description: res.description,
         price: res.price,
         quantity: res.quantity,
-        img_url: res.imageUrl,
+        imageUrl: res.imageUrl,
         brand: res.brand
       });
     });
@@ -75,7 +75,7 @@ export default function ProductDetailPage(props) {
         <div className="col-12 col-lg-9">
           <div className="row g-4">
             <div className="col-12 col-md-6">
-              <img src={productDetail.img_url} alt={productDetail.name} className="img-fluid rounded" />
+              <img src={productDetail.imageUrl} alt={productDetail.name} className="img-fluid rounded" />
             </div>
             <div className="col-12 col-md-6">
               <div className="d-flex align-items-center mb-3">
