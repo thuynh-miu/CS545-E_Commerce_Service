@@ -106,7 +106,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     // Update order status (Shipped → On the Way → Delivered)
-    public Order updateOrderStatus(Long orderId, OrderStatus status) {
+    public OrderDto updateOrderStatus(Long orderId, OrderStatus status) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found with ID: " + orderId));
 
@@ -115,7 +115,7 @@ public class OrderServiceImpl implements OrderService {
 
         // Update status
         order.setStatus(status);
-        return orderRepository.save(order);
+        return modelMapper.map(orderRepository.save(order), OrderDto.class);
     }
 
     @Override

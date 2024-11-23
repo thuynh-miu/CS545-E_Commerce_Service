@@ -2,6 +2,7 @@ package edu.miu.project.controller;
 
 import edu.miu.project.entity.Order;
 import edu.miu.project.entity.OrderStatus;
+import edu.miu.project.entity.dto.OrderDto;
 import edu.miu.project.entity.dto.OrderRequest;
 import edu.miu.project.entity.dto.request.OrderStatusRequest;
 import edu.miu.project.service.OrderService;
@@ -68,7 +69,7 @@ public class OrderController {
     public ResponseEntity<?> updateOrderStatus(@PathVariable Long orderId, @RequestBody OrderStatusRequest status) {
         try {
             OrderStatus newStatus = OrderStatus.valueOf(status.getStatus().toUpperCase());
-            Order updatedOrder = orderService.updateOrderStatus(orderId, newStatus);
+            OrderDto updatedOrder = orderService.updateOrderStatus(orderId, newStatus);
             return ResponseEntity.ok(updatedOrder);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
