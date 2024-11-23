@@ -42,7 +42,7 @@ public class SecurityConfig {
                             .requestMatchers("/swagger-ui/**").permitAll()
                             .requestMatchers("/api/v1/authenticate").permitAll()
                             .requestMatchers("/api/v1/admin/**").hasAuthority(RoleEnum.ADMIN.toString())
-                            .requestMatchers("/api/v1/cart").permitAll()
+                            .requestMatchers("/api/v1/cart").hasAuthority(RoleEnum.BUYER.toString())
                             .requestMatchers("/api/v1/order").hasAnyAuthority(RoleEnum.BUYER.toString() , RoleEnum.SELLER.toString())
                             .requestMatchers("/api/v1/product").hasAnyAuthority(RoleEnum.SELLER.toString())
                             .requestMatchers("/api/v1/users").permitAll()

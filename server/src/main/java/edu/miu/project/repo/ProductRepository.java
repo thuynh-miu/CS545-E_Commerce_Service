@@ -24,7 +24,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "AND (:maxPrice is null or p.price <= :maxPrice) " +
             "AND (" +
             "(:colors is null or (a.name = 'color' AND LOWER(a.value) IN :colors)) " +
-            "OR (:brands is null or (a.name = 'brand' AND LOWER(a.value) IN :brands))" +
+            "AND (:brands is null or (a.name = 'brand' AND LOWER(a.value) IN :brands))" +
             ") ")
     Page<Product> filterProducts(String name, Double minPrice, Double maxPrice, List<String> colors, List<String> brands, Pageable pageable);
 }

@@ -17,17 +17,29 @@ export default function Product({ product }) {
   };
 
   const productInfo = useMemo(() => {
-    return cartItems?.find(item => item.id == product.id);
+    return cartItems?.find((item) => item.id === product.id);
   }, [cartItems, product.id]);
 
   return (
-    <div className="card">
+    <div className="card position-relative">
       <Link
         to={`/products/detail/${product.id}`}
         className="text-decoration-none"
       >
-        <img className="card-img-top" src={imageUrl} />
-        <div className="d-flex">
+        <div className="position-relative">
+          <img
+            className="card-img-top"
+            src={imageUrl}
+            alt={name}
+            style={{ objectFit: "cover", height: "200px" }}
+          />
+          {quantity == 0 && (
+            <div className="out-of-stock-overlay d-flex justify-content-center align-items-center">
+              <span className="text-white fw-bold">Out of Stock</span>
+            </div>
+          )}
+        </div>
+        <div className="d-flex mt-2">
           <span className="ms-3">Stock left: {quantity}</span>
           <span className="ms-auto me-3">
             <Rating
@@ -45,11 +57,13 @@ export default function Product({ product }) {
       </Link>
       <div className="card-body pt-0">
         <div className="d-flex">
+          {quantity > 0 && (
           <AddToCartButton
             quantity={(productInfo && productInfo.quantity) || 0}
             increase={increase}
             decrease={decrease}
           />
+          )}
         </div>
       </div>
     </div>

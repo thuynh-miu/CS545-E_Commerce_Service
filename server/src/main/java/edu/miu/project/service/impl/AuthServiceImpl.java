@@ -1,10 +1,7 @@
 package edu.miu.project.service.impl;
 
 import edu.miu.project.entity.*;
-import edu.miu.project.entity.dto.LoginRequest;
-import edu.miu.project.entity.dto.LoginResponse;
-import edu.miu.project.entity.dto.RefreshTokenRequest;
-import edu.miu.project.entity.dto.RegisterRequest;
+import edu.miu.project.entity.dto.*;
 import edu.miu.project.repo.BuyerRepository;
 import edu.miu.project.repo.RoleRepository;
 import edu.miu.project.repo.SellerRepository;
@@ -13,6 +10,8 @@ import edu.miu.project.service.AuthService;
 import edu.miu.project.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +20,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -50,6 +52,13 @@ public class AuthServiceImpl implements AuthService {
         }
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(result.getName());
+
+        Optional<Seller> seller = sellerRepository.findByEmail(userDetails.getUsername());
+        if (seller.isPresent()) {
+            if (!seller.get().isApproved()) {
+                throw new AccessDeniedException("You are not authorized to access this resource.");
+            }
+        }
 
         final String accessToken = jwtUtil.generateToken(userDetails);
         final String refreshToken = jwtUtil.generateRefreshToken(userDetails);

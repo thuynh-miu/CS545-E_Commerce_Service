@@ -23,13 +23,26 @@ export const register = async (payload) => {
 };
 
 export const login = async (payload) => {
-    return fetch(`${hostname}/api/v1/authenticate`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
+  try {
+    const response = await fetch(`${hostname}/api/v1/authenticate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
     });
+
+    if (!response.ok) {
+      throw new Error(
+        `Login failed. Please try again`
+      );
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error during login:", error);
+    throw new Error(error.message || "An unexpected error occurred during login");
+  }
 };
 
 export const getProducts = async (params) => {

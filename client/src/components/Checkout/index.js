@@ -4,9 +4,11 @@ import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { placeOrder } from "../../api/cart";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../../contexts/CartContextProvider";
+import { useUserContext } from "../../contexts/UserContextProvider";
 
 export default function Checkout() {
     const navigate = useNavigate();
+    const {userData} = useUserContext();
     const { cartItems, syncCart } = useContext(CartContext);
     const fullNameInputRef = useRef();
     const fullNameValidationRef = useRef();
@@ -212,6 +214,7 @@ export default function Checkout() {
                                 type="email"
                                 className="form-control"
                                 id="email"
+                                defaultValue={userData?.email || ""}
                                 required
                             />
                             <small
@@ -318,67 +321,76 @@ export default function Checkout() {
                     title={<h2 className="h5">Payment Method</h2>}
                 >
                     <div className="row g-3">
-                        <div className="col-12 col-md-6">
-                            <label htmlFor="card-number" className="form-label">
+                        <div className="row g-3">
+                            <div className="col-12 col-md-6">
+                                <label htmlFor="card-number" className="form-label">
                                 Card Number
-                            </label>
-                            <input
+                                </label>
+                                <input
                                 type="text"
-                                maxLength={16}
                                 className="form-control"
                                 id="card-number"
+                                placeholder="1234 5678 9012 3456"
+                                maxLength={19}
                                 required
                                 ref={cardNumberInputRef}
-                            />
-                            <small
-                                className="text-danger"
-                                ref={cardNumberValidationRef}
-                                hidden
-                            >
-                                <ExclamationCircleOutlined /> Invalid card
-                                number
-                            </small>
-                        </div>
-                        <div className="col-6 col-md-3">
-                            <label htmlFor="expiry-date" className="form-label">
-                                Expiry Date
-                            </label>
-                            <input
-                                type="month"
-                                className="form-control"
-                                id="expiry-date"
-                                required
-                                ref={expiryInputRef}
-                            />
-                            <small
-                                className="text-danger"
-                                ref={expiryValidationRef}
-                                hidden
-                            >
-                                <ExclamationCircleOutlined /> Invalid expiry
-                                date
-                            </small>
-                        </div>
-                        <div className="col-6 col-md-3">
-                            <label htmlFor="cvv" className="form-label">
+                                onInput={(e) => {
+                                    e.target.value = e.target.value
+                                    .replace(/\D/g, '')
+                                    .replace(/(.{4})/g, '$1 ')
+                                    .trim();
+                                }}
+                                />
+                                <small className="text-danger" ref={cardNumberValidationRef} hidden>
+                                <ExclamationCircleOutlined /> Invalid card number
+                                </small>
+                            </div>
+
+                            <div className="col-6 col-md-3">
+                                <label htmlFor="expiry-date" className="form-label">
+                                    Expiry Date
+                                </label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="expiry-date"
+                                    placeholder="MM/YYYY"
+                                    maxLength={7}
+                                    required
+                                    ref={expiryInputRef}
+                                    onInput={(e) => {
+                                    e.target.value = e.target.value
+                                        .replace(/\D/g, '')
+                                        .replace(/(\d{2})(\d{0,4})/, (match, p1, p2) => (p2 ? `${p1}/${p2}` : p1))
+                                        .slice(0, 7);
+                                    }}
+                                />
+                                <small className="text-danger" ref={expiryValidationRef} hidden>
+                                    <ExclamationCircleOutlined /> Invalid expiry date
+                                </small>
+                            </div>
+
+                            <div className="col-6 col-md-3">
+                                <label htmlFor="cvv" className="form-label">
                                 CVV
-                            </label>
-                            <input
+                                </label>
+                                <input
                                 type="text"
                                 className="form-control"
                                 id="cvv"
+                                placeholder="123"
+                                maxLength={3}
                                 required
                                 ref={cvvInputRef}
-                                maxLength={3}
-                            />
-                            <small
-                                className="text-danger"
-                                ref={cvvValidationRef}
-                                hidden
-                            >
-                                <ExclamationCircleOutlined /> Invalid cvv
-                            </small>
-                        </div>
+                                onInput={(e) => {
+                                    e.target.value = e.target.value.replace(/\D/g, '');
+                                }}
+                                />
+                                <small className="text-danger" ref={cvvValidationRef} hidden>
+                                <ExclamationCircleOutlined /> Invalid CVV
+                                </small>
+                            </div>
+                            </div>
                     </div>
                 </Collapsible>
             </div>

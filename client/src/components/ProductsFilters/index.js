@@ -54,19 +54,19 @@ export default function ProductsFilters(props) {
           name: "Red",
         },
         {
-          key: "blue",
-          value: "blue",
-          name: "Blue",
-        },
-        {
           key: "yellow",
           value: "yellow",
           name: "Yellow",
         },
         {
-          key: "green",
-          value: "Green",
-          name: "Green",
+          key: "gold",
+          value: "Gold",
+          name: "Gold",
+        },
+        {
+          key: "silver",
+          value: "Silver",
+          name: "Silver",
         },
       ],
     },

@@ -80,6 +80,7 @@ export const CartContextProvider = (props) => {
     };
 
     const syncCart = async () => {
+
         const cartData = await getCart();
 
         setTotalPrice(cartData?.totalPrice);
@@ -94,9 +95,9 @@ export const CartContextProvider = (props) => {
         setCartItems(items);
     };
 
-    useEffect(() => {
-        syncCart();
-    }, []);
+    // useEffect(() => {
+    //     syncCart();
+    // }, []);
 
     return (
         <CartContext.Provider

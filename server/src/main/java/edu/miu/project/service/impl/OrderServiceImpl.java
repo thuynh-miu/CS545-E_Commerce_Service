@@ -147,7 +147,9 @@ public class OrderServiceImpl implements OrderService {
         if (currentStatus == OrderStatus.CANCELED) {
             throw new RuntimeException("Cannot change the status of a canceled order.");
         }
-
+        if (currentStatus == OrderStatus.PENDING && newStatus == OrderStatus.CANCELED) {
+            return;
+        }
         if ((currentStatus == OrderStatus.PENDING && newStatus != OrderStatus.SHIPPED) ||
                 (currentStatus == OrderStatus.SHIPPED && newStatus != OrderStatus.TRANSIT) ||
                 (currentStatus == OrderStatus.TRANSIT && newStatus != OrderStatus.DELIVERED)) {

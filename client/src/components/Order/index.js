@@ -3,13 +3,16 @@ import { Button, Badge, Alert } from "react-bootstrap";
 import OrderStatus from "../../constants/OrderStatus";
 import { Link } from "react-router-dom";
 import { updateOrderStatus } from "../../api/seller";
+import { UserRole } from "../../constants/UserRole/index";
+import { useUserContext } from "../../contexts/UserContextProvider";
 
 export default function Order(props) {
-    const { id, status, created_date, updated_date, items, total, review } = props;
+    const { userData } = useUserContext();
+    const { id, status, created_date, updated_date, items, total, review } =
+        props;
     const [orderStatus, setOrderStatus] = useState(status);
     const [message, setMessage] = useState(null);
     const [messageType, setMessageType] = useState(""); // "success" or "danger"
-
     const printReceipt = async (orderId) => {
         try {
             console.log(`Printing receipt for order: ${orderId}`);
@@ -40,15 +43,6 @@ export default function Order(props) {
                 return (
                     <>
                         <Button
-                            variant="danger"
-                            className="me-2"
-                            onClick={() =>
-                                handleChangeStatus(id, OrderStatus.CANCELLED)
-                            }
-                        >
-                            Cancel
-                        </Button>
-                        <Button
                             variant="primary"
                             className="me-2"
                             onClick={() =>
@@ -64,7 +58,9 @@ export default function Order(props) {
                     <Button
                         variant="primary"
                         className="me-2"
-                        onClick={() => handleChangeStatus(id, OrderStatus.TRANSIT)}
+                        onClick={() =>
+                            handleChangeStatus(id, OrderStatus.TRANSIT)
+                        }
                     >
                         Mark as Transisting
                     </Button>
@@ -81,12 +77,12 @@ export default function Order(props) {
                         Mark as Delivered
                     </Button>
                 );
-            case OrderStatus.DELIVERED:
-                return (
-                    <Button variant="primary" className="me-2">
-                        Write a Review
-                    </Button>
-                );
+            // case OrderStatus.DELIVERED:
+            //     return (
+            //         <Button variant="primary" className="me-2">
+            //             Write a Review
+            //         </Button>
+            //     );
             default:
                 return null;
         }
@@ -109,7 +105,18 @@ export default function Order(props) {
             >
                 <span className="my-auto">Order# {id}</span>
                 <div className="ms-auto d-flex flex-wrap">
-                    {getNextStatusButton()}
+                    {orderStatus === OrderStatus.CREATED && (
+                        <Button
+                            variant="danger"
+                            className="me-2"
+                            onClick={() =>
+                                handleChangeStatus(id, OrderStatus.CANCELLED)
+                            }
+                        >
+                            Cancel
+                        </Button>
+                    )}
+                    {userData.role === UserRole.SELLER && getNextStatusButton()}
                     <Link to={`${id}`}>
                         <Button variant="link">View Details</Button>
                     </Link>
@@ -118,10 +125,14 @@ export default function Order(props) {
             <div className="d-flex p-3 border border-top-0 border-bottom-0">
                 <span className="my-auto me-3">Status:</span>
                 <Badge
-                    bg={status === OrderStatus.CANCELLED ? "danger" : "success"}
+                    bg={
+                        orderStatus === OrderStatus.CANCELLED
+                            ? "danger"
+                            : "success"
+                    }
                     className="p-2 my-auto"
                 >
-                    {status}
+                    {orderStatus}
                 </Badge>
                 <div className="ms-auto text-end">
                     <small>Updated at</small>
@@ -151,14 +162,16 @@ export default function Order(props) {
                         />
                     ))}
                 </div>
-                <div className="ms-md-auto mt-3 mt-md-0 text-center text-md-end">
-                    <Button
-                        variant="secondary"
-                        onClick={() => printReceipt(id)}
-                    >
-                        Print Receipt
-                    </Button>
-                </div>
+                {/* <div className="ms-md-auto mt-3 mt-md-0 text-center text-md-end">
+                    {orderStatus === OrderStatus.DELIVERED && (
+                        <Button
+                            variant="secondary"
+                            onClick={() => printReceipt(id)}
+                        >
+                            Print Receipt
+                        </Button>
+                    )}
+                </div> */}
             </div>
         </div>
     );

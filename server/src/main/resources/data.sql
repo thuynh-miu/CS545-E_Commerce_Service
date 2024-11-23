@@ -12,7 +12,7 @@ VALUES ('admin', 'admin@miu.edu', '$2a$12$IKEQb00u5QpZMx4v5zMweu.3wrq0pS7XLCHO4y
 
 -- Insert Sellers
 INSERT INTO seller (user_id, is_approved)
-VALUES (2, false);
+VALUES (2, true);
 
 -- Insert Buyers
 INSERT INTO buyer (user_id)
@@ -30,18 +30,18 @@ INSERT INTO Attribute (name, value) VALUES ('color', 'Silver');
 INSERT INTO Attribute (name, value) VALUES ('color', 'Space Gray');
 INSERT INTO Attribute (name, value) VALUES ('color', 'Purple');
 
-INSERT INTO Attribute (name, value) VALUES ('branch', 'Apple');
-INSERT INTO Attribute (name, value) VALUES ('branch', 'Samsung');
-INSERT INTO Attribute (name, value) VALUES ('branch', 'Huawei');
-INSERT INTO Attribute (name, value) VALUES ('branch', 'Xiaomi');
-INSERT INTO Attribute (name, value) VALUES ('branch', 'OnePlus');
-INSERT INTO Attribute (name, value) VALUES ('branch', 'Sony');
-INSERT INTO Attribute (name, value) VALUES ('branch', 'LG');
-INSERT INTO Attribute (name, value) VALUES ('branch', 'Google');
-INSERT INTO Attribute (name, value) VALUES ('branch', 'Nokia');
-INSERT INTO Attribute (name, value) VALUES ('branch', 'AT&T');
-INSERT INTO Attribute (name, value) VALUES ('branch', 'Verizon');
-INSERT INTO Attribute (name, value) VALUES ('branch', 'T-Mobile');
+INSERT INTO Attribute (name, value) VALUES ('brand', 'Apple');
+INSERT INTO Attribute (name, value) VALUES ('brand', 'Samsung');
+INSERT INTO Attribute (name, value) VALUES ('brand', 'Huawei');
+INSERT INTO Attribute (name, value) VALUES ('brand', 'Xiaomi');
+INSERT INTO Attribute (name, value) VALUES ('brand', 'OnePlus');
+INSERT INTO Attribute (name, value) VALUES ('brand', 'Sony');
+INSERT INTO Attribute (name, value) VALUES ('brand', 'LG');
+INSERT INTO Attribute (name, value) VALUES ('brand', 'Google');
+INSERT INTO Attribute (name, value) VALUES ('brand', 'Nokia');
+INSERT INTO Attribute (name, value) VALUES ('brand', 'AT&T');
+INSERT INTO Attribute (name, value) VALUES ('brand', 'Verizon');
+INSERT INTO Attribute (name, value) VALUES ('brand', 'T-Mobile');
 
 -- Insert Products
 INSERT INTO Product (name, description, price, quantity, image_url, seller_id)
@@ -62,49 +62,49 @@ VALUES
 -- Product 1 Attributes
 INSERT INTO Product_Attributes (products_id, attributes_id)
 VALUES
-(1, (SELECT id FROM Attribute WHERE name = 'branch' AND value = 'Apple')),
+(1, (SELECT id FROM Attribute WHERE name = 'brand' AND value = 'Apple')),
 (1, (SELECT id FROM Attribute WHERE name = 'color' AND value = 'Silver'));
 
 -- Product 2 Attributes
 INSERT INTO Product_Attributes (products_id, attributes_id)
 VALUES
-(2, (SELECT id FROM Attribute WHERE name = 'branch' AND value = 'Apple')),
+(2, (SELECT id FROM Attribute WHERE name = 'brand' AND value = 'Apple')),
 (2, (SELECT id FROM Attribute WHERE name = 'color' AND value = 'Gold'));
 
 -- Product 3 Attributes
 INSERT INTO Product_Attributes (products_id, attributes_id)
 VALUES
-(3, (SELECT id FROM Attribute WHERE name = 'branch' AND value = 'Apple')),
+(3, (SELECT id FROM Attribute WHERE name = 'brand' AND value = 'Apple')),
 (3, (SELECT id FROM Attribute WHERE name = 'color' AND value = 'Silver'));
 
 -- Product 4 Attributes
 INSERT INTO Product_Attributes (products_id, attributes_id)
 VALUES
-(4, (SELECT id FROM Attribute WHERE name = 'branch' AND value = 'Apple')),
+(4, (SELECT id FROM Attribute WHERE name = 'brand' AND value = 'Apple')),
 (4, (SELECT id FROM Attribute WHERE name = 'color' AND value = 'Silver'));
 
 -- Product 5 Attributes
 INSERT INTO Product_Attributes (products_id, attributes_id)
 VALUES
-(5, (SELECT id FROM Attribute WHERE name = 'branch' AND value = 'Apple')),
+(5, (SELECT id FROM Attribute WHERE name = 'brand' AND value = 'Apple')),
 (5, (SELECT id FROM Attribute WHERE name = 'color' AND value = 'Silver'));
 
 -- Product 6 Attributes
 INSERT INTO Product_Attributes (products_id, attributes_id)
 VALUES
-(6, (SELECT id FROM Attribute WHERE name = 'branch' AND value = 'Apple')),
+(6, (SELECT id FROM Attribute WHERE name = 'brand' AND value = 'Apple')),
 (6, (SELECT id FROM Attribute WHERE name = 'color' AND value = 'Silver'));
 
 -- Product 7 Attributes
 INSERT INTO Product_Attributes (products_id, attributes_id)
 VALUES
-(7, (SELECT id FROM Attribute WHERE name = 'branch' AND value = 'Apple')),
+(7, (SELECT id FROM Attribute WHERE name = 'brand' AND value = 'Apple')),
 (7, (SELECT id FROM Attribute WHERE name = 'color' AND value = 'Silver'));
 
 -- Product 8 Attributes
 INSERT INTO Product_Attributes (products_id, attributes_id)
 VALUES
-(8, (SELECT id FROM Attribute WHERE name = 'branch' AND value = 'Apple')),
+(8, (SELECT id FROM Attribute WHERE name = 'brand' AND value = 'Apple')),
 (8, (SELECT id FROM Attribute WHERE name = 'color' AND value = 'Silver'));
 
 -- Insert Reviews

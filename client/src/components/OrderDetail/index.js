@@ -1,5 +1,5 @@
 import { PrinterOutlined, StarOutlined } from "@ant-design/icons";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
     Link,
     useNavigate,
@@ -7,41 +7,18 @@ import {
     useSearchParams,
 } from "react-router-dom";
 import { getOrderById } from "../../api";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+import OrderStatus from "../../constants/OrderStatus";
+import { useUserContext } from "../../contexts/UserContextProvider";
+import { UserRole } from "../../constants/UserRole";
 
 export default function OrderDetail(props) {
     const navigate = useNavigate();
 
+    const { userData } = useUserContext();
+
     const { orderId } = useParams();
-
-    // const orderDetail = {
-    //     id: "ABCDX123",
-    //     order_date: new Date(2024, 1, 1),
-    //     items: [
-    //         {
-    //             id: 1,
-    //             name: "Fresh Green Seedless Grapes (2.25 lbs/Bag Est.)",
-    //             price: 1.98,
-    //             quantity: 1,
-    //             imageUrl:
-    //                 "https://i5.walmartimages.com/seo/Fresh-Green-Seedless-Grapes-2-25-lbs-Bag-Est_9b543e57-d12c-4b2f-af70-cbfc8166dce1.19eafb20170233f7df74f7a6c5ff5530.jpeg?odnHeight=208&odnWidth=208&odnBg=FFFFFF",
-    //         },
-    //         {
-    //             id: 2,
-    //             name: "Great Value Disposable Paper Napkins, White, 500 Count",
-    //             price: 2.21,
-    //             quantity: 2,
-    //             imageUrl:
-    //                 "https://i5.walmartimages.com/seo/Great-Value-Disposable-Paper-Napkins-White-500-Count_8f85c677-4910-4e3d-a5c8-d7ba4a7715a6.95fcdbd0772d95c39e34d153dac90332.jpeg?odnHeight=208&odnWidth=208&odnBg=FFFFFF",
-    //         },
-    //     ],
-    //     shipping_address: {
-    //         street: "1000 N 4th St",
-    //         city: "Fairfield",
-    //         state: "Iowa",
-    //         zipcode: "52557",
-    //     },
-    // };
-
     const [orderDetail, setOrderDetail] = useState({});
     useEffect(() => {
         getOrderById(orderId).then((data) => {
@@ -52,6 +29,30 @@ export default function OrderDetail(props) {
         navigate(-1);
     };
 
+    const printReceipt = async () => {
+        try {
+            const receiptElement = document.getElementById("order-receipt");
+            if (!receiptElement) {
+                throw new Error("Receipt element not found.");
+            }
+
+            const canvas = await html2canvas(receiptElement, { scale: 2 });
+            const imgData = canvas.toDataURL("image/png");
+
+            const pdf = new jsPDF();
+            const imgWidth = 190; // PDF width in mm
+            const pageHeight = 285; // PDF height in mm
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+            pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
+
+            pdf.save(`order_${orderId}_receipt.pdf`);
+        } catch (error) {
+            console.error("Failed to print receipt:", error.message);
+            alert("An error occurred while trying to print the receipt.");
+        }
+    };
+
     return (
         <div className="container w-75">
             <div>
@@ -60,11 +61,13 @@ export default function OrderDetail(props) {
                     Order# {orderDetail?.id}
                 </h1>
                 <div>
-                    <button className="btn btn-link">
-                        <PrinterOutlined /> Print
-                    </button>
+                    {orderDetail?.status == OrderStatus.DELIVERED && (
+                        <button className="btn btn-link" onClick={printReceipt}>
+                            <PrinterOutlined /> Print
+                        </button>
+                    )}
                 </div>
-                <div className="d-flex mb-3">
+                <div id="order-receipt" className="d-flex mb-3">
                     <div className="container border rounded me-5">
                         {orderDetail?.items &&
                             orderDetail?.items.map((item, index) => (
@@ -87,12 +90,21 @@ export default function OrderDetail(props) {
                                         </p>
                                     </div>
                                     <div className="d-flex">
-                                        <StarOutlined />
-                                        <Link to={`review/${item?.id}`}>
-                                            <button className="btn btn-link text-black">
-                                                Write a review
-                                            </button>
-                                        </Link>
+                                        {orderDetail.status ===
+                                            OrderStatus.DELIVERED &&
+                                            userData.role ===
+                                                UserRole.BUYER && (
+                                                    <>
+                                                        <StarOutlined />
+                                                        <Link
+                                                            to={`review/${item?.product?.id}`}
+                                                        >
+                                                            <button className="btn btn-link text-black">
+                                                                Write a review
+                                                            </button>
+                                                        </Link>
+                                                    </>
+                                                )}
                                     </div>
                                     {index < orderDetail?.items?.length - 1 && (
                                         <hr />
