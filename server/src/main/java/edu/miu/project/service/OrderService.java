@@ -12,7 +12,7 @@ public interface OrderService {
     Page<OrderDto> getOrderHistory(Pageable pageable);
     void placeOrder(OrderRequest orderRequest);
     boolean cancelOrder(Long orderId);
-    Order updateOrderStatus(Long orderId, OrderStatus status);
-
+    OrderDto updateOrderStatus(Long orderId, OrderStatus status);
+    Order getOrderById(Long orderId);
     Page<OrderDto> getOrderByStatus(OrderStatus orderStatus, Pageable pageable);
 }

@@ -32,6 +32,13 @@ public class Product {
     @Formula("(SELECT COUNT(*) FROM order_item i WHERE i.product_id = id)")
     private Integer soldQuantity = 0;
 
+    @Transient
+    private double rating;
+    @PostLoad
+    private void onLoad() {
+        this.rating = reviews.stream().mapToDouble(Review::getRating).average().orElse(Double.NaN);
+    }
+
     private String imageUrl;
 
     @ManyToOne

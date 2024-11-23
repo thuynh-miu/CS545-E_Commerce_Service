@@ -34,7 +34,7 @@ export default function ProductDetailPage(props) {
           title: review.title,
           comment: review.comment,
           rating: review.rating,
-          buyer: review.buyer
+          author: review.author
         };
       }));
     });

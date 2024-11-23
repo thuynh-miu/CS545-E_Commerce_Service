@@ -6,7 +6,7 @@ import { updateOrderStatus } from "../../api/seller";
 
 export default function Order(props) {
     const { id, status, created_date, updated_date, items, total, review } = props;
-    console.log("Order", props);
+    const [orderStatus, setOrderStatus] = useState(status);
     const [message, setMessage] = useState(null);
     const [messageType, setMessageType] = useState(""); // "success" or "danger"
 
@@ -24,6 +24,7 @@ export default function Order(props) {
         try {
             console.log(`Changing status for order ${orderId} to ${newStatus}`);
             await updateOrderStatus(orderId, newStatus);
+            setOrderStatus(newStatus);
             setMessage(`Order status updated to ${newStatus}.`);
             setMessageType("success");
         } catch (error) {
@@ -34,21 +35,25 @@ export default function Order(props) {
     };
 
     const getNextStatusButton = () => {
-        switch (status) {
+        switch (orderStatus) {
             case OrderStatus.CREATED:
                 return (
                     <>
                         <Button
                             variant="danger"
                             className="me-2"
-                            onClick={() => handleChangeStatus(id, OrderStatus.CANCELLED)}
+                            onClick={() =>
+                                handleChangeStatus(id, OrderStatus.CANCELLED)
+                            }
                         >
                             Cancel
                         </Button>
                         <Button
                             variant="primary"
                             className="me-2"
-                            onClick={() => handleChangeStatus(id, OrderStatus.SHIPPED)}
+                            onClick={() =>
+                                handleChangeStatus(id, OrderStatus.SHIPPED)
+                            }
                         >
                             Mark as Shipped
                         </Button>
@@ -59,17 +64,19 @@ export default function Order(props) {
                     <Button
                         variant="primary"
                         className="me-2"
-                        onClick={() => handleChangeStatus(id, OrderStatus.TRANSISTING)}
+                        onClick={() => handleChangeStatus(id, OrderStatus.TRANSIT)}
                     >
                         Mark as Transisting
                     </Button>
                 );
-            case OrderStatus.TRANSISTING:
+            case OrderStatus.TRANSIT:
                 return (
                     <Button
                         variant="primary"
                         className="me-2"
-                        onClick={() => handleChangeStatus(id, OrderStatus.DELIVERED)}
+                        onClick={() =>
+                            handleChangeStatus(id, OrderStatus.DELIVERED)
+                        }
                     >
                         Mark as Delivered
                     </Button>
@@ -88,33 +95,46 @@ export default function Order(props) {
     return (
         <div className="container bg-white rounded shadow-sm mb-4">
             {message && (
-                <Alert variant={messageType} onClose={() => setMessage(null)} dismissible>
+                <Alert
+                    variant={messageType}
+                    onClose={() => setMessage(null)}
+                    dismissible
+                >
                     {message}
                 </Alert>
             )}
-            <div className="d-flex bg-light p-3 rounded-top border border-bottom-0" id={`order-${id}-header`}>
+            <div
+                className="d-flex bg-light p-3 rounded-top border border-bottom-0"
+                id={`order-${id}-header`}
+            >
                 <span className="my-auto">Order# {id}</span>
                 <div className="ms-auto d-flex flex-wrap">
                     {getNextStatusButton()}
-                    <Link to={id}>
+                    <Link to={`${id}`}>
                         <Button variant="link">View Details</Button>
                     </Link>
                 </div>
             </div>
             <div className="d-flex p-3 border border-top-0 border-bottom-0">
                 <span className="my-auto me-3">Status:</span>
-                <Badge bg={status === OrderStatus.CANCELLED ? "danger" : "success"} className="p-2 my-auto">
+                <Badge
+                    bg={status === OrderStatus.CANCELLED ? "danger" : "success"}
+                    className="p-2 my-auto"
+                >
                     {status}
                 </Badge>
                 <div className="ms-auto text-end">
                     <small>Updated at</small>
                     <h5>
                         <b>
-                            {new Date(updated_date).toLocaleDateString("en-US", {
-                                month: "long",
-                                day: "numeric",
-                                year: "numeric",
-                            })}
+                            {new Date(updated_date).toLocaleDateString(
+                                "en-US",
+                                {
+                                    month: "long",
+                                    day: "numeric",
+                                    year: "numeric",
+                                }
+                            )}
                         </b>
                     </h5>
                 </div>
@@ -124,7 +144,7 @@ export default function Order(props) {
                     {items.map((item, index) => (
                         <img
                             key={index}
-                            src={item.img_url}
+                            src={item?.imageUrl}
                             width={60}
                             height={60}
                             className="me-2 mb-2"
@@ -132,7 +152,10 @@ export default function Order(props) {
                     ))}
                 </div>
                 <div className="ms-md-auto mt-3 mt-md-0 text-center text-md-end">
-                    <Button variant="secondary" onClick={() => printReceipt(id)}>
+                    <Button
+                        variant="secondary"
+                        onClick={() => printReceipt(id)}
+                    >
                         Print Receipt
                     </Button>
                 </div>

@@ -51,5 +51,12 @@ public class Order {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "payment_id")
     private Payment payment;
+
+    @Transient
+    private double total;
+    @PostLoad
+    private void onLoad() {
+        this.total = items.stream().mapToDouble(item -> item.getQuantity() * item.getPrice()).sum();
+    }
 }
 

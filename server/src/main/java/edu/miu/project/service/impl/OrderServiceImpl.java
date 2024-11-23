@@ -8,6 +8,7 @@ import edu.miu.project.helper.ListMapper;
 import edu.miu.project.repo.BuyerRepository;
 import edu.miu.project.repo.OrderRepository;
 import edu.miu.project.repo.ProductRepository;
+import edu.miu.project.service.CartService;
 import edu.miu.project.service.OrderService;
 import edu.miu.project.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -34,6 +35,8 @@ public class OrderServiceImpl implements OrderService {
     private ModelMapper modelMapper;
     @Autowired
     UserService userService;
+    @Autowired
+    CartService cartService;
 
     // Place an order
     public void placeOrder(OrderRequest orderRequest) {
@@ -71,7 +74,8 @@ public class OrderServiceImpl implements OrderService {
         });
 
         order.setSeller(orderItems.get(0).getProduct().getSeller());
-
+        order.setItems(orderItems);
+        cartService.emptyCart();
         // Save the order
         orderRepository.save(order);
     }
@@ -106,7 +110,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     // Update order status (Shipped → On the Way → Delivered)
-    public Order updateOrderStatus(Long orderId, OrderStatus status) {
+    public OrderDto updateOrderStatus(Long orderId, OrderStatus status) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found with ID: " + orderId));
 
@@ -115,7 +119,12 @@ public class OrderServiceImpl implements OrderService {
 
         // Update status
         order.setStatus(status);
-        return orderRepository.save(order);
+        return modelMapper.map(orderRepository.save(order), OrderDto.class);
+    }
+
+    @Override
+    public Order getOrderById(Long orderId) {
+        return orderRepository.findById(orderId).orElse(null);
     }
 
     @Override
