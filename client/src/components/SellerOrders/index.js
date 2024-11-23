@@ -4,7 +4,7 @@ export default function SellerOrders(props) {
   const orders = [
     {
       id: "200012291239038",
-      status: "Delivered",
+      status: "CREATED",
       created_date: new Date("2024-09-20"),
       updated_date: new Date("2024-09-21"),
       items: [
