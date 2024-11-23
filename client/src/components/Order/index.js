@@ -53,18 +53,14 @@ export default function Order(props) {
                     <small>Updated at </small>
                     <h5>
                         <b>
-                            {updated_date.toLocaleDateString("en-US", {
-                                month: "long",
-                                day: "numeric",
-                                year: "numeric",
-                            })}
+                            {updated_date}
                         </b>
                     </h5>
                 </span>
             </div>
             <div className="d-flex p-3 border border-top-0 rounded-bottom">
                 {items.map((item) => (
-                    <img src={item.img_url} width={60} height={60} />
+                    <img src={item.product.imageUrl} width={60} height={60} />
                 ))}
                 <div className="ms-auto mt-auto">
                     <button className="btn btn-secondary">Print Receipt</button>

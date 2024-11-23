@@ -9,6 +9,6 @@ public class Payment {
     private Long id;
 
     private String cardNumber;
-    private String expirationDate;
+    private String expiryDate;
     private String cvv;
 }
