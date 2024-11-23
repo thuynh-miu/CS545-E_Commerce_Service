@@ -185,8 +185,8 @@ public class ProductServiceImpl implements ProductService {
     public Page<ProductDto> filterProducts(
             String name,
             Double minPrice, Double maxPrice,
-            List<String> colors, List<String> branchs, Pageable pageable) {
-        Page<Product> products = productRepository.filterProducts(name, minPrice, maxPrice, colors, branchs, pageable);
+            List<String> colors, List<String> brands, Pageable pageable) {
+        Page<Product> products = productRepository.filterProducts(name, minPrice, maxPrice, colors, brands, pageable);
         return products.map(product -> modelMapper.map(product, ProductDto.class));
     }
 

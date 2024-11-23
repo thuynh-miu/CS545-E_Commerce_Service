@@ -12,7 +12,7 @@ VALUES ('admin', 'admin@miu.edu', '$2a$12$IKEQb00u5QpZMx4v5zMweu.3wrq0pS7XLCHO4y
 
 -- Insert Sellers
 INSERT INTO seller (user_id, is_approved)
-VALUES (2, false);
+VALUES (2, true);
 
 -- Insert Buyers
 INSERT INTO buyer (user_id)
