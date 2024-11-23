@@ -13,6 +13,6 @@ public interface OrderService {
     void placeOrder(OrderRequest orderRequest);
     boolean cancelOrder(Long orderId);
     OrderDto updateOrderStatus(Long orderId, OrderStatus status);
-
+    Order getOrderById(Long orderId);
     Page<OrderDto> getOrderByStatus(OrderStatus orderStatus, Pageable pageable);
 }

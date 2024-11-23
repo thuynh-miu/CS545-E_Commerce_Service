@@ -105,6 +105,7 @@ export const CartContextProvider = (props) => {
                 addProduct: addProduct,
                 reduceProduct: reduceProduct,
                 removeProduct: removeProduct,
+                syncCart: syncCart,
             }}
         >
             {props.children}

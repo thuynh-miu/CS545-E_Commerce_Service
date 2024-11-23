@@ -6,7 +6,9 @@ export default function OrdersHistory(props) {
     const [orders, setOrders] = useState([]);
 
     useEffect(() => {
-        getOrdersHistory().then((data) => setOrders(data.content));
+        getOrdersHistory().then((data) => {
+            setOrders(data);
+        });
     }, []);
     return (
         <div className="continer">

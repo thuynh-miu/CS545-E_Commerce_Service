@@ -7,7 +7,7 @@ import { CartContext } from "../../contexts/CartContextProvider";
 
 export default function Checkout() {
     const navigate = useNavigate();
-    const { cartItems } = useContext(CartContext);
+    const { cartItems, syncCart } = useContext(CartContext);
     const fullNameInputRef = useRef();
     const fullNameValidationRef = useRef();
 
@@ -145,7 +145,11 @@ export default function Checkout() {
             })),
         })
             .then((response) => {
-                response.json();
+                if (response.status > 299) {
+                    throw new Error("Can not place order");
+                }
+                syncCart();
+                navigate("/buyer/orders");
             })
             .catch((error) => {
                 alert(error);
