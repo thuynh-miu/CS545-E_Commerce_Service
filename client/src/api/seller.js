@@ -39,8 +39,6 @@ export const updateOrderStatus = async (orderId, newStatus) => {
         `Failed to update order status: ${errorDetails.message || "Unknown error"}`
       );
     }
-
-    return await response.json();
   } catch (error) {
     console.error("Error updating order status:", error.message);
     throw error;

@@ -6,7 +6,7 @@ import { updateOrderStatus } from "../../api/seller";
 
 export default function Order(props) {
     const { id, status, created_date, updated_date, items, total, review } = props;
-    console.log("Order", props);
+    const [orderStatus, setOrderStatus] = useState(status);
     const [message, setMessage] = useState(null);
     const [messageType, setMessageType] = useState(""); // "success" or "danger"
 
@@ -24,6 +24,7 @@ export default function Order(props) {
         try {
             console.log(`Changing status for order ${orderId} to ${newStatus}`);
             await updateOrderStatus(orderId, newStatus);
+            setOrderStatus(newStatus);
             setMessage(`Order status updated to ${newStatus}.`);
             setMessageType("success");
         } catch (error) {
@@ -34,7 +35,7 @@ export default function Order(props) {
     };
 
     const getNextStatusButton = () => {
-        switch (status) {
+        switch (orderStatus) {
             case OrderStatus.CREATED:
                 return (
                     <>
@@ -59,12 +60,12 @@ export default function Order(props) {
                     <Button
                         variant="primary"
                         className="me-2"
-                        onClick={() => handleChangeStatus(id, OrderStatus.TRANSISTING)}
+                        onClick={() => handleChangeStatus(id, OrderStatus.TRANSIT)}
                     >
                         Mark as Transisting
                     </Button>
                 );
-            case OrderStatus.TRANSISTING:
+            case OrderStatus.TRANSIT:
                 return (
                     <Button
                         variant="primary"

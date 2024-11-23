@@ -1,9 +1,9 @@
 const OrderStatus = {
-    CREATED: 'CREATED',
+    CREATED: 'PENDING',
     SHIPPED: 'SHIPPED',
-    TRANSISTING: 'TRANSISTING',
+    TRANSIT: 'TRANSIT',
     DELIVERED: 'DELIVERED',
-    CANCELLED: 'CANCELLED'
+    CANCELLED: 'CANCELED'
 }
 
 export default OrderStatus;
