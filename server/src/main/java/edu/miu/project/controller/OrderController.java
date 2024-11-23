@@ -3,6 +3,7 @@ package edu.miu.project.controller;
 import edu.miu.project.entity.Order;
 import edu.miu.project.entity.OrderStatus;
 import edu.miu.project.entity.dto.OrderRequest;
+import edu.miu.project.entity.dto.request.OrderStatusRequest;
 import edu.miu.project.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -60,13 +61,13 @@ public class OrderController {
             }
     )
     @Parameters({
-            @Parameter(name = "orderId", description = "ID of the order to update", required = true),
+            @Parameter(name = "orderId", description = "ID of the order to update status", required = true),
             @Parameter(name = "status", description = "New status of the order", required = true)
     })
     @PutMapping("/{orderId}/status")
-    public ResponseEntity<?> updateOrderStatus(@PathVariable Long orderId, @RequestBody String status) {
+    public ResponseEntity<?> updateOrderStatus(@PathVariable Long orderId, @RequestBody OrderStatusRequest status) {
         try {
-            OrderStatus newStatus = OrderStatus.valueOf(status.toUpperCase());
+            OrderStatus newStatus = OrderStatus.valueOf(status.getStatus().toUpperCase());
             Order updatedOrder = orderService.updateOrderStatus(orderId, newStatus);
             return ResponseEntity.ok(updatedOrder);
         } catch (RuntimeException e) {
