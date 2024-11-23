@@ -6,7 +6,7 @@ import AddToCartButton from "../AddToCartButton";
 import { CartContext } from "../../contexts/CartContextProvider";
 
 export default function Product({ product }) {
-  const { name, price, rating, imageUrl } = product;
+  const { name, price, rating, imageUrl, quantity } = product;
   const { cartItems, addProduct, reduceProduct } = useContext(CartContext);
 
   const increase = () => {
@@ -28,6 +28,7 @@ export default function Product({ product }) {
       >
         <img className="card-img-top" src={imageUrl} />
         <div className="d-flex">
+          <span className="ms-3">Stock left: {quantity}</span>
           <span className="ms-auto me-3">
             <Rating
               initialRating={rating}

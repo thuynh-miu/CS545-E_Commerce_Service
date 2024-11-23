@@ -16,7 +16,8 @@ export default function BestSellerProducts(props) {
                     price: product.price,
                     quantity: product.quantity,
                     imageUrl: product.imageUrl,
-                    reviews: product.reviews
+                    reviews: product.reviews,
+                    rating: product.rating
                 }
             }))
         });

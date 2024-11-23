@@ -97,6 +97,16 @@ public class CartServiceImpl implements CartService {
         return cartRepository.save(cart);
     }
 
+    @Override
+    public void emptyCart() {
+        Buyer buyer = userService.getCurrentBuyer()
+                .orElseThrow(() -> new RuntimeException("Buyer not found"));
+        Cart cart = (Cart) cartRepository.findByBuyer_Id(buyer.getId())
+                .orElseThrow(() -> new RuntimeException("Cart not found"));
+        cart.setItems(new ArrayList<>());
+        cartRepository.save(cart);
+    }
+
 //    // Update cart item quantity
 //    public Cart updateCartItemQuantity(Long productId, int quantity) {
 //        Buyer buyer = userService.getCurrentBuyer()

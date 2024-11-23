@@ -22,5 +22,7 @@ public class OrderDto {
     private List<OrderItemDto> items;
     private AddressDto address;
     private PaymentDto payment;
+
+    private double total;
 }
 

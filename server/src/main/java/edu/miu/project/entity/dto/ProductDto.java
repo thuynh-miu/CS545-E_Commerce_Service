@@ -11,4 +11,5 @@ public class ProductDto {
     private int quantity;
     private int soldQuantity;
     private String imageUrl;
+    private double rating;
 }

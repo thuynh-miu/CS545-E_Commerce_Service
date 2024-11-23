@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,8 @@ public class OrderController {
 
     @Autowired
     OrderService orderService;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Operation(
             summary = "Cancel an order",
@@ -156,5 +159,16 @@ public class OrderController {
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @Parameters({
+            @Parameter(name = "page", description = "Page number for pagination", required = false),
+            @Parameter(name = "pagesize", description = "Number of orders per page", required = false)
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderDto> getOrderById(@PathVariable Long id
+    ) {
+        Order order = orderService.getOrderById(id);
+        return ResponseEntity.ok(modelMapper.map(order, OrderDto.class));
     }
 }
