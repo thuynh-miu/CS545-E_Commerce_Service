@@ -1,55 +1,59 @@
-import { useContext, useRef } from "react";
+import { useContext, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../api";
 import { UserContext } from "../../contexts/UserContextProvider";
 import { LoginContext } from "../../contexts/LoginStatusProvider";
 
-export default function Login(props) {
+export default function Login() {
     const emailRef = useRef(null);
     const passwordRef = useRef(null);
     const navigate = useNavigate();
 
-    const {userData, userDispatch} = useContext(UserContext);
-    const {setIsLoggedIn} = useContext(LoginContext)
+    const { userDispatch } = useContext(UserContext);
+    const { setIsLoggedIn } = useContext(LoginContext);
 
-    const handleLogin = (e) => {
+    const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const handleLogin = async (e) => {
         e.preventDefault();
+        setErrorMessage("");
         const email = emailRef.current.value;
         const password = passwordRef.current.value;
 
         if (!email || !password) {
-            alert("Please fill in both fields.");
+            setErrorMessage("Please fill in both email and password.");
             return;
         }
-        login({
-            email: email,
-            password: password,
-        })
-            .then((response) => {
-                if (response.status === 200) {
-                    return response.json();
-                } else {
-                    throw new Error(`Received status code ${response.status}`);
-                }
-            })
-            .then(({accessToken, refreshToken}) => {
-                localStorage.setItem('accessToken', accessToken);
-                localStorage.setItem('refreshToken', refreshToken);
-                setIsLoggedIn(true);
-                navigate('/')
-            })
-            .catch((error) => {
-                alert("Incorrect username or password");
-            });
+
+        setLoading(true);
+        try {
+            const { accessToken, refreshToken } = await login({ email, password });
+            localStorage.setItem("accessToken", accessToken);
+            localStorage.setItem("refreshToken", refreshToken);
+            setIsLoggedIn(true);
+            navigate("/");
+        } catch (error) {
+            setErrorMessage(error.message || "Incorrect username or password.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
-        <form className="container mt-5">
+        <form className="container mt-5" onSubmit={handleLogin}>
             <div
-                className="card shadow p-4"
-                style={{ maxWidth: "400px", margin: "auto" }}
+                className="card shadow p-4 border-light"
+                style={{ maxWidth: "400px", margin: "auto", borderRadius: "8px" }}
             >
                 <h3 className="text-center mb-4">Login</h3>
+
+                {errorMessage && (
+                    <div className="alert alert-danger" role="alert">
+                        {errorMessage}
+                    </div>
+                )}
+
                 <div className="mb-3">
                     <label htmlFor="email" className="form-label">
                         Email
@@ -63,6 +67,7 @@ export default function Login(props) {
                         required
                     />
                 </div>
+
                 <div className="mb-3">
                     <label htmlFor="password" className="form-label">
                         Password
@@ -76,15 +81,22 @@ export default function Login(props) {
                         required
                     />
                 </div>
+
                 <button
+                    type="submit"
                     className="btn btn-primary w-100 mb-3"
-                    onClick={handleLogin}
+                    disabled={loading}
                 >
-                    Log In
+                    {loading ? (
+                        <span className="spinner-border spinner-border-sm me-2" role="status" />
+                    ) : (
+                        "Log In"
+                    )}
                 </button>
-                <Link to={"/register"} className="text-center">
-                    Not a user? Register
-                </Link>
+
+                <div className="text-center">
+                    <Link to={"/register"}>Not a user? Register</Link>
+                </div>
             </div>
         </form>
     );
