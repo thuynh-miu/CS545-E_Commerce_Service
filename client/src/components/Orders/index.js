@@ -8,8 +8,8 @@ export default function Orders({ orders }) {
           <Order
             id={order.id}
             status={order.status}
-            order_date={order.created_date}
-            updated_date={order.updated_date}
+            order_date={order.orderDate}
+            updated_date={order.updateDate}
             items={order.items}
           />
         </div>

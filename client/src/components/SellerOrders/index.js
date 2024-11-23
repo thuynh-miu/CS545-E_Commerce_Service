@@ -14,8 +14,8 @@ export default function SellerOrders() {
         const formattedOrders = res?.map((order) => ({
           id: order.id,
           status: order.status,
-          created_date: new Date(order.orderDate),
-          updated_date: new Date(order.updateDate),
+          orderDate: new Date(order.orderDate),
+          updateDate: new Date(order.updateDate),
           items: order.items.map((item) => ({
             img_url: item.imageUrl,
           }))
