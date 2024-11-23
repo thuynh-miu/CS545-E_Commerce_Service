@@ -71,7 +71,6 @@ export const createReview = async (productId, payload) => {
         if (!response.ok) {
             throw new Error("Review failed");
         }
-        return await response.json();
     } catch (error) {
         throw error;
     }
