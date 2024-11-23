@@ -1,5 +1,5 @@
 import { PrinterOutlined, StarOutlined } from "@ant-design/icons";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
     Link,
     useNavigate,
@@ -10,9 +10,13 @@ import { getOrderById } from "../../api";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import OrderStatus from "../../constants/OrderStatus";
+import { useUserContext } from "../../contexts/UserContextProvider";
+import { UserRole } from "../../constants/UserRole";
 
 export default function OrderDetail(props) {
     const navigate = useNavigate();
+
+    const { userData } = useUserContext();
 
     const { orderId } = useParams();
     const [orderDetail, setOrderDetail] = useState({});
@@ -86,12 +90,21 @@ export default function OrderDetail(props) {
                                         </p>
                                     </div>
                                     <div className="d-flex">
-                                        <StarOutlined />
-                                        <Link to={`review/${item?.id}`}>
-                                            <button className="btn btn-link text-black">
-                                                Write a review
-                                            </button>
-                                        </Link>
+                                        {orderDetail.status ===
+                                            OrderStatus.DELIVERED &&
+                                            userData.role ===
+                                                UserRole.BUYER && (
+                                                    <>
+                                                        <StarOutlined />
+                                                        <Link
+                                                            to={`review/${item?.product?.id}`}
+                                                        >
+                                                            <button className="btn btn-link text-black">
+                                                                Write a review
+                                                            </button>
+                                                        </Link>
+                                                    </>
+                                                )}
                                     </div>
                                     {index < orderDetail?.items?.length - 1 && (
                                         <hr />

@@ -27,11 +27,10 @@ export default function ReviewProduct() {
     const commentRef = useRef();
 
     const initProduct = {
-        id: 1,
-        brand: "Mainstays",
-        name: "Mainstays 2.2 Qt - Compact Air Fryer, Black - Automatic Shutoff, Built-in Timer",
-        imageUrl:
-            "https://i5.walmartimages.com/seo/Mainstays-2-2-Qt-Compact-Air-Fryer-Non-Stick-Dishwasher-Safe-Basket-1150W-Black-Automatic-Shutoff-Built-in-Timer-New-Condition_1f151723-56df-47cb-bea4-cd24bc216d07.0155bba2f419511d81441e32814f8fd1.jpeg",
+        id: null,
+        brand: null,
+        name: null,
+        imageUrl: null,
     };
 
     const [product, setProduct] = useState(initProduct);
