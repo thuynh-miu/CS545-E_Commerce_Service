@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -117,7 +118,7 @@ public class OrderController {
             @RequestParam(name = "pagesize", defaultValue = Constants.PAGE_SIZE) int pageSize
     ) {
         try {
-            Pageable pageable = PageRequest.of(page, pageSize);
+            Pageable pageable = PageRequest.of(page, pageSize, Sort.by("id").descending());
             return ResponseEntity.ok(orderService.getOrderHistory(pageable));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -146,7 +147,7 @@ public class OrderController {
             @RequestParam(name = "pagesize", defaultValue = Constants.PAGE_SIZE) int pageSize
     ) {
         try {
-            Pageable pageable = PageRequest.of(page, pageSize);
+            Pageable pageable = PageRequest.of(page, pageSize, Sort.by("id").descending());
             if (status.isEmpty()) {
                 return ResponseEntity.ok(orderService.getOrderHistory(pageable));
             }
