@@ -18,7 +18,6 @@ export default function ProductDetailPage(props) {
 
   useEffect(() => {
     getProductById(productId).then((res) => {
-      console.log(res.data);
       setProductDetail({
         id: res.id,
         name: res.name,

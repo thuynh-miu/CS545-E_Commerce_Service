@@ -4,11 +4,11 @@ const hostname = process.env.REACT_APP_BACKEND_URL;
 
 const host = "http://localhost:8080";
 export const getCart = async () => {
-    const accessToken = localStorage.getItem('accessToken');
+    const accessToken = localStorage.getItem("accessToken");
     const response = await fetch(`${host}/api/v1/cart`, {
         headers: {
             "Content-Type": "application/json",
-            "accessToken": accessToken
+            accessToken: accessToken,
         },
     });
 
@@ -16,19 +16,34 @@ export const getCart = async () => {
         return response.json();
     }
     return null;
-}
+};
 
 export const addToCart = async (productId, quantity) => {
-    const accessToken = localStorage.getItem('accessToken');
-    return fetch(`${hostname}/api/v1/cart?productId=${productId}&quantity=${quantity}`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "accessToken": accessToken
-        },
-    });
-}
+    const accessToken = localStorage.getItem("accessToken");
+    return fetch(
+        `${hostname}/api/v1/cart?productId=${productId}&quantity=${quantity}`,
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                accessToken: accessToken,
+            },
+        }
+    );
+};
 
 export const removeFromCart = async (productId) => {
     const data = await axios.get(`${host}/api/v1/cart?productId=${productId}`);
-}
+};
+
+export const placeOrder = async (payload) => {
+    const accessToken = localStorage.getItem("accessToken");
+    return fetch(`${hostname}/api/v1/orders/order`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            accessToken: accessToken,
+        },
+        body: JSON.stringify(payload),
+    });
+};
