@@ -1,7 +1,7 @@
 # CS545-E_Commerce_Service
 
 ## Client
-Link: ...
+Link: https://cs-545-e-commerce-service.vercel.app/
 
 ### How to run the client
 To run the client, please execute the following from the root directory:
