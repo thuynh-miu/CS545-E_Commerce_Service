@@ -34,11 +34,15 @@ public class Product {
 
     @Transient
     private double rating;
+    @Transient
+    private String brand;
     @PostLoad
     private void onLoad() {
         this.rating = reviews.stream().mapToDouble(Review::getRating).average().orElse(Double.NaN);
+        this.brand = attributes.stream().filter(attribute -> attribute.getName().equals("brand")).map(Attribute::getValue).findFirst().orElse("");
     }
 
+    @Column(length = 1024)
     private String imageUrl;
 
     @ManyToOne

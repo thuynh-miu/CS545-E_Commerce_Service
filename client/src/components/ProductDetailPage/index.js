@@ -24,7 +24,8 @@ export default function ProductDetailPage(props) {
         description: res.description,
         price: res.price,
         quantity: res.quantity,
-        img_url: res.imageUrl
+        img_url: res.imageUrl,
+        brand: res.brand
       });
     });
     getReviewsByProductId(productId).then((res) => {

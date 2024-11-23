@@ -85,7 +85,14 @@ export default function Inventories(props) {
                                 <td>
                                     ${parseFloat(inventory.price).toFixed(2)}
                                 </td>
-                                <td>{inventory.quantity}</td>
+                                <td>
+                                    {inventory.quantity}
+                                    {inventory.quantity === 0 && (
+                                        <span className="text-danger ms-3">
+                                            Out of Stock
+                                        </span>
+                                    )}
+                                </td>
                                 <td>{inventory.soldQuantity}</td>
                                 <td className="text-center">
                                     <button

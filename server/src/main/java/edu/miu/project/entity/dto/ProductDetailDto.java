@@ -14,4 +14,5 @@ public class ProductDetailDto {
     private int soldQuantity;
     private String imageUrl;
     List<ReviewDto> reviews;
+    private String brand;
 }
