@@ -7,6 +7,8 @@ import {
     useSearchParams,
 } from "react-router-dom";
 import { getOrderById } from "../../api";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 export default function OrderDetail(props) {
     const navigate = useNavigate();
@@ -52,6 +54,30 @@ export default function OrderDetail(props) {
         navigate(-1);
     };
 
+    const printReceipt = async () => {
+        try {
+            const receiptElement = document.getElementById("order-receipt");
+            if (!receiptElement) {
+                throw new Error("Receipt element not found.");
+            }
+
+            const canvas = await html2canvas(receiptElement, { scale: 2 });
+            const imgData = canvas.toDataURL("image/png");
+
+            const pdf = new jsPDF();
+            const imgWidth = 190; // PDF width in mm
+            const pageHeight = 285; // PDF height in mm
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+            pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
+
+            pdf.save(`order_${orderId}_receipt.pdf`);
+        } catch (error) {
+            console.error("Failed to print receipt:", error.message);
+            alert("An error occurred while trying to print the receipt.");
+        }
+    };
+
     return (
         <div className="container w-75">
             <div>
@@ -60,11 +86,11 @@ export default function OrderDetail(props) {
                     Order# {orderDetail?.id}
                 </h1>
                 <div>
-                    <button className="btn btn-link">
+                    <button className="btn btn-link" onClick={printReceipt}>
                         <PrinterOutlined /> Print
                     </button>
                 </div>
-                <div className="d-flex mb-3">
+                <div id="order-receipt"  className="d-flex mb-3">
                     <div className="container border rounded me-5">
                         {orderDetail?.items &&
                             orderDetail?.items.map((item, index) => (

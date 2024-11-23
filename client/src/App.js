@@ -62,7 +62,7 @@ function App() {
                                     element={<SellerOrders />}
                                 />
                                 <Route
-                                    path="orders/:id"
+                                    path="orders/:orderId"
                                     element={<OrderDetail />}
                                 />
                                 <Route
