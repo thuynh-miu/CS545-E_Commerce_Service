@@ -3,8 +3,11 @@ import { Button, Badge, Alert } from "react-bootstrap";
 import OrderStatus from "../../constants/OrderStatus";
 import { Link } from "react-router-dom";
 import { updateOrderStatus } from "../../api/seller";
+import { UserRole } from "../../constants/UserRole/index";
+import { useUserContext } from "../../contexts/UserContextProvider";
 
 export default function Order(props) {
+    const { userData } = useUserContext();
     const { id, status, created_date, updated_date, items, total, review } = props;
     const [orderStatus, setOrderStatus] = useState(status);
     const [message, setMessage] = useState(null);
@@ -95,12 +98,14 @@ export default function Order(props) {
             )}
             <div className="d-flex bg-light p-3 rounded-top border border-bottom-0" id={`order-${id}-header`}>
                 <span className="my-auto">Order# {id}</span>
+                {userData.role === UserRole.SELLER && (
                 <div className="ms-auto d-flex flex-wrap">
                     {getNextStatusButton()}
                     <Link to={id}>
                         <Button variant="link">View Details</Button>
                     </Link>
                 </div>
+                ) }
             </div>
             <div className="d-flex p-3 border border-top-0 border-bottom-0">
                 <span className="my-auto me-3">Status:</span>
