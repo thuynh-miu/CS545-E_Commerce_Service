@@ -125,7 +125,11 @@ export default function Order(props) {
             <div className="d-flex p-3 border border-top-0 border-bottom-0">
                 <span className="my-auto me-3">Status:</span>
                 <Badge
-                    bg={orderStatus === OrderStatus.CANCELLED ? "danger" : "success"}
+                    bg={
+                        orderStatus === OrderStatus.CANCELLED
+                            ? "danger"
+                            : "success"
+                    }
                     className="p-2 my-auto"
                 >
                     {orderStatus}

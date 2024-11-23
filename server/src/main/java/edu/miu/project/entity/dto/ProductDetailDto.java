@@ -15,4 +15,5 @@ public class ProductDetailDto {
     private String imageUrl;
     List<ReviewDto> reviews;
     private String brand;
+    private double rating;
 }
