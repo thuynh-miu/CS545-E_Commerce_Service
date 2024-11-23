@@ -11,16 +11,16 @@ import java.util.List;
 public class OrderDto {
     private Long id;
 
-    private Buyer buyer; // Reference back to the buyer
-    private Seller seller; // Reference back to the buyer
+    private BuyerDto buyer; // Reference back to the buyer
+    private SellerDto seller; // Reference back to the buyer
 
     private LocalDateTime orderDate;
     private LocalDateTime updateDate;
 
     private OrderStatus status; // Enum for order status
 
-    private List<OrderItem> items;
-    private Address address;
-    private Payment payment;
+    private List<OrderItemDto> items;
+    private AddressDto address;
+    private PaymentDto payment;
 }
 

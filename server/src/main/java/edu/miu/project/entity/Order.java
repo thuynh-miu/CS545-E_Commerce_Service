@@ -4,6 +4,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CurrentTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,8 +32,10 @@ public class Order {
     private Seller seller; // Reference back to the buyer
 
     @Column(nullable = false)
+    @CurrentTimestamp
     private LocalDateTime orderDate;
     @Column(nullable = false)
+    @UpdateTimestamp
     private LocalDateTime updateDate;
 
     @Enumerated(EnumType.STRING)
