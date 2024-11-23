@@ -1,69 +1,140 @@
-import { Button, Dropdown, DropdownButton } from "react-bootstrap";
+import { useState } from "react";
+import { Button, Badge, Alert } from "react-bootstrap";
 import OrderStatus from "../../constants/OrderStatus";
 import { Link } from "react-router-dom";
+import { updateOrderStatus } from "../../api/seller";
 
 export default function Order(props) {
-    const { id, status, created_date, updated_date, items, total, review } =
-        props;
+    const { id, status, created_date, updated_date, items, total, review } = props;
+    console.log("Order", props);
+    const [message, setMessage] = useState(null);
+    const [messageType, setMessageType] = useState(""); // "success" or "danger"
 
-    const printReceipt = (orderId) => {
-        console.log(orderId);
+    const printReceipt = async (orderId) => {
+        try {
+            console.log(`Printing receipt for order: ${orderId}`);
+            // Add logic here for printing the receipt
+        } catch (error) {
+            console.error("Failed to print receipt:", error.message);
+            alert("An error occurred while trying to print the receipt.");
+        }
+    };
+
+    const handleChangeStatus = async (orderId, newStatus) => {
+        try {
+            console.log(`Changing status for order ${orderId} to ${newStatus}`);
+            await updateOrderStatus(orderId, newStatus);
+            setMessage(`Order status updated to ${newStatus}.`);
+            setMessageType("success");
+        } catch (error) {
+            console.error("Failed to update order status:", error.message);
+            setMessage("Failed to update order status. Please try again.");
+            setMessageType("danger");
+        }
+    };
+
+    const getNextStatusButton = () => {
+        switch (status) {
+            case OrderStatus.CREATED:
+                return (
+                    <>
+                        <Button
+                            variant="danger"
+                            className="me-2"
+                            onClick={() => handleChangeStatus(id, OrderStatus.CANCELLED)}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            variant="primary"
+                            className="me-2"
+                            onClick={() => handleChangeStatus(id, OrderStatus.SHIPPED)}
+                        >
+                            Mark as Shipped
+                        </Button>
+                    </>
+                );
+            case OrderStatus.SHIPPED:
+                return (
+                    <Button
+                        variant="primary"
+                        className="me-2"
+                        onClick={() => handleChangeStatus(id, OrderStatus.TRANSISTING)}
+                    >
+                        Mark as Transisting
+                    </Button>
+                );
+            case OrderStatus.TRANSISTING:
+                return (
+                    <Button
+                        variant="primary"
+                        className="me-2"
+                        onClick={() => handleChangeStatus(id, OrderStatus.DELIVERED)}
+                    >
+                        Mark as Delivered
+                    </Button>
+                );
+            case OrderStatus.DELIVERED:
+                return (
+                    <Button variant="primary" className="me-2">
+                        Write a Review
+                    </Button>
+                );
+            default:
+                return null;
+        }
     };
 
     return (
-        <div className="container">
-            <div
-                className="d-flex bg-light p-3 rounded-top border border-bottom-0"
-                id={`order-${id}-header`}
-            >
+        <div className="container bg-white rounded shadow-sm mb-4">
+            {message && (
+                <Alert variant={messageType} onClose={() => setMessage(null)} dismissible>
+                    {message}
+                </Alert>
+            )}
+            <div className="d-flex bg-light p-3 rounded-top border border-bottom-0" id={`order-${id}-header`}>
                 <span className="my-auto">Order# {id}</span>
-                <div className="ms-auto">
-                    {status === OrderStatus.CREATED && (
-                        <button className="btn btn-danger me-2">Cancel</button>
-                    )}
-                    {status === OrderStatus.CREATED && (
-                        <button className="btn btn-primary me-2">
-                            Change status to Shipped
-                        </button>
-                    )}
-                    {status === OrderStatus.SHIPPED && (
-                        <button className="btn btn-primary me-2">
-                            Change status to Transisting
-                        </button>
-                    )}
-                    {status === OrderStatus.TRANSISTING && (
-                        <button className="btn btn-primary me-2">
-                            Change status Delivered
-                        </button>
-                    )}
-                    {status === OrderStatus.DELIVERED && (
-                        <button className="btn btn-primary me-2">
-                            Write a review
-                        </button>
-                    )}
+                <div className="ms-auto d-flex flex-wrap">
+                    {getNextStatusButton()}
                     <Link to={id}>
-                        <button className="btn btn-link">View Detail</button>
+                        <Button variant="link">View Details</Button>
                     </Link>
                 </div>
             </div>
             <div className="d-flex p-3 border border-top-0 border-bottom-0">
                 <span className="my-auto me-3">Status:</span>
-                <span className="badge bg-success p-3 my-auto">{status}</span>
-                <span className="my-auto ms-auto">
-                    <small>Updated at </small>
+                <Badge bg={status === OrderStatus.CANCELLED ? "danger" : "success"} className="p-2 my-auto">
+                    {status}
+                </Badge>
+                <div className="ms-auto text-end">
+                    <small>Updated at</small>
                     <h5>
                         <b>
-                            {updated_date}
+                            {new Date(updated_date).toLocaleDateString("en-US", {
+                                month: "long",
+                                day: "numeric",
+                                year: "numeric",
+                            })}
                         </b>
                     </h5>
-                </span>
+                </div>
             </div>
-            <div className="d-flex p-3 border border-top-0 rounded-bottom">
-                {items.map((item) => (
-                    <img src={item.product.imageUrl} width={60} height={60} />
-                ))}
-                <div className="ms-auto mt-auto">
-                    <button className="btn btn-secondary">Print Receipt</button>
+            <div className="d-flex p-3 border border-top-0 rounded-bottom flex-column flex-md-row">
+                <div className="d-flex flex-wrap">
+                    {items.map((item, index) => (
+                        <img
+                            key={index}
+                            src={item.img_url}
+                            width={60}
+                            height={60}
+                            className="me-2 mb-2"
+                        />
+                    ))}
+                </div>
+                <div className="ms-md-auto mt-3 mt-md-0 text-center text-md-end">
+                    <Button variant="secondary" onClick={() => printReceipt(id)}>
+                        Print Receipt
+                    </Button>
                 </div>
             </div>
         </div>
