@@ -8,7 +8,8 @@ import { useUserContext } from "../../contexts/UserContextProvider";
 
 export default function Order(props) {
     const { userData } = useUserContext();
-    const { id, status, created_date, updated_date, items, total, review } = props;
+    const { id, status, created_date, updated_date, items, total, review } =
+        props;
     const [orderStatus, setOrderStatus] = useState(status);
     const [message, setMessage] = useState(null);
     const [messageType, setMessageType] = useState(""); // "success" or "danger"
@@ -43,15 +44,6 @@ export default function Order(props) {
                 return (
                     <>
                         <Button
-                            variant="danger"
-                            className="me-2"
-                            onClick={() =>
-                                handleChangeStatus(id, OrderStatus.CANCELLED)
-                            }
-                        >
-                            Cancel
-                        </Button>
-                        <Button
                             variant="primary"
                             className="me-2"
                             onClick={() =>
@@ -67,7 +59,9 @@ export default function Order(props) {
                     <Button
                         variant="primary"
                         className="me-2"
-                        onClick={() => handleChangeStatus(id, OrderStatus.TRANSIT)}
+                        onClick={() =>
+                            handleChangeStatus(id, OrderStatus.TRANSIT)
+                        }
                     >
                         Mark as Transisting
                     </Button>
@@ -111,22 +105,31 @@ export default function Order(props) {
                 id={`order-${id}-header`}
             >
                 <span className="my-auto">Order# {id}</span>
-                {userData.role === UserRole.SELLER && (
                 <div className="ms-auto d-flex flex-wrap">
-                    {getNextStatusButton()}
+                    {orderStatus === OrderStatus.CREATED && (
+                        <Button
+                            variant="danger"
+                            className="me-2"
+                            onClick={() =>
+                                handleChangeStatus(id, OrderStatus.CANCELLED)
+                            }
+                        >
+                            Cancel
+                        </Button>
+                    )}
+                    {userData.role === UserRole.SELLER && getNextStatusButton()}
                     <Link to={`${id}`}>
                         <Button variant="link">View Details</Button>
                     </Link>
                 </div>
-                ) }
             </div>
             <div className="d-flex p-3 border border-top-0 border-bottom-0">
                 <span className="my-auto me-3">Status:</span>
                 <Badge
-                    bg={status === OrderStatus.CANCELLED ? "danger" : "success"}
+                    bg={orderStatus === OrderStatus.CANCELLED ? "danger" : "success"}
                     className="p-2 my-auto"
                 >
-                    {status}
+                    {orderStatus}
                 </Badge>
                 <div className="ms-auto text-end">
                     <small>Updated at</small>
